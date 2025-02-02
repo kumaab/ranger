@@ -137,7 +137,7 @@ jobs:
       - name: Check containers are running
         run: |
           sleep 60
-          containers=(ranger ranger-zk ranger-solr ranger-postgres ranger-usersync ranger-tagsync ranger-kms ranger-hadoop ranger-hbase ranger-kafka ranger-hive ranger-knox ozone-om ozone-scm ozone-datanode);
+          containers=(ranger ranger-zk ranger-solr ranger-${{ matrix.arg }} ranger-usersync ranger-tagsync ranger-kms ranger-hadoop ranger-hbase ranger-kafka ranger-hive ranger-knox ozone-om ozone-scm ozone-datanode);
           flag=true;
           for container in "${containers[@]}"; do
               if [[ $(docker inspect -f '{{.State.Running}}' $container 2>/dev/null) == "true" ]]; then
@@ -149,15 +149,52 @@ jobs:
           done
           echo "CONTAINER_SUCCESS=${flag}" >> $GITHUB_ENV
 
+      - name: Check Ranger Services have started
+        run: |
+          services=(Usersync, Tagsync, KMS)
+          for service in "${services[@]}"; do
+              service_lower=$(echo "$service" | tr '[:upper:]' '[:lower:]')
+              docker logs ranger-${service_lower} | grep "Apache Ranger ${service} Service with pid [0-9]* has started"
+              if [ $? != 0 ]; then
+                  echo "Ranger ${service} service failed to start!";
+              fi
+              docker logs ranger | grep "Apache Ranger Admin Service with pid [0-9]* has started"
+              if [ $? != 0 ]; then
+                  echo "Ranger Admin service failed to start!";
+              fi
+          done
+      
       - name: Check plugins have been installed
         run: |
           services=(kms hive hbase kafka knox)
           for service in "${services[@]}"; do
               docker logs ranger-${service} | grep "Ranger Plugin for ${service} has been enabled"
               if [ $? != 0 ]; then
-                  echo "Plugin Installation failure for ${service};
+                  echo "Plugin Installation failure for ${service}";
               fi
           done
+
+      - name: Review ranger service container logs
+        run: |
+          docker exec ranger cat /var/log/ranger/ranger-admin-ranger.example.com-ranger.log
+          docker exec ranger-usersync cat /var/log/ranger/usersync/usersync-ranger-usersync.example.com-.log
+          docker exec ranger-tagsync cat /var/log/ranger/tagsync/tagsync-ranger-tagsync.example.com-.log
+          docker exec ranger-kms cat /var/log/ranger/kms/ranger-kms-ranger-kms.example.com-root.log
+          docker exec ranger cat /var/log/ranger/ranger-admin-ranger.example.com-ranger.log
+      
+      - name: Run REST API calls
+        run: |
+          python3 -m pip install apache-ranger
+          python3 <<EOF
+          from apache_ranger.client.ranger_client           import *
+          from apache_ranger.utils                          import *
+          from apache_ranger.model.ranger_user_mgmt         import *
+          from apache_ranger.client.ranger_user_mgmt_client import *
+          ranger_url  = 'http://localhost:6080'
+          ranger_auth = ('admin', 'rangerR0cks!')
+          ranger    = RangerClient(ranger_url, ranger_auth)
+          user_mgmt = RangerUserMgmtClient(ranger)
+          print(user_mgmt.get_users_in_group('hadoop'))
 
       - name: Remove containers
         run: |

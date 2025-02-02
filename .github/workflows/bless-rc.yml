@@ -63,7 +63,7 @@ jobs:
   docker-build:
     strategy:
       matrix:
-        arg: [postgres, mysql]
+        arg: [postgres, mysql, oracle]
     needs:
       - build-8
     runs-on: ubuntu-22.04

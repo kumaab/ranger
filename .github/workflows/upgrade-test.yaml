@@ -96,6 +96,11 @@ jobs:
           # Get container ID of ranger-build
           CONTAINER_ID=$(docker ps -aqf "name=ranger-build")
 
+          docker logs -f $CONTAINER_ID &
+
+          # Wait for the container to exit
+          docker wait $CONTAINER_ID
+
           # Step 3: Wait for the container to exit
           echo "Waiting for $CONTAINER_ID to exit..."
           while [ "$(docker inspect -f '{{.State.Status}}' $CONTAINER_ID)" != "exited" ]; do

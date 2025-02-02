@@ -33,14 +33,15 @@ env:
   MAVEN_OPTS: -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.http.retryHandler.class=standard -Dmaven.wagon.http.retryHandler.count=3
 
 jobs:
-  install_n_upgrade:
+  install:
     strategy:
       fail-fast: false  # Ensures all matrix jobs run to completion
       matrix:
-        db: [postgres, mysql]
         release: [ranger-2.4, ranger-2.5]
     runs-on: ubuntu-22.04
     timeout-minutes: 60
+    outputs:
+      param1: ${{ steps.set-output.outputs.release }}
     steps:
       - uses: actions/checkout@v4
       - name: Cache for maven dependencies
@@ -90,12 +91,11 @@ jobs:
       - name: Clean up Docker space
         run: docker system prune --all --force --volumes
 
-      - name: Bring up containers
+      - name: Build ranger version 1
         run: |
           cd dev-support/ranger-docker
           export DOCKER_BUILDKIT=1
           export COMPOSE_DOCKER_CLI_BUILD=1
-          export RANGER_DB_TYPE=${{ matrix.db }}
           docker compose -f docker-compose.ranger-base.yml -f docker-compose.ranger-build.yml build
           docker compose -f docker-compose.ranger-base.yml -f docker-compose.ranger-build.yml up -d
           
@@ -107,18 +107,7 @@ jobs:
           # Wait for the container to exit
           docker wait $CONTAINER_ID
 
-          # Step 3: Wait for the container to exit
-          echo "Waiting for $CONTAINER_ID to exit..."
-          while [ "$(docker inspect -f '{{.State.Status}}' $CONTAINER_ID)" != "exited" ]; do
-            sleep 20
-          done
-          
-          docker compose -f docker-compose.ranger.yml -f docker-compose.ranger-${RANGER_DB_TYPE}.yml build
-          docker compose -f docker-compose.ranger.yml -f docker-compose.ranger-${RANGER_DB_TYPE}.yml up -d
-          sleep 30
-          docker logs ranger
-
-      - name: Update .env for upgrade
+      - name: Update .env with new ranger version
         run: |
           cd dev-support/ranger-docker
           RELEASE="${{ matrix.release }}"
@@ -134,26 +123,105 @@ jobs:
           EOF
           cat .env
 
-      - name: Upgrade Ranger
+      - name: Build ranger version 2
         run: |
           cd dev-support/ranger-docker
           export DOCKER_BUILDKIT=1
           export COMPOSE_DOCKER_CLI_BUILD=1
-          export RANGER_DB_TYPE=${{ matrix.db }}
           docker compose -f docker-compose.ranger-base.yml -f docker-compose.ranger-build.yml build
           docker compose -f docker-compose.ranger-base.yml -f docker-compose.ranger-build.yml up -d
 
           # Get container ID of ranger-build
           CONTAINER_ID=$(docker ps -aqf "name=ranger-build")
 
-          # Step 3: Wait for the container to exit
-          echo "Waiting for $CONTAINER_ID to exit..."
-          while [ "$(docker inspect -f '{{.State.Status}}' $CONTAINER_ID)" != "exited" ]; do
-            sleep 20
-          done
+          docker logs -f $CONTAINER_ID &
+
+          # Wait for the container to exit
+          docker wait $CONTAINER_ID
           
           docker compose -f docker-compose.ranger.yml -f docker-compose.ranger-${RANGER_DB_TYPE}.yml build
           docker compose -f docker-compose.ranger.yml -f docker-compose.ranger-${RANGER_DB_TYPE}.yml up -d
           sleep 30
           docker logs ranger
 
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: dev-support/ranger-docker/dist/*
+
+      - name: Save release matrix to File
+        run: echo "${{ matrix.release }}" >> release-matrix-values.txt
+
+      - name: Upload release matrix as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-matrix
+          path: release-matrix-values.txt
+  
+  upgrade:
+    needs: install
+    strategy:
+      fail-fast: false  # Ensures all matrix jobs run to completion
+      matrix:
+        db: [postgres, mysql]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    steps:
+      - name: Download Artifacts from Previous Job
+        uses: actions/download-artifact@v4
+        with:
+          name: release-matrix
+
+      - name: Read Matrix Values from Previous Job
+        run: |
+          MATRIX_VALUES=$(cat release-matrix-values.txt | tr '\n' ' ')
+          echo "DB Matrix=${{ matrix.db }} will use values: $MATRIX_VALUES"
+
+          for RELEASE_BR in $MATRIX_VALUES; do
+            echo "Processing B=${{ matrix.B }} with A=$RELEASE_BR"
+            # Simulate a command using A and B
+            echo "Running task with A=$A and B=${{ matrix.B }}"
+          done
+  
+      - uses: actions/checkout@v4
+      - name: Download build-artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+
+      - name: Copy artifacts for docker build
+        run: |
+          cp ranger-*.tar.gz dev-support/ranger-docker/dist
+          cp version dev-support/ranger-docker/dist
+
+      - name: Update .env
+        run: |
+          cd dev-support/ranger-docker
+          RELEASE="${{ matrix.release }}"
+          python3 <<EOF
+          with open(r'.env', 'r') as file:
+              data = file.read()
+          release_branch = "$RELEASE"
+          data = data.replace('BUILD_HOST_SRC=true', 'BUILD_HOST_SRC=false')
+          data = data.replace('BRANCH=master', f'BRANCH={release_branch}')
+          ranger_version = release_branch.split('-')[1] + '.1-SNAPSHOT'
+          data = data.replace('3.0.0-SNAPSHOT', ranger_version)
+          with open(r'.env', 'w') as file:
+              file.write(data)
+          EOF
+          cat .env
+      
+      
+      - name: Install ranger version 1
+        run: |
+          export DOCKER_BUILDKIT=1
+          export COMPOSE_DOCKER_CLI_BUILD=1
+          export RANGER_DB_TYPE=${{ matrix.db }}
+          docker compose -f docker-compose.ranger-base.yml build
+          docker compose -f docker-compose.ranger.yml -f docker-compose.ranger-${RANGER_DB_TYPE}.yml build
+          docker compose -f docker-compose.ranger.yml -f docker-compose.ranger-${RANGER_DB_TYPE}.yml up -d
+          sleep 30
+          docker logs ranger
+          
+    

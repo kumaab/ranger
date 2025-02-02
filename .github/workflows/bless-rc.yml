@@ -151,7 +151,7 @@ jobs:
 
       - name: Check Ranger Services have started
         run: |
-          services=(Usersync, Tagsync, KMS)
+          services=(Usersync Tagsync KMS)
           for service in "${services[@]}"; do
               service_lower=$(echo "$service" | tr '[:upper:]' '[:lower:]')
               docker logs ranger-${service_lower} | grep "Apache Ranger ${service} Service with pid [0-9]* has started"
@@ -180,7 +180,6 @@ jobs:
           docker exec ranger-usersync cat /var/log/ranger/usersync/usersync-ranger-usersync.example.com-.log
           docker exec ranger-tagsync cat /var/log/ranger/tagsync/tagsync-ranger-tagsync.example.com-.log
           docker exec ranger-kms cat /var/log/ranger/kms/ranger-kms-ranger-kms.example.com-root.log
-          docker exec ranger cat /var/log/ranger/ranger-admin-ranger.example.com-ranger.log
       
       - name: Run REST API calls
         run: |
@@ -195,6 +194,7 @@ jobs:
           ranger    = RangerClient(ranger_url, ranger_auth)
           user_mgmt = RangerUserMgmtClient(ranger)
           print(user_mgmt.get_users_in_group('hadoop'))
+          EOF
 
       - name: Remove containers
         run: |

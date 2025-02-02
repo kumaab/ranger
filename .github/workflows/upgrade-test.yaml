@@ -38,7 +38,7 @@ jobs:
       fail-fast: false  # Ensures all matrix jobs run to completion
       matrix:
         db: [postgres, mysql]
-        release: [ranger-2.3, ranger-2.4]
+        release: [ranger-2.4, ranger-2.5]
     runs-on: ubuntu-22.04
     timeout-minutes: 60
     steps:
@@ -69,7 +69,7 @@ jobs:
           release_branch = "$RELEASE"
           data = data.replace('BUILD_HOST_SRC=true', 'BUILD_HOST_SRC=false')
           data = data.replace('BRANCH=master', f'BRANCH={release_branch}')
-          ranger_version = release_branch.split('-')[1] + '.0-SNAPSHOT'
+          ranger_version = release_branch.split('-')[1] + '.1-SNAPSHOT'
           data = data.replace('3.0.0-SNAPSHOT', ranger_version)
           with open(r'.env', 'w') as file:
               file.write(data)
@@ -91,6 +91,17 @@ jobs:
           export COMPOSE_DOCKER_CLI_BUILD=1
           export RANGER_DB_TYPE=${{ matrix.db }}
           docker compose -f docker-compose.ranger-base.yml -f docker-compose.ranger-build.yml build
+          docker compose -f docker-compose.ranger-base.yml -f docker-compose.ranger-build.yml up -d
+          
+          # Get container ID of ranger-build
+          CONTAINER_ID=$(docker ps -aqf "name=ranger-build")
+
+          # Step 3: Wait for the container to exit
+          echo "Waiting for $CONTAINER_ID to exit..."
+          while [ "$(docker inspect -f '{{.State.Status}}' $CONTAINER_ID)" != "exited" ]; do
+            sleep 20
+          done
+          
           docker compose -f docker-compose.ranger.yml -f docker-compose.ranger-${RANGER_DB_TYPE}.yml build
           docker compose -f docker-compose.ranger.yml -f docker-compose.ranger-${RANGER_DB_TYPE}.yml up -d
           sleep 30
@@ -119,6 +130,17 @@ jobs:
           export COMPOSE_DOCKER_CLI_BUILD=1
           export RANGER_DB_TYPE=${{ matrix.db }}
           docker compose -f docker-compose.ranger-base.yml -f docker-compose.ranger-build.yml build
+          docker compose -f docker-compose.ranger-base.yml -f docker-compose.ranger-build.yml up -d
+
+          # Get container ID of ranger-build
+          CONTAINER_ID=$(docker ps -aqf "name=ranger-build")
+
+          # Step 3: Wait for the container to exit
+          echo "Waiting for $CONTAINER_ID to exit..."
+          while [ "$(docker inspect -f '{{.State.Status}}' $CONTAINER_ID)" != "exited" ]; do
+            sleep 20
+          done
+          
           docker compose -f docker-compose.ranger.yml -f docker-compose.ranger-${RANGER_DB_TYPE}.yml build
           docker compose -f docker-compose.ranger.yml -f docker-compose.ranger-${RANGER_DB_TYPE}.yml up -d
           sleep 30

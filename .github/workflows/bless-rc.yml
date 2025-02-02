@@ -158,11 +158,11 @@ jobs:
               if [ $? != 0 ]; then
                   echo "Ranger ${service} service failed to start!";
               fi
-              docker logs ranger | grep "Apache Ranger Admin Service with pid [0-9]* has started"
-              if [ $? != 0 ]; then
-                  echo "Ranger Admin service failed to start!";
-              fi
           done
+          docker logs ranger | grep "Apache Ranger Admin Service with pid [0-9]* has started"
+          if [ $? != 0 ]; then
+              echo "Ranger Admin service failed to start!";
+          fi
       
       - name: Check plugins have been installed
         run: |
@@ -193,7 +193,12 @@ jobs:
           ranger_auth = ('admin', 'rangerR0cks!')
           ranger    = RangerClient(ranger_url, ranger_auth)
           user_mgmt = RangerUserMgmtClient(ranger)
+          # check users in groups
           print(user_mgmt.get_users_in_group('hadoop'))
+          print(user_mgmt.get_users_in_group('ranger'))
+          print(user_mgmt.get_users_in_group('knox'))
+          # check all users
+          print(user_mgmt.find_users())
           EOF
 
       - name: Remove containers

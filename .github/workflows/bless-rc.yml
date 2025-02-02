@@ -62,6 +62,7 @@ jobs:
   
   docker-build:
     strategy:
+      fail-fast: false  # Ensures all matrix jobs run to completion
       matrix:
         arg: [postgres, mysql, oracle]
     needs:

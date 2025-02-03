@@ -111,15 +111,6 @@ jobs:
         with:
           name: ${{ matrix.release }}-build-artifacts
           path: dev-support/ranger-docker/dist/*
-
-      - name: Save release matrix to File
-        run: echo "${{ matrix.release }}" >> release-matrix-values.txt
-
-      - name: Upload release matrix as Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-matrix
-          path: release-matrix-values.txt
   
   upgrade:
     needs: install
@@ -182,7 +173,7 @@ jobs:
           sleep 30
           docker logs ranger
 
-      - name: Update .env
+      - name: Update .env for Upgrade
         run: |
           cd dev-support/ranger-docker
           RELEASE="${{ matrix.release }}"

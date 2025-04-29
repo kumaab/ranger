@@ -1,0 +1,207 @@
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Ranger Upgrade
+
+on:
+  push:
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  MAVEN_OPTS: -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.http.retryHandler.class=standard -Dmaven.wagon.http.retryHandler.count=3
+
+jobs:
+  install:
+    strategy:
+      fail-fast: false  # Ensures all matrix jobs run to completion
+      matrix:
+        release: [ranger-2.4, ranger-2.5, ranger-2.6]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache for maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository/*/*/*
+            !~/.m2/repository/org/apache/ranger
+          key: maven-repo-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            maven-repo-
+
+      - name: Set up .m2 directory and permissions
+        run: |
+          mkdir -p ~/.m2/repository
+          chmod -R 777 ~/.m2
+          chmod -R 777 ./
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
+      - name: Update .env
+        run: |
+          cd dev-support/ranger-docker
+          RELEASE="${{ matrix.release }}"
+          python3 <<EOF
+          branch_to_version = {"ranger-2.4": "2.4.1-SNAPSHOT", "ranger-2.5": "2.5.1-SNAPSHOT", "ranger-2.6": "2.6.0"}
+          with open(r'.env', 'r') as file:
+              data = file.read()
+          release_branch = "$RELEASE"
+          data = data.replace('BUILD_HOST_SRC=true', 'BUILD_HOST_SRC=false')
+          data = data.replace('BRANCH=master', f'BRANCH={release_branch}')
+          ranger_version = branch_to_version[release_branch]
+          data = data.replace('3.0.0-SNAPSHOT', ranger_version)
+          with open(r'.env', 'w') as file:
+              file.write(data)
+          EOF
+          cat .env
+
+      - name: Run download-archives.sh
+        run: |
+          cd dev-support/ranger-docker
+          ./download-archives.sh none
+      
+      - name: Clean up Docker space
+        run: docker system prune --all --force --volumes
+
+      - name: Build Ranger in Docker
+        run: |
+          cd dev-support/ranger-docker
+          export DOCKER_BUILDKIT=1
+          export COMPOSE_DOCKER_CLI_BUILD=1
+          docker compose -f docker-compose.ranger-base.yml -f docker-compose.ranger-build.yml build
+          docker compose -f docker-compose.ranger-base.yml -f docker-compose.ranger-build.yml up -d
+          
+          # Get container ID of ranger-build
+          CONTAINER_ID=$(docker ps -aqf "name=ranger-build")
+
+          docker logs -f $CONTAINER_ID &
+
+          # Wait for the container to exit
+          docker wait $CONTAINER_ID
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.release }}-build-artifacts
+          path: dev-support/ranger-docker/dist/*
+  
+  upgrade:
+    needs: install
+    strategy:
+      fail-fast: false  # Ensures all matrix jobs run to completion
+      matrix:
+        release: [ranger-2.4, ranger-2.5]
+        db: [postgres, mysql]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 8
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
+      - name: Download Release Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ matrix.release }}-build-artifacts
+
+      - name: Download Release Artifacts For Upgrade
+        uses: actions/download-artifact@v4
+        with:
+          name: ranger-2.6-build-artifacts
+
+      - name: Copy artifacts for docker build
+        run: |
+          cp ranger-*.tar.gz dev-support/ranger-docker/dist
+          cp version dev-support/ranger-docker/dist
+          ls -lrt dev-support/ranger-docker/dist/
+
+      - name: Update .env
+        run: |
+          cd dev-support/ranger-docker
+          RELEASE="${{ matrix.release }}"
+          python3 <<EOF
+          branch_to_version = {"ranger-2.4": "2.4.1-SNAPSHOT", "ranger-2.5": "2.5.1-SNAPSHOT", "ranger-2.6": "2.6.0"}
+          with open(r'.env', 'r') as file:
+              data = file.read()
+          release_branch = "$RELEASE"
+          ranger_version = branch_to_version[release_branch]
+          data = data.replace('3.0.0-SNAPSHOT', ranger_version)
+          with open(r'.env', 'w') as file:
+              file.write(data)
+          EOF
+          cat .env
+      
+      - name: Run download-archives.sh
+        run: |
+          cd dev-support/ranger-docker
+          ./download-archives.sh none
+      
+      - name: Bringing up ${{ matrix.release }} in docker
+        run: |
+          cd dev-support/ranger-docker
+          export DOCKER_BUILDKIT=1
+          export COMPOSE_DOCKER_CLI_BUILD=1
+          export RANGER_DB_TYPE=${{ matrix.db }}
+          docker compose -f docker-compose.ranger-base.yml build
+          docker compose -f docker-compose.ranger.yml -f docker-compose.ranger-${RANGER_DB_TYPE}.yml build
+          docker compose -f docker-compose.ranger.yml -f docker-compose.ranger-${RANGER_DB_TYPE}.yml up -d
+          sleep 30
+          docker logs ranger
+
+      - name: Update .env for Upgrade
+        run: |
+          cd dev-support/ranger-docker
+          RELEASE="${{ matrix.release }}"
+          python3 <<EOF
+          branch_to_version = {"ranger-2.4": "2.4.1-SNAPSHOT", "ranger-2.5": "2.5.1-SNAPSHOT", "ranger-2.6": "2.6.0"}
+          with open(r'.env', 'r') as file:
+              data = file.read()
+          release_branch = "$RELEASE"
+          ranger_version = branch_to_version[release_branch]
+          data = data.replace(ranger_version, branch_to_version["ranger-2.6"])
+          with open(r'.env', 'w') as file:
+              file.write(data)
+          EOF
+          cat .env
+
+      - name: Upgrading to ranger-2.6 in docker
+        run: |
+          cd dev-support/ranger-docker
+          export DOCKER_BUILDKIT=1
+          export COMPOSE_DOCKER_CLI_BUILD=1
+          export RANGER_DB_TYPE=${{ matrix.db }}
+          docker compose -f docker-compose.ranger-base.yml build
+          docker compose -f docker-compose.ranger.yml -f docker-compose.ranger-${RANGER_DB_TYPE}.yml build
+          docker compose -f docker-compose.ranger.yml -f docker-compose.ranger-${RANGER_DB_TYPE}.yml up -d
+          sleep 30
+          docker logs ranger

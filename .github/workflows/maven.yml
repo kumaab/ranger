@@ -34,7 +34,7 @@ env:
 
 jobs:
   build-8:
-    runs-on: [self-hosted, ubuntu-22.04]
+    runs-on: arm64
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4

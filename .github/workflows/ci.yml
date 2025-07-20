@@ -45,7 +45,9 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
       - name: build (8)
-        run: mvn clean verify --no-transfer-progress -B -V
+        run: |
+          rm -rf ~/.m2/repository
+          mvn clean verify --no-transfer-progress -B -V
 
       - name: run code coverage
         run: |

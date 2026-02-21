@@ -1,0 +1,36 @@
+<property>
+    <name>ranger.plugin.hdfs.chained.services.cm_hive.impl</name>
+    <value>org.apache.ranger.chainedplugin.hdfs.hive.RangerHdfsHiveChainedPlugin</value>
+</property>
+<property>
+    <name>ranger.plugin.hdfs.mapping.hive.authorize.with.only.chained.policies</name>
+    <value>false</value>
+</property>
+<property>
+    <name>ranger.hdfs.authz.enable.optimization</name>
+    <value>true</value>
+</property>
+<property>
+    <name>ranger.hdfs.authz.saved.eval.logging</name>
+    <value>true</value>
+</property>
+<property>
+    <name>ranger.hdfs.authz.saved.eval.logging.interval</name>
+    <value>300000</value>
+</property>
+<property>
+    <name>ranger.plugin.hdfs.mapping.source.download.interval</name>
+    <value>100000000</value>
+</property>
+<property>
+    <name>ranger.plugin.hdfs.policy.pollIntervalMs</name>
+    <value>100000000</value>
+</property>
+<property>
+    <name>ranger.hdfs.authz.metrics.testuser</name>
+    <value>nonexistent</value>
+</property>
+<property>
+    <name>ranger.hdfs.authz.print.call.info</name>
+    <value>false</value>
+</property>

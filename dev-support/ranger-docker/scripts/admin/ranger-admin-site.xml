@@ -9,30 +9,45 @@
         <value>true</value>
         <description />
     </property>
+    <!--
+        Database flavor settings for the dockerized Ranger Admin runtime.
+
+        Keep only one database flavor active at a time. PostgreSQL is active
+        by default. To use MySQL or Oracle, comment the active PostgreSQL
+        properties below and uncomment the matching flavor block.
+    -->
     <property>
         <name>ranger.jdbc.sqlconnectorjar</name>
-        <value>/usr/share/java/postgresql.jar</value>
+<!--        <value>/usr/share/java/postgresql.jar</value>-->
+<!--        <value>/usr/share/java/mysql-connector.jar</value>-->
+        <value>/usr/share/java/oracle.jar</value>
         <description>SQL connector JAR file path for the dockerized Ranger Admin runtime</description>
     </property>
     <property>
         <name>ranger.jpa.jdbc.driver</name>
-        <value>org.postgresql.Driver</value>
+<!--        <value>org.postgresql.Driver</value>-->
+<!--        <value>com.mysql.cj.jdbc.Driver</value>-->
+        <value>oracle.jdbc.OracleDriver</value>
         <description />
     </property>
     <property>
         <name>ranger.jpa.jdbc.url</name>
-        <value>jdbc:postgresql://ranger-db:5432/ranger</value>
+<!--        <value>jdbc:postgresql://ranger-db:5432/ranger</value>-->
+<!--        <value>jdbc:mysql://ranger-db:3306/ranger?useSSL=false</value> &lt;!&ndash; jdbc:mysql with com.mysql.cj.jdbc.Driver; log4jdbc URLs need net.sf.log4jdbc.sql.jdbcapi.DriverSpy &ndash;&gt;-->
+        <value>jdbc:oracle:thin:@//ranger-db:1521/FREEPDB1</value>
         <description />
+    </property>
+    <property>
+        <name>ranger.jpa.jdbc.dialect</name>
+<!--        <value>org.eclipse.persistence.platform.database.PostgreSQLPlatform</value>-->
+<!--        <value>org.eclipse.persistence.platform.database.MySQLPlatform</value>-->
+        <value>org.eclipse.persistence.platform.database.OraclePlatform</value>
+        <description>JPA database dialect</description>
     </property>
     <property>
         <name>ranger.jpa.jdbc.user</name>
         <value>rangeradmin</value>
         <description />
-    </property>
-    <property>
-        <name>ranger.jpa.jdbc.dialect</name>
-        <value>org.eclipse.persistence.platform.database.PostgreSQLPlatform</value>
-        <description>JPA database dialect for PostgreSQL</description>
     </property>
     <property>
         <name>ranger.jpa.jdbc.maxpoolsize</name>
@@ -57,7 +72,7 @@
     <property>
         <name>ranger.jpa.jdbc.preferredtestquery</name>
         <value>select 1</value>
-        <description>Query used to test database connections</description>
+        <description>Query used to test database connections. Use "select 1 from dual" for Oracle.</description>
     </property>
     <property>
         <name>ranger.jpa.jdbc.connectiontimeout</name>
@@ -94,6 +109,10 @@
         <value>org.eclipse.persistence.platform.database.PostgreSQLPlatform</value>
         <description>JPA database dialect for audit database (PostgreSQL)</description>
     </property>
+    <!--
+        Use org.eclipse.persistence.platform.database.MySQLPlatform for MySQL.
+        Use org.eclipse.persistence.platform.database.OraclePlatform for Oracle.
+    -->
     <property>
         <name>ranger.jpa.audit.jdbc.credential.alias</name>
         <value>ranger.auditdb.password</value>

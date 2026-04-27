@@ -30,13 +30,22 @@ logger = get_logger(__name__)
 
 JISQL_DEBUG = True
 
-# Regex used to extract the database name from a JDBC override URL.
-_JDBC_DB_NAME_RE = re.compile(r"jdbc:postgresql://[^/]+:\d+/(\w+)")
-
 # Allowlist for sequence names interpolated into SQL commands.
 _SAFE_IDENTIFIER_RE = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*$")
 
 RANGER_HOME = os.getenv("RANGER_HOME")
+
+DEFAULT_CONNECTOR_JARS = {
+    "MYSQL": "/usr/share/java/mysql-connector.jar",
+    "ORACLE": "/usr/share/java/oracle.jar",
+    "POSTGRES": "/usr/share/java/postgresql.jar",
+}
+
+SCHEMA_FILES = {
+    "MYSQL": "db/mysql/optimized/current/ranger_core_db_mysql.sql",
+    "ORACLE": "db/oracle/optimized/current/ranger_core_db_oracle.sql",
+    "POSTGRES": "db/postgres/optimized/current/ranger_core_db_postgres.sql",
+}
 
 # ---------------------------------------------------------------------------
 # Custom exceptions
@@ -157,6 +166,16 @@ def _validate_identifier(name: str) -> str:
     return name
 
 
+def _normalize_db_flavor(db_flavor: str) -> str:
+    """Normalize Docker/env/JDBC database flavor names."""
+    flavor = (db_flavor or "").strip().upper()
+    aliases = {
+        "MARIADB": "MYSQL",
+        "POSTGRESQL": "POSTGRES",
+    }
+    return aliases.get(flavor, flavor)
+
+
 def load_runtime_config() -> dict:
     """Load runtime config using XML for JDBC metadata and env for secrets.
 
@@ -169,9 +188,7 @@ def load_runtime_config() -> dict:
     jdbc_url = props.get("ranger.jpa.jdbc.url", "")
     jdbc_info = parse_jdbc_url(jdbc_url)
 
-    db_flavor = (os.environ.get("RANGER_DB_TYPE") or jdbc_info.get("flavor") or "POSTGRES").upper()
-    if db_flavor == "POSTGRESQL":
-        db_flavor = "POSTGRES"
+    db_flavor = _normalize_db_flavor(os.environ.get("RANGER_DB_TYPE") or jdbc_info.get("flavor") or "POSTGRES")
 
     db_host = os.environ.get("RANGER_ADMIN_DB_HOSTNAME") or jdbc_info.get("host", "")
     db_port = os.environ.get("RANGER_ADMIN_DB_PORT") or jdbc_info.get("port", "")
@@ -186,12 +203,15 @@ def load_runtime_config() -> dict:
 
     config = dict(props)
     config["DB_FLAVOR"] = db_flavor
-    config["SQL_CONNECTOR_JAR"] = props.get("ranger.jdbc.sqlconnectorjar", "/usr/share/java/postgresql.jar")
+    config["SQL_CONNECTOR_JAR"] = props.get("ranger.jdbc.sqlconnectorjar") or os.environ.get("SQL_CONNECTOR_JAR") or DEFAULT_CONNECTOR_JARS.get(db_flavor, "")
     config["db_name"] = db_name
     config["db_host"] = f"{db_host}:{db_port}" if db_port else db_host
     config["db_user"] = db_user
     config["db_password"] = db_password
-    config["postgres_core_file"] = "db/postgres/optimized/current/ranger_core_db_postgres.sql"
+    config["schema_file"] = SCHEMA_FILES.get(db_flavor, "")
+    config["postgres_core_file"] = SCHEMA_FILES["POSTGRES"]
+    config["mysql_core_file"] = SCHEMA_FILES["MYSQL"]
+    config["oracle_core_file"] = SCHEMA_FILES["ORACLE"]
     return config
 
 
@@ -203,13 +223,20 @@ class BaseDB:
 
     flavor = "UNKNOWN"
     default_port = ""
+    driver_alias = ""
+    readiness_query = "SELECT 1;"
+    requires_sequence_validation = False
 
-    def __init__(self, *, host: str):
+    def __init__(self, *, host: str, sql_connector_jar: str, java_bin: str, ssl: SSLConfig):
         self.host = host
+        self.sql_connector_jar = sql_connector_jar
+        self.java_bin = java_bin.strip("'")
+        self.ssl = ssl
 
     def _resolve_host_and_port(self) -> tuple[str, str]:
         """Split the configured host string into host and port parts."""
-        host, _, port = self.host.partition(":")
+        host_part = self.host.split("/", 1)[0]
+        host, _, port = host_part.partition(":")
         return host, port or self.default_port
 
     def _can_reach_socket(self) -> bool:
@@ -231,7 +258,54 @@ class BaseDB:
 
     def _is_ready(self, db_name: str, db_user: str, db_password: str) -> bool:
         """Return True when the target DB is accepting connections."""
+        if self._can_reach_socket():
+            try:
+                self.check_connection(db_name, db_user, db_password)
+                return True
+            except ConnectionError:
+                return False
+        return False
+
+    def _resolve_db_name(self, db_name: str) -> str:
+        """Extract a database/catalog name from an override JDBC URL when present."""
+        if not (self.ssl.override_jdbc and self.ssl.override_jdbc_connection_string):
+            return db_name
+
+        jdbc_info = parse_jdbc_url(self.ssl.override_jdbc_connection_string)
+        return jdbc_info.get("database") or db_name
+
+    def _build_jisql_classpath(self) -> str:
+        """Locate Jisql lib directories and build a Java classpath."""
+        candidates = [os.path.join(RANGER_HOME, "admin", "jisql", "lib"), os.path.join(RANGER_HOME, "jisql", "lib")]
+        found = [d for d in candidates if os.path.isdir(d)]
+        if not found:
+            found = [candidates[0]]  # Fall back to the most common layout.
+        return os.pathsep.join(os.path.join(d, "*") for d in found)
+
+    def _build_ssl_params(self) -> tuple[str, str]:
+        """Return (url_param, jvm_cert_flags) for SSL."""
+        return "", ""
+
+    def _build_jdbc_url(self, db_name: str, ssl_url: str) -> str:
+        """Build the JDBC connection URL for this DB flavor."""
         raise NotImplementedError
+
+    def _get_jisql_cmd(self, user: str, password: str, db_name: str) -> str:
+        """Build the full Jisql invocation command string."""
+        classpath = self._build_jisql_classpath()
+        ssl_url, ssl_cert = self._build_ssl_params()
+        cp = f"{self.sql_connector_jar}{os.pathsep}{classpath}"
+
+        if self.ssl.override_jdbc and self.ssl.override_jdbc_connection_string:
+            cstring = self.ssl.override_jdbc_connection_string
+        else:
+            cstring = self._build_jdbc_url(db_name, ssl_url)
+
+        return (
+            f"{self.java_bin} {ssl_cert} -cp {cp} org.apache.util.sql.Jisql"
+            f" -driver {self.driver_alias} -cstring '{cstring}'"
+            f" -u '{user}' -p '{password}' -noheader -trim -c \\;"
+        )
 
     def wait_until_ready(self, db_name: str, db_user: str, db_password: str, timeout_s: int = 600) -> None:
         """Wait until the database is reachable or raise ConnectionError."""
@@ -251,14 +325,57 @@ class BaseDB:
             logger.info(f"Waiting for DB connectivity... elapsed={elapsed}s remaining={timeout_s - elapsed}s")
             time.sleep(5)
 
-    def check_connection(self, db_name, db_user, db_password):
-        logger.info("---------- Verifying DB connection ----------")
+    def check_connection(self, db_name: str, db_user: str, db_password: str) -> bool:
+        """Verify that we can reach the database. Raises ConnectionError on failure."""
+        logger.info(f"Checking connection to database {db_name}")
+        cmd = self._get_jisql_cmd(db_user, db_password, db_name)
+        query = f'{cmd} -query "{self.readiness_query}"'
+        _log_jisql(query, db_password)
+
+        output = _run_command(query)
+        if "1" in output:
+            logger.info("Connection successful")
+            return True
+        raise ConnectionError(f"Cannot establish connection to database {db_name}")
 
     def check_table(self, db_name, db_user, db_password, table_name):
         logger.info("---------- Verifying table ----------")
 
-    def import_db_file(self, db_name, db_user, db_password, file_name):
-        logger.info("---------- Importing db schema ----------")
+    def import_db_file(self, db_name: str, db_user: str, db_password: str, file_name: str) -> None:
+        """Import a SQL schema file into the database."""
+        display_name = os.path.basename(file_name)
+        if not os.path.isfile(file_name):
+            raise FileNotFoundError(f"DB schema file not found: {display_name}")
+
+        logger.info(f"Importing schema to {db_name} from file: {display_name}")
+        cmd = self._get_jisql_cmd(db_user, db_password, db_name)
+        query = f"{cmd} -input {file_name}"
+        _log_jisql(query, db_password)
+
+        ret = subprocess.call(shlex.split(query))
+        if ret != 0:
+            raise SchemaImportError(f"Schema import failed for {display_name}")
+        logger.info(f"{display_name} imported successfully")
+
+    def ensure_sequence(self, db_name: str, db_user: str, db_password: str, sequence_name: str) -> bool:
+        logger.info(f"Sequence validation is not required for {self.flavor}")
+        return True
+
+    def update_portal_user_password(self, db_name: str, db_user: str, db_password: str, login_id: str, plain_password: str) -> None:
+        """Set a portal user's password using Ranger's legacy seed encoding."""
+        encoded_password = hashlib.md5(f"{plain_password}{{{login_id}}}".encode("utf-8")).hexdigest()
+        cmd = self._get_jisql_cmd(db_user, db_password, db_name)
+        query = (
+            f'{cmd} -query "UPDATE x_portal_user '
+            f"SET password='{encoded_password}' "
+            f"WHERE login_id='{login_id}';\""
+        )
+        logger.info(f"Setting initial password for Ranger user {login_id} from environment")
+        _log_jisql(query, db_password)
+
+        ret = subprocess.call(shlex.split(query))
+        if ret != 0:
+            raise SchemaImportError(f"Failed to seed password for Ranger user {login_id}")
 
 
 class PostgresDB(BaseDB):
@@ -268,10 +385,8 @@ class PostgresDB(BaseDB):
     default_port = "5432"
 
     def __init__(self, *, host: str, sql_connector_jar: str, java_bin: str, ssl: SSLConfig):
-        super().__init__(host=host)
-        self.sql_connector_jar = sql_connector_jar
-        self.java_bin = java_bin.strip("'")
-        self.ssl = ssl
+        super().__init__(host=host, sql_connector_jar=sql_connector_jar, java_bin=java_bin, ssl=ssl)
+        self.requires_sequence_validation = True
 
     # -- private helpers ---------------------------------------------------
 
@@ -279,8 +394,8 @@ class PostgresDB(BaseDB):
         """Extract the actual DB name from a JDBC override URL if active."""
         if not (self.ssl.override_jdbc and self.ssl.override_jdbc_connection_string):
             return db_name
-        match = _JDBC_DB_NAME_RE.search(self.ssl.override_jdbc_connection_string)
-        return match.group(1) if match else db_name
+        jdbc_info = parse_jdbc_url(self.ssl.override_jdbc_connection_string)
+        return jdbc_info.get("database") or db_name
 
     def _is_ready(self, db_name: str, db_user: str, db_password: str) -> bool:
         """Return True when PostgreSQL is accepting connections."""
@@ -352,20 +467,6 @@ class PostgresDB(BaseDB):
         )
 
     # -- public interface --------------------------------------------------
-
-    def check_connection(self, db_name: str, db_user: str, db_password: str) -> bool:
-        """Verify that we can reach the database. Raises ConnectionError on failure."""
-        logger.info(f"Checking connection to database {db_name}")
-        cmd = self._get_jisql_cmd(db_user, db_password, db_name)
-        query = f'{cmd} -query "SELECT 1;"'
-        _log_jisql(query, db_password)
-
-        output = _run_command(query)
-        if "1" in output:
-            logger.info("Connection successful")
-            return True
-        raise ConnectionError(f"Cannot establish connection to database {db_name}")
-
     def import_db_file(self, db_name: str, db_user: str, db_password: str, file_name: str) -> None:
         """Import a SQL schema file into the database.
 
@@ -484,6 +585,111 @@ class PostgresDB(BaseDB):
             raise SchemaImportError(f"Failed to seed password for Ranger user {login_id}")
 
 
+class MysqlDB(BaseDB):
+    """MySQL/MariaDB-specific implementation of the DB bootstrap interface."""
+
+    flavor = "MYSQL"
+    default_port = "3306"
+    driver_alias = "mysqlconj"
+    readiness_query = "SELECT 1;"
+
+    def _build_ssl_params(self) -> tuple[str, str]:
+        """Return (url_param, jvm_cert_flags) for MySQL SSL settings."""
+        if not self.ssl.enabled:
+            return "?useSSL=false", ""
+
+        ssl = self.ssl
+        url_param = (
+            f"?useSSL=true&requireSSL={str(ssl.required).lower()}"
+            f"&verifyServerCertificate={str(ssl.verify_server_certificate).lower()}"
+        )
+        cert_flags = ""
+        if ssl.verify_server_certificate:
+            if ssl.auth_type == "1-way":
+                cert_flags = f" -Djavax.net.ssl.trustStore={ssl.trust_store} -Djavax.net.ssl.trustStorePassword={ssl.trust_store_password}"
+            else:
+                cert_flags = (
+                    f" -Djavax.net.ssl.keyStore={ssl.key_store}"
+                    f" -Djavax.net.ssl.keyStorePassword={ssl.key_store_password}"
+                    f" -Djavax.net.ssl.trustStore={ssl.trust_store}"
+                    f" -Djavax.net.ssl.trustStorePassword={ssl.trust_store_password}"
+                )
+        return url_param, cert_flags
+
+    def _build_jdbc_url(self, db_name: str, ssl_url: str) -> str:
+        return f"jdbc:mysql://{self.host}/{db_name}{ssl_url}"
+
+    def _is_ready(self, db_name: str, db_user: str, db_password: str) -> bool:
+        host, port = self._resolve_host_and_port()
+        env = dict(os.environ, MYSQL_PWD=db_password)
+
+        if shutil.which("mysql"):
+            return self._command_succeeds(["mysql", "-h", host, "-P", port, "-u", db_user, db_name, "-e", "select 1"], env=env)
+
+        return super()._is_ready(db_name, db_user, db_password)
+
+    def check_table(self, db_name: str, db_user: str, db_password: str, table_name: str) -> bool:
+        db_name = self._resolve_db_name(db_name)
+        logger.info(f"Verifying table {table_name} in database {db_name}")
+
+        cmd = self._get_jisql_cmd(db_user, db_password, db_name)
+        query = (
+            f'{cmd} -query "SELECT table_name FROM information_schema.tables'
+            f" WHERE table_schema='{db_name}' AND table_name='{table_name}';\""
+        )
+        _log_jisql(query, db_password)
+
+        try:
+            output = _run_command(query)
+            if output and table_name.lower() in output.lower():
+                logger.info(f"Table {table_name} exists in {db_name}")
+                return True
+            logger.info(f"Table {table_name} does not exist in {db_name}")
+            return False
+        except (subprocess.SubprocessError, OSError) as exc:
+            logger.error(f"Error checking table: {exc}")
+            return False
+
+
+class OracleDB(BaseDB):
+    """Oracle-specific implementation of the DB bootstrap interface."""
+
+    flavor = "ORACLE"
+    default_port = "1521"
+    driver_alias = "oraclethin"
+    readiness_query = "SELECT 1 FROM dual;"
+
+    def __init__(self, *, host: str, sql_connector_jar: str, java_bin: str, ssl: SSLConfig):
+        super().__init__(host=host, sql_connector_jar=sql_connector_jar, java_bin=java_bin, ssl=ssl)
+        if "-Djava.security.egd=" not in self.java_bin:
+            self.java_bin = f"{self.java_bin} -Djava.security.egd=file:///dev/urandom"
+
+    def _build_jdbc_url(self, db_name: str, ssl_url: str) -> str:
+        if self.host.count(":") == 2 or self.host.count(":") == 0:
+            return f"jdbc:oracle:thin:@{self.host}"
+        if "/" in self.host:
+            return f"jdbc:oracle:thin:@//{self.host}"
+        return f"jdbc:oracle:thin:@//{self.host}/{db_name}"
+
+    def check_table(self, db_name: str, db_user: str, db_password: str, table_name: str) -> bool:
+        logger.info(f"Verifying table {table_name} in Oracle schema for user {db_user}")
+
+        cmd = self._get_jisql_cmd(db_user, db_password, db_name)
+        query = f'{cmd} -query "SELECT table_name FROM user_tables WHERE UPPER(table_name)=UPPER(\'{table_name}\');"'
+        _log_jisql(query, db_password)
+
+        try:
+            output = _run_command(query)
+            if output and table_name.upper() in output.upper():
+                logger.info(f"Table {table_name} exists in Oracle schema")
+                return True
+            logger.info(f"Table {table_name} does not exist in Oracle schema")
+            return False
+        except (subprocess.SubprocessError, OSError) as exc:
+            logger.error(f"Error checking table: {exc}")
+            return False
+
+
 # ---------------------------------------------------------------------------
 # Java binary resolution
 # ---------------------------------------------------------------------------
@@ -523,7 +729,26 @@ VERSION_TABLE = "x_db_version_h"
 CRITICAL_SEQUENCE = "X_TRX_LOG_SEQ"
 
 
-def seed_initial_user_passwords(db: PostgresDB, db_name: str, db_user: str, db_password: str) -> None:
+def create_db(config: dict, java_bin: str, ssl: SSLConfig) -> BaseDB:
+    db_classes = {
+        "MYSQL": MysqlDB,
+        "ORACLE": OracleDB,
+        "POSTGRES": PostgresDB,
+    }
+
+    db_flavor = config["DB_FLAVOR"]
+    db_class = db_classes.get(db_flavor)
+    if not db_class:
+        raise ConfigError(f"Ranger Admin docker does not support DB flavor: {db_flavor}")
+
+    sql_connector_jar = config.get("SQL_CONNECTOR_JAR", "")
+    if not sql_connector_jar:
+        raise ConfigError(f"SQL connector jar is not configured for DB flavor: {db_flavor}")
+
+    return db_class(host=config["db_host"], sql_connector_jar=sql_connector_jar, java_bin=java_bin, ssl=ssl)
+
+
+def seed_initial_user_passwords(db: BaseDB, db_name: str, db_user: str, db_password: str) -> None:
     for login_id, env_var in (("admin", "RANGER_ADMIN_PASSWORD"), ("rangerusersync", "RANGER_USERSYNC_PASSWORD"), ("rangertagsync", "RANGER_TAGSYNC_PASSWORD")):
         plain_password = os.environ.get(env_var, "")
         if plain_password:
@@ -536,9 +761,6 @@ def main(argv: list[str]) -> None:
     config = load_runtime_config()
 
     db_flavor = config["DB_FLAVOR"]
-    if db_flavor != "POSTGRES":
-        raise ConfigError("Ranger Admin docker currently supports only PostgreSQL")
-
     java_bin = _resolve_java_bin()
     logger.info(f"DB FLAVOR: {db_flavor}")
 
@@ -547,13 +769,10 @@ def main(argv: list[str]) -> None:
 
     db_name, db_user, db_password = config["db_name"], config["db_user"], config["db_password"]
 
-    db = PostgresDB(host=config["db_host"], sql_connector_jar=config["SQL_CONNECTOR_JAR"], java_bin=java_bin, ssl=ssl)
-    schema_file = _resolve_schema_file(config["postgres_core_file"])
+    db = create_db(config, java_bin, ssl)
+    schema_file = _resolve_schema_file(config["schema_file"])
 
     db.wait_until_ready(db_name, db_user, db_password)
-
-    logger.info("--------- Verifying Ranger DB connection ---------")
-    db.check_connection(db_name, db_user, db_password)
 
     if len(argv) > 1:
         return  # Extra CLI arguments present — skip schema initialisation.
@@ -561,7 +780,7 @@ def main(argv: list[str]) -> None:
     logger.info("--------- Verifying Ranger DB tables ---------")
     if db.check_table(db_name, db_user, db_password, VERSION_TABLE):
         logger.info("Database schema already initialised")
-        if not db.ensure_sequence(db_name, db_user, db_password, CRITICAL_SEQUENCE):
+        if db.requires_sequence_validation and not db.ensure_sequence(db_name, db_user, db_password, CRITICAL_SEQUENCE):
             logger.warning(f"Critical sequence {CRITICAL_SEQUENCE} still missing, but schema appears initialised. Service creation may fail.")
         return
 
@@ -572,7 +791,7 @@ def main(argv: list[str]) -> None:
     if not db.check_table(db_name, db_user, db_password, VERSION_TABLE):
         raise SchemaImportError(f"Schema import completed but {VERSION_TABLE} table not found")
 
-    if not db.ensure_sequence(db_name, db_user, db_password, CRITICAL_SEQUENCE):
+    if db.requires_sequence_validation and not db.ensure_sequence(db_name, db_user, db_password, CRITICAL_SEQUENCE):
         raise SchemaImportError(f"Sequence {CRITICAL_SEQUENCE} required for service creation. Schema import/patch may be incomplete.")
 
     logger.info("Database schema imported successfully")

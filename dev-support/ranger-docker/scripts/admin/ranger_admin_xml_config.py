@@ -69,7 +69,7 @@ def parse_jdbc_url(jdbc_url):
     if not jdbc_url:
         return info
 
-    match = re.match(r"jdbc:(postgresql|mysql)://([^/:;]+)(?::(\d+))?/([^?;]+)", jdbc_url)
+    match = re.match(r"jdbc:(?:log4jdbc:)?(postgresql|mysql)://([^/:;]+)(?::(\d+))?/([^?;]+)", jdbc_url)
     if match:
         flavor = match.group(1).upper()
         info["flavor"] = "POSTGRES" if flavor == "POSTGRESQL" else flavor

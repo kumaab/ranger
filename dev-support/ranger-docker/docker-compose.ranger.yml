@@ -7,7 +7,7 @@ services:
         - RANGER_BASE_IMAGE=${RANGER_BASE_IMAGE}
         - RANGER_BASE_VERSION=${RANGER_BASE_VERSION}
         - RANGER_VERSION=${RANGER_VERSION}
-        - RANGER_DB_TYPE=${RANGER_DB_TYPE}
+        - RANGER_DB_TYPE=${RANGER_DB_TYPE:-postgres}
         - KERBEROS_ENABLED=${KERBEROS_ENABLED}
     image: ranger:latest
     container_name: ranger
@@ -36,7 +36,7 @@ services:
         condition: service_started
     environment:
       - RANGER_VERSION
-      - RANGER_DB_TYPE
+      - RANGER_DB_TYPE=${RANGER_DB_TYPE:-postgres}
       - KERBEROS_ENABLED
       - DEBUG_ADMIN=${DEBUG_ADMIN:-false}
       - RANGER_ADMIN_DB_PASSWORD=rangerR0cks!
@@ -70,7 +70,7 @@ services:
 
   ranger-db:
     extends:
-      service: ${RANGER_DB_TYPE}
+      service: ${RANGER_DB_TYPE:-postgres}
       file: docker-compose.ranger-db.yml
 
   ranger-zk:

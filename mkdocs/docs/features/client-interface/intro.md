@@ -27,3 +27,8 @@ Ranger provides client libraries in Java and Python to access Ranger REST APIs p
 For more details, please refer to [Ranger Python Client Library](https://pypi.org/project/apache-ranger/).
 
 ## Java
+
+For applications that need to call a Ranger PDP server for authorization
+decisions, see the
+[Ranger Authz Remote Client](https://github.com/apache/ranger/blob/master/authz-remote/README.md).
+The client supports Kerberos/SPNEGO and JWT bearer-token authentication.

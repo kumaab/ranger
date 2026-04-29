@@ -158,6 +158,36 @@ public class TestRemoteAuthorizer {
     }
 
     @Test
+    public void testAuthorizeWithJwtFromFile() throws Exception {
+        try (StubPdpServer server = StubPdpServer.createHttp()) {
+            server.respond("/authz/v1/authorize", 200,
+                    "{\"requestId\":\"req-1\",\"decision\":\"ALLOW\",\"permissions\":{\"select\":{\"permission\":\"select\",\"access\":{\"decision\":\"ALLOW\",\"policy\":{\"id\":7,\"version\":3}},\"additionalInfo\":{\"source\":\"pdp\"}}}}");
+
+            Path jwtFile = Files.createTempFile("ranger-authz-remote-jwt", ".txt");
+            Files.write(jwtFile, Arrays.asList("# comment", "test-jwt-token"), StandardCharsets.UTF_8);
+            jwtFile.toFile().deleteOnExit();
+
+            RangerRemoteAuthorizer authorizer = new RangerRemoteAuthorizer(createJwtFileProperties(server.getBaseUrl(), jwtFile));
+
+            try {
+                authorizer.init();
+
+                RangerAccessContext accessContext = new RangerAccessContext("hive", "dev_hive", 123L, "10.0.0.1",
+                        Collections.singletonList("10.0.0.2"), stringMap("requestData", "show tables"));
+                RangerAuthzRequest request = new RangerAuthzRequest("req-1", new RangerUserInfo("alice"),
+                        new RangerAccessInfo(resource("table:default/sales", "column:id", "column:name"), "QUERY", linkedSet("select")),
+                        accessContext);
+                RangerAuthzResult result = authorizer.authorize(request);
+
+                assertEquals(expectedAuthorizeResult(), result);
+                assertEquals("Bearer test-jwt-token", server.getLastHeader("Authorization"));
+            } finally {
+                authorizer.close();
+            }
+        }
+    }
+
+    @Test
     public void testRemoteErrorIncludesPdpMessage() throws Exception {
         try (StubPdpServer server = StubPdpServer.createHttp()) {
             server.respond("/authz/v1/authorize", 403, "{\"code\":\"FORBIDDEN\",\"message\":\"alice is not authorized\"}");
@@ -194,6 +224,18 @@ public class TestRemoteAuthorizer {
         assertTrue(exception.getMessage().contains(RangerRemoteAuthzConfig.PROP_REMOTE_AUTH_KERBEROS_PRINCIPAL));
     }
 
+    @Test
+    public void testJwtConfigRequiresSource() {
+        Properties props = createNoAuthProperties("https://localhost:6500");
+        props.setProperty(RangerRemoteAuthzConfig.PROP_REMOTE_AUTH_TYPE, "jwt");
+
+        RangerRemoteAuthorizer authorizer = new RangerRemoteAuthorizer(props);
+
+        RangerAuthzException exception = assertThrows(RangerAuthzException.class, authorizer::init);
+
+        assertTrue(exception.getMessage().contains(RangerRemoteAuthzConfig.PROP_REMOTE_AUTH_JWT_SOURCE));
+    }
+
     private static Properties createTlsNoAuthProperties(String baseUrl, Path trustStore) {
         Properties props = new Properties();
 
@@ -211,6 +253,16 @@ public class TestRemoteAuthorizer {
         Properties props = new Properties();
 
         props.setProperty(RangerRemoteAuthzConfig.PROP_REMOTE_URL, baseUrl);
+
+        return props;
+    }
+
+    private static Properties createJwtFileProperties(String baseUrl, Path jwtFile) {
+        Properties props = createNoAuthProperties(baseUrl);
+
+        props.setProperty(RangerRemoteAuthzConfig.PROP_REMOTE_AUTH_TYPE, "jwt");
+        props.setProperty(RangerRemoteAuthzConfig.PROP_REMOTE_AUTH_JWT_SOURCE, "file");
+        props.setProperty(RangerRemoteAuthzConfig.PROP_REMOTE_AUTH_JWT_FILE, jwtFile.toAbsolutePath().toString());
 
         return props;
     }

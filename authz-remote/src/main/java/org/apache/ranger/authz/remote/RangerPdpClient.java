@@ -48,6 +48,7 @@ import org.apache.ranger.authz.model.RangerMultiAuthzRequest;
 import org.apache.ranger.authz.model.RangerMultiAuthzResult;
 import org.apache.ranger.authz.model.RangerResourcePermissions;
 import org.apache.ranger.authz.model.RangerResourcePermissionsRequest;
+import org.apache.ranger.authz.remote.authn.RangerRemoteJwtProvider;
 import org.apache.ranger.authz.remote.authn.RangerRemoteKerberosContext;
 
 import javax.net.ssl.HostnameVerifier;
@@ -61,6 +62,7 @@ import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.util.Map;
 
+import static org.apache.ranger.authz.remote.RangerRemoteAuthType.JWT;
 import static org.apache.ranger.authz.remote.RangerRemoteAuthType.KERBEROS;
 import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.FAILED_TO_DESERIALIZE_RESPONSE;
 import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.FAILED_TO_SERIALIZE_REQUEST;
@@ -74,10 +76,13 @@ class RangerPdpClient implements Closeable {
     private static final String PATH_AUTHORIZE            = "/authorize";
     private static final String PATH_AUTHORIZE_MULTI      = "/authorizeMulti";
     private static final String PATH_RESOURCE_PERMISSIONS = "/permissions";
+    private static final String HEADER_AUTHORIZATION      = "Authorization";
+    private static final String JWT_HEADER_PREFIX         = "Bearer ";
 
     private final RangerRemoteAuthzConfig config;
     private final CloseableHttpClient     httpClient;
     private final RangerRemoteAuthType    authType;
+    private final RangerRemoteJwtProvider jwtProvider;
     private final RangerRemoteKerberosContext kerberosContext;
     private final String                  apiEndpointAuthorize;
     private final String                  apiEndpointAuthorizeMulti;
@@ -86,6 +91,7 @@ class RangerPdpClient implements Closeable {
     RangerPdpClient(RangerRemoteAuthzConfig config) throws RangerAuthzException {
         this.config                         = config;
         this.authType                       = config.getAuthType();
+        this.jwtProvider                    = authType == JWT ? RangerRemoteJwtProvider.create(config) : null;
         this.kerberosContext                = authType == KERBEROS ? RangerRemoteKerberosContext.create(config) : null;
         this.apiEndpointAuthorize           = config.getEndpointUrl(PATH_AUTHORIZE);
         this.apiEndpointAuthorizeMulti      = config.getEndpointUrl(PATH_AUTHORIZE_MULTI);
@@ -123,6 +129,10 @@ class RangerPdpClient implements Closeable {
 
             for (Map.Entry<String, String> header : config.getHeaders().entrySet()) {
                 request.setHeader(header.getKey(), header.getValue());
+            }
+
+            if (authType == JWT) {
+                request.setHeader(HEADER_AUTHORIZATION, JWT_HEADER_PREFIX + jwtProvider.getJwt());
             }
 
             String responseBody;

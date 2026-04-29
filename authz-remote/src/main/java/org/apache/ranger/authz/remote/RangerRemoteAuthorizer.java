@@ -92,7 +92,7 @@ public class RangerRemoteAuthorizer extends RangerAuthorizer {
     protected void validateAccessContext(RangerAccessContext context) throws RangerAuthzException {
         super.validateAccessContext(context);
 
-        if (StringUtils.isBlank(context.getServiceName()) || StringUtils.isBlank(context.getServiceType())) {
+        if (StringUtils.isBlank(context.getServiceName()) && StringUtils.isBlank(context.getServiceType())) {
             throw new RangerAuthzException(INVALID_REQUEST_SERVICE_NAME_OR_TYPE_MANDATORY);
         }
     }

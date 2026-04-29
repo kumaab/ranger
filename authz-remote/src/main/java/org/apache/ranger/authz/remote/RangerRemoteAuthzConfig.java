@@ -46,10 +46,13 @@ public class RangerRemoteAuthzConfig {
     public static final String PROP_REMOTE_SSL_TRUSTSTORE_PASSWORD           = "ranger.authz.remote.ssl.truststore.password";
     public static final String PROP_REMOTE_SSL_TRUSTSTORE_TYPE               = "ranger.authz.remote.ssl.truststore.type";
     public static final String PROP_REMOTE_SSL_DISABLE_HOSTNAME_VERIFICATION = "ranger.authz.remote.ssl.disable.hostname.verification";
-    public static final String PROP_REMOTE_AUTH_TYPE                         = "ranger.authz.remote.auth.type";
-    public static final String PROP_REMOTE_AUTH_KERBEROS_PRINCIPAL           = "ranger.authz.remote.auth.kerberos.principal";
-    public static final String PROP_REMOTE_AUTH_KERBEROS_KEYTAB              = "ranger.authz.remote.auth.kerberos.keytab";
-    public static final String PROP_REMOTE_AUTH_KERBEROS_DEBUG               = "ranger.authz.remote.auth.kerberos.debug";
+    public static final String PROP_REMOTE_AUTH_TYPE                         = "ranger.authz.remote.authn.type";
+    public static final String PROP_REMOTE_AUTH_JWT_SOURCE                   = "ranger.authz.remote.authn.jwt.source";
+    public static final String PROP_REMOTE_AUTH_JWT_ENV                      = "ranger.authz.remote.authn.jwt.env";
+    public static final String PROP_REMOTE_AUTH_JWT_FILE                     = "ranger.authz.remote.authn.jwt.file";
+    public static final String PROP_REMOTE_AUTH_KERBEROS_PRINCIPAL           = "ranger.authz.remote.authn.kerberos.principal";
+    public static final String PROP_REMOTE_AUTH_KERBEROS_KEYTAB              = "ranger.authz.remote.authn.kerberos.keytab";
+    public static final String PROP_REMOTE_AUTH_KERBEROS_DEBUG               = "ranger.authz.remote.authn.kerberos.debug";
 
     private static final String AUTHZ_PATH_PREFIX = "/authz/v1";
 
@@ -109,6 +112,24 @@ public class RangerRemoteAuthzConfig {
         } catch (IllegalArgumentException e) {
             throw new RangerAuthzException(UNSUPPORTED_AUTH_TYPE, e, value);
         }
+    }
+
+    public String getJwtSource() throws RangerAuthzException {
+        String ret = trimToNull(properties.getProperty(PROP_REMOTE_AUTH_JWT_SOURCE));
+
+        if (ret == null) {
+            throw new RangerAuthzException(MISSING_AUTH_CONFIG, PROP_REMOTE_AUTH_JWT_SOURCE);
+        }
+
+        return ret;
+    }
+
+    public String getJwtEnvVar() throws RangerAuthzException {
+        return getRequiredProperty(PROP_REMOTE_AUTH_JWT_ENV);
+    }
+
+    public String getJwtFile() throws RangerAuthzException {
+        return getRequiredProperty(PROP_REMOTE_AUTH_JWT_FILE);
     }
 
     public String getKerberosPrincipal() throws RangerAuthzException {
@@ -203,6 +224,16 @@ public class RangerRemoteAuthzConfig {
         } catch (NumberFormatException e) {
             throw new RangerAuthzException(INVALID_PROPERTY_VALUE, e, propertyName, propertyValue);
         }
+    }
+
+    private String getRequiredProperty(String propertyName) throws RangerAuthzException {
+        String ret = trimToNull(properties.getProperty(propertyName));
+
+        if (ret == null) {
+            throw new RangerAuthzException(MISSING_AUTH_CONFIG, propertyName);
+        }
+
+        return ret;
     }
 
     private static String normalizeBaseUrl(String url) {

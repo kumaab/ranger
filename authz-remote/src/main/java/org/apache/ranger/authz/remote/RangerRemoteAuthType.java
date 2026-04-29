@@ -21,5 +21,6 @@ package org.apache.ranger.authz.remote;
 
 enum RangerRemoteAuthType {
     NONE,
+    JWT,
     KERBEROS
 }

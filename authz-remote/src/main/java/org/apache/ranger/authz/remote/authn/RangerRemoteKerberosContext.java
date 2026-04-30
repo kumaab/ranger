@@ -56,8 +56,7 @@ import java.util.Map;
 import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.KERBEROS_LOGIN_FAILED;
 
 public final class RangerRemoteKerberosContext {
-    private static final String CRED_CONF_NAME = "RangerRemoteClientKerberos";
-    private static final Oid    SPNEGO_OID     = getSpnegoOid();
+    private static final Oid SPNEGO_OID = getSpnegoOid();
 
     private final Subject                      subject;
     private final CredentialsProvider          credentialsProvider;
@@ -75,7 +74,7 @@ public final class RangerRemoteKerberosContext {
 
         try {
             final GSSManager gssManager = GSSManager.getInstance();
-            final Subject    subject    = login(principal, keytab, config.isKerberosDebugEnabled());
+            final Subject    subject    = login(config, principal, keytab);
             final GSSName    userName   = gssManager.createName(principal, GSSName.NT_USER_NAME);
             final GSSCredential credential = Subject.doAs(subject, (PrivilegedExceptionAction<GSSCredential>) () ->
                     gssManager.createCredential(userName, GSSCredential.DEFAULT_LIFETIME, SPNEGO_OID, GSSCredential.INITIATE_ONLY));
@@ -86,7 +85,9 @@ public final class RangerRemoteKerberosContext {
                     new KerberosCredentials(credential));
 
             Lookup<AuthSchemeProvider> authSchemeRegistry = RegistryBuilder.<AuthSchemeProvider>create()
-                    .register(AuthSchemes.SPNEGO, new SPNegoSchemeFactory(true, true))
+                    .register(AuthSchemes.SPNEGO, new SPNegoSchemeFactory(
+                            config.isKerberosSpnegoStripPort(),
+                            config.isKerberosSpnegoUseCanonicalHostname()))
                     .build();
 
             return new RangerRemoteKerberosContext(subject, credentialsProvider, authSchemeRegistry);
@@ -104,10 +105,19 @@ public final class RangerRemoteKerberosContext {
         builder.setDefaultAuthSchemeRegistry(authSchemeRegistry);
     }
 
-    private static Subject login(String principal, String keytab, boolean enableDebug) throws LoginException {
+    private static Subject login(RangerRemoteAuthzConfig config, String principal, String keytab) throws LoginException, RangerAuthzException {
         Subject subject = new Subject(false, Collections.singleton(new KerberosPrincipal(principal)), Collections.emptySet(), Collections.emptySet());
-        Configuration config = new KeytabJaasConf(principal, keytab, enableDebug);
-        LoginContext loginContext = new LoginContext(CRED_CONF_NAME, subject, noOpCallbackHandler(), config);
+        Configuration jaasConfig = new KeytabJaasConf(
+                config.getKerberosJaasLoginModuleClass(),
+                principal,
+                config.isKerberosDebugEnabled(),
+                config.isKerberosJaasStoreKey(),
+                config.isKerberosJaasIsInitiator(),
+                keytab,
+                config.isKerberosJaasDoNotPrompt(),
+                config.isKerberosJaasUseTicketCache(),
+                config.isKerberosJaasRefreshKrb5Config());
+        LoginContext loginContext = new LoginContext(config.getKerberosJaasContextName(), subject, noOpCallbackHandler(), jaasConfig);
 
         loginContext.login();
 
@@ -131,12 +141,18 @@ public final class RangerRemoteKerberosContext {
     }
 
     private abstract static class AbstractJaasConf extends Configuration {
+        private final String  loginModuleClassName;
         private final String  userPrincipalName;
         private final boolean enableDebugLogs;
+        private final boolean storeKey;
+        private final boolean isInitiator;
 
-        AbstractJaasConf(String userPrincipalName, boolean enableDebugLogs) {
-            this.userPrincipalName = userPrincipalName;
-            this.enableDebugLogs   = enableDebugLogs;
+        AbstractJaasConf(String loginModuleClassName, String userPrincipalName, boolean enableDebugLogs, boolean storeKey, boolean isInitiator) {
+            this.loginModuleClassName = loginModuleClassName;
+            this.userPrincipalName    = userPrincipalName;
+            this.enableDebugLogs      = enableDebugLogs;
+            this.storeKey             = storeKey;
+            this.isInitiator          = isInitiator;
         }
 
         @Override
@@ -144,14 +160,14 @@ public final class RangerRemoteKerberosContext {
             Map<String, String> options = new HashMap<>();
 
             options.put("principal", userPrincipalName);
-            options.put("isInitiator", Boolean.TRUE.toString());
-            options.put("storeKey", Boolean.TRUE.toString());
+            options.put("isInitiator", Boolean.toString(isInitiator));
+            options.put("storeKey", Boolean.toString(storeKey));
             options.put("debug", Boolean.toString(enableDebugLogs));
 
             addOptions(options);
 
             return new AppConfigurationEntry[] {
-                    new AppConfigurationEntry("com.sun.security.auth.module.Krb5LoginModule",
+                    new AppConfigurationEntry(loginModuleClassName,
                             AppConfigurationEntry.LoginModuleControlFlag.REQUIRED,
                             Collections.unmodifiableMap(options))
             };
@@ -161,20 +177,34 @@ public final class RangerRemoteKerberosContext {
     }
 
     private static final class KeytabJaasConf extends AbstractJaasConf {
-        private final String keytabFilePath;
+        private final String  keytabFilePath;
+        private final boolean doNotPrompt;
+        private final boolean useTicketCache;
+        private final boolean refreshKrb5Config;
 
-        KeytabJaasConf(String userPrincipalName, String keytabFilePath, boolean enableDebugLogs) {
-            super(userPrincipalName, enableDebugLogs);
-            this.keytabFilePath = keytabFilePath;
+        KeytabJaasConf(String loginModuleClassName,
+                       String userPrincipalName,
+                       boolean enableDebugLogs,
+                       boolean storeKey,
+                       boolean isInitiator,
+                       String keytabFilePath,
+                       boolean doNotPrompt,
+                       boolean useTicketCache,
+                       boolean refreshKrb5Config) {
+            super(loginModuleClassName, userPrincipalName, enableDebugLogs, storeKey, isInitiator);
+            this.keytabFilePath     = keytabFilePath;
+            this.doNotPrompt        = doNotPrompt;
+            this.useTicketCache     = useTicketCache;
+            this.refreshKrb5Config = refreshKrb5Config;
         }
 
         @Override
         void addOptions(Map<String, String> options) {
             options.put("useKeyTab", Boolean.TRUE.toString());
             options.put("keyTab", keytabFilePath);
-            options.put("doNotPrompt", Boolean.TRUE.toString());
-            options.put("useTicketCache", Boolean.FALSE.toString());
-            options.put("refreshKrb5Config", Boolean.TRUE.toString());
+            options.put("doNotPrompt", Boolean.toString(doNotPrompt));
+            options.put("useTicketCache", Boolean.toString(useTicketCache));
+            options.put("refreshKrb5Config", Boolean.toString(refreshKrb5Config));
         }
     }
 }

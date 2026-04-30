@@ -28,7 +28,11 @@ For more details, please refer to [Ranger Python Client Library](https://pypi.or
 
 ## Java
 
-For applications that need to call a Ranger PDP server for authorization
-decisions, see the
+For more details on using Ranger Java client: [Ranger Java Client Library](https://github.com/apache/ranger/blob/master/intg/src/main/java/README.md)
+
+For applications that need to call a Ranger PDP server for authorization decisions, see the
 [Ranger Authz Remote Client](https://github.com/apache/ranger/blob/master/authz-remote/README.md).
-The client supports Kerberos/SPNEGO and JWT bearer-token authentication.
+
+The client supports Header-based, Kerberos/SPNEGO and JWT bearer-token authentication.
+
+

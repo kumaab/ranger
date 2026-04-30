@@ -35,30 +35,41 @@ import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.MISSING_
 import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.UNSUPPORTED_AUTH_TYPE;
 
 public class RangerRemoteAuthzConfig {
-    public static final String PROP_REMOTE_URL                               = "ranger.authz.remote.pdp.url";
-    public static final String PROP_REMOTE_CONNECT_TIMEOUT_MS                = "ranger.authz.remote.pdp.connect.timeout.ms";
-    public static final String PROP_REMOTE_READ_TIMEOUT_MS                   = "ranger.authz.remote.pdp.read.timeout.ms";
-    public static final String PROP_REMOTE_HEADER_PREFIX                     = "ranger.authz.remote.header.";
-    public static final String PROP_REMOTE_SSL_KEYSTORE_FILE                 = "ranger.authz.remote.ssl.keystore.file";
-    public static final String PROP_REMOTE_SSL_KEYSTORE_PASSWORD             = "ranger.authz.remote.ssl.keystore.password";
-    public static final String PROP_REMOTE_SSL_KEYSTORE_TYPE                 = "ranger.authz.remote.ssl.keystore.type";
-    public static final String PROP_REMOTE_SSL_TRUSTSTORE_FILE               = "ranger.authz.remote.ssl.truststore.file";
-    public static final String PROP_REMOTE_SSL_TRUSTSTORE_PASSWORD           = "ranger.authz.remote.ssl.truststore.password";
-    public static final String PROP_REMOTE_SSL_TRUSTSTORE_TYPE               = "ranger.authz.remote.ssl.truststore.type";
-    public static final String PROP_REMOTE_SSL_DISABLE_HOSTNAME_VERIFICATION = "ranger.authz.remote.ssl.disable.hostname.verification";
-    public static final String PROP_REMOTE_AUTH_TYPE                         = "ranger.authz.remote.authn.type";
-    public static final String PROP_REMOTE_AUTH_JWT_SOURCE                   = "ranger.authz.remote.authn.jwt.source";
-    public static final String PROP_REMOTE_AUTH_JWT_ENV                      = "ranger.authz.remote.authn.jwt.env";
-    public static final String PROP_REMOTE_AUTH_JWT_FILE                     = "ranger.authz.remote.authn.jwt.file";
-    public static final String PROP_REMOTE_AUTH_KERBEROS_PRINCIPAL           = "ranger.authz.remote.authn.kerberos.principal";
-    public static final String PROP_REMOTE_AUTH_KERBEROS_KEYTAB              = "ranger.authz.remote.authn.kerberos.keytab";
-    public static final String PROP_REMOTE_AUTH_KERBEROS_DEBUG               = "ranger.authz.remote.authn.kerberos.debug";
+    public static final String PROP_REMOTE_URL                                       = "ranger.authz.remote.pdp.url";
+    public static final String PROP_REMOTE_CONNECT_TIMEOUT_MS                        = "ranger.authz.remote.pdp.connect.timeout.ms";
+    public static final String PROP_REMOTE_READ_TIMEOUT_MS                           = "ranger.authz.remote.pdp.read.timeout.ms";
+    public static final String PROP_REMOTE_HEADER_PREFIX                             = "ranger.authz.remote.header.";
+    public static final String PROP_REMOTE_SSL_KEYSTORE_FILE                         = "ranger.authz.remote.ssl.keystore.file";
+    public static final String PROP_REMOTE_SSL_KEYSTORE_PASSWORD                     = "ranger.authz.remote.ssl.keystore.password";
+    public static final String PROP_REMOTE_SSL_KEYSTORE_TYPE                         = "ranger.authz.remote.ssl.keystore.type";
+    public static final String PROP_REMOTE_SSL_TRUSTSTORE_FILE                       = "ranger.authz.remote.ssl.truststore.file";
+    public static final String PROP_REMOTE_SSL_TRUSTSTORE_PASSWORD                   = "ranger.authz.remote.ssl.truststore.password";
+    public static final String PROP_REMOTE_SSL_TRUSTSTORE_TYPE                       = "ranger.authz.remote.ssl.truststore.type";
+    public static final String PROP_REMOTE_SSL_DISABLE_HOSTNAME_VERIFICATION         = "ranger.authz.remote.ssl.disable.hostname.verification";
+    public static final String PROP_REMOTE_AUTH_TYPE                                 = "ranger.authz.remote.authn.type";
+    public static final String PROP_REMOTE_AUTH_JWT_SOURCE                           = "ranger.authz.remote.authn.jwt.source";
+    public static final String PROP_REMOTE_AUTH_JWT_ENV                              = "ranger.authz.remote.authn.jwt.env";
+    public static final String PROP_REMOTE_AUTH_JWT_FILE                             = "ranger.authz.remote.authn.jwt.file";
+    public static final String PROP_REMOTE_AUTH_KERBEROS_PRINCIPAL                   = "ranger.authz.remote.authn.kerberos.principal";
+    public static final String PROP_REMOTE_AUTH_KERBEROS_KEYTAB                      = "ranger.authz.remote.authn.kerberos.keytab";
+    public static final String PROP_REMOTE_AUTH_KERBEROS_DEBUG                       = "ranger.authz.remote.authn.kerberos.debug";
+    public static final String PROP_REMOTE_AUTH_KERBEROS_JAAS_CONTEXT_NAME           = "ranger.authz.remote.authn.kerberos.jaas.context.name";
+    public static final String PROP_REMOTE_AUTH_KERBEROS_JAAS_LOGIN_MODULE           = "ranger.authz.remote.authn.kerberos.jaas.login.module";
+    public static final String PROP_REMOTE_AUTH_KERBEROS_JAAS_STORE_KEY              = "ranger.authz.remote.authn.kerberos.jaas.store.key";
+    public static final String PROP_REMOTE_AUTH_KERBEROS_JAAS_IS_INITIATOR           = "ranger.authz.remote.authn.kerberos.jaas.is.initiator";
+    public static final String PROP_REMOTE_AUTH_KERBEROS_JAAS_DO_NOT_PROMPT          = "ranger.authz.remote.authn.kerberos.jaas.do.not.prompt";
+    public static final String PROP_REMOTE_AUTH_KERBEROS_JAAS_USE_TICKET_CACHE       = "ranger.authz.remote.authn.kerberos.jaas.use.ticket.cache";
+    public static final String PROP_REMOTE_AUTH_KERBEROS_JAAS_REFRESH_KRB5_CONFIG    = "ranger.authz.remote.authn.kerberos.jaas.refresh.krb5.config";
+    public static final String PROP_REMOTE_AUTH_KERBEROS_SPNEGO_STRIP_PORT           = "ranger.authz.remote.authn.kerberos.spnego.strip.port";
+    public static final String PROP_REMOTE_AUTH_KERBEROS_SPNEGO_USE_CANONICAL_HOST   = "ranger.authz.remote.authn.kerberos.spnego.use.canonical.hostname";
 
     private static final String AUTHZ_PATH_PREFIX = "/authz/v1";
 
     private static final int DEFAULT_CONNECT_TIMEOUT_MS = 5_000;
     private static final int DEFAULT_READ_TIMEOUT_MS    = 30_000;
     private static final String DEFAULT_STORE_TYPE      = "PKCS12";
+    private static final String DEFAULT_KERBEROS_JAAS_CONTEXT_NAME = "RangerRemoteClientKerberos";
+    private static final String DEFAULT_KERBEROS_JAAS_LOGIN_MODULE = "com.sun.security.auth.module.Krb5LoginModule";
 
     private final Properties properties;
     private final Map<String, String> headers;
@@ -154,6 +165,42 @@ public class RangerRemoteAuthzConfig {
 
     public boolean isKerberosDebugEnabled() throws RangerAuthzException {
         return getBooleanProperty(PROP_REMOTE_AUTH_KERBEROS_DEBUG, false);
+    }
+
+    public String getKerberosJaasContextName() {
+        return StringUtils.defaultIfBlank(properties.getProperty(PROP_REMOTE_AUTH_KERBEROS_JAAS_CONTEXT_NAME), DEFAULT_KERBEROS_JAAS_CONTEXT_NAME).trim();
+    }
+
+    public String getKerberosJaasLoginModuleClass() {
+        return StringUtils.defaultIfBlank(properties.getProperty(PROP_REMOTE_AUTH_KERBEROS_JAAS_LOGIN_MODULE), DEFAULT_KERBEROS_JAAS_LOGIN_MODULE).trim();
+    }
+
+    public boolean isKerberosJaasStoreKey() throws RangerAuthzException {
+        return getBooleanProperty(PROP_REMOTE_AUTH_KERBEROS_JAAS_STORE_KEY, true);
+    }
+
+    public boolean isKerberosJaasIsInitiator() throws RangerAuthzException {
+        return getBooleanProperty(PROP_REMOTE_AUTH_KERBEROS_JAAS_IS_INITIATOR, true);
+    }
+
+    public boolean isKerberosJaasDoNotPrompt() throws RangerAuthzException {
+        return getBooleanProperty(PROP_REMOTE_AUTH_KERBEROS_JAAS_DO_NOT_PROMPT, true);
+    }
+
+    public boolean isKerberosJaasUseTicketCache() throws RangerAuthzException {
+        return getBooleanProperty(PROP_REMOTE_AUTH_KERBEROS_JAAS_USE_TICKET_CACHE, false);
+    }
+
+    public boolean isKerberosJaasRefreshKrb5Config() throws RangerAuthzException {
+        return getBooleanProperty(PROP_REMOTE_AUTH_KERBEROS_JAAS_REFRESH_KRB5_CONFIG, true);
+    }
+
+    public boolean isKerberosSpnegoStripPort() throws RangerAuthzException {
+        return getBooleanProperty(PROP_REMOTE_AUTH_KERBEROS_SPNEGO_STRIP_PORT, true);
+    }
+
+    public boolean isKerberosSpnegoUseCanonicalHostname() throws RangerAuthzException {
+        return getBooleanProperty(PROP_REMOTE_AUTH_KERBEROS_SPNEGO_USE_CANONICAL_HOST, true);
     }
 
     public String getSslKeyStoreFile() {

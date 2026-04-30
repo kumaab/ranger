@@ -84,7 +84,7 @@ public class TestRemoteAuthorizer {
 
                 RangerAccessContext accessContext = new RangerAccessContext("hive", "dev_hive", 123L, "10.0.0.1",
                         Collections.singletonList("10.0.0.2"), stringMap("requestData", "show tables"));
-                RangerAuthzRequest request = new RangerAuthzRequest("req-1", new RangerUserInfo("alice"),
+                RangerAuthzRequest request = new RangerAuthzRequest("req-1", new RangerUserInfo("madhan"),
                         new RangerAccessInfo(resource("table:default/sales", "column:id", "column:name"), "QUERY", linkedSet("select")),
                         accessContext);
                 RangerAuthzResult result = authorizer.authorize(request);
@@ -115,7 +115,7 @@ public class TestRemoteAuthorizer {
                 authorizer.init();
 
                 RangerAccessContext accessContext = new RangerAccessContext("hive", "dev_hive", 456L, null, null, null);
-                RangerMultiAuthzRequest multiRequest = new RangerMultiAuthzRequest("req-2", new RangerUserInfo("alice"),
+                RangerMultiAuthzRequest multiRequest = new RangerMultiAuthzRequest("req-2", new RangerUserInfo("abhi"),
                         Arrays.asList(
                                 new RangerAccessInfo(resource("table:default/sales"), "QUERY", linkedSet("select")),
                                 new RangerAccessInfo(resource("table:default/sales"), "UPDATE", linkedSet("update"))),
@@ -136,7 +136,7 @@ public class TestRemoteAuthorizer {
         try (StubPdpServer server = StubPdpServer.createHttp()) {
             server.respond("/authz/v1/permissions", 200,
                     "{\"resource\":{\"name\":\"table:default/sales\",\"subResources\":[\"column:id\"]},"
-                            + "\"users\":{\"alice\":{\"select\":{\"permission\":\"select\",\"access\":{\"decision\":\"ALLOW\"}}}},"
+                            + "\"users\":{\"abhi\":{\"select\":{\"permission\":\"select\",\"access\":{\"decision\":\"ALLOW\"}}}},"
                             + "\"groups\":{\"analysts\":{\"select\":{\"permission\":\"select\",\"access\":{\"decision\":\"ALLOW\"}}}},"
                             + "\"roles\":{\"finance\":{\"update\":{\"permission\":\"update\",\"access\":{\"decision\":\"DENY\"}}}}}");
 
@@ -174,7 +174,7 @@ public class TestRemoteAuthorizer {
 
                 RangerAccessContext accessContext = new RangerAccessContext("hive", "dev_hive", 123L, "10.0.0.1",
                         Collections.singletonList("10.0.0.2"), stringMap("requestData", "show tables"));
-                RangerAuthzRequest request = new RangerAuthzRequest("req-1", new RangerUserInfo("alice"),
+                RangerAuthzRequest request = new RangerAuthzRequest("req-1", new RangerUserInfo("madhan"),
                         new RangerAccessInfo(resource("table:default/sales", "column:id", "column:name"), "QUERY", linkedSet("select")),
                         accessContext);
                 RangerAuthzResult result = authorizer.authorize(request);
@@ -190,7 +190,7 @@ public class TestRemoteAuthorizer {
     @Test
     public void testRemoteErrorIncludesPdpMessage() throws Exception {
         try (StubPdpServer server = StubPdpServer.createHttp()) {
-            server.respond("/authz/v1/authorize", 403, "{\"code\":\"FORBIDDEN\",\"message\":\"alice is not authorized\"}");
+            server.respond("/authz/v1/authorize", 403, "{\"code\":\"FORBIDDEN\",\"message\":\"abhi is not authorized\"}");
 
             RangerRemoteAuthorizer authorizer = new RangerRemoteAuthorizer(createNoAuthProperties(server.getBaseUrl()));
 
@@ -198,14 +198,14 @@ public class TestRemoteAuthorizer {
                 authorizer.init();
 
                 RangerAccessContext accessContext = new RangerAccessContext("hive", "dev_hive");
-                authorizer.authorize(new RangerAuthzRequest("req-4", new RangerUserInfo("alice"),
+                authorizer.authorize(new RangerAuthzRequest("req-4", new RangerUserInfo("abhi"),
                         new RangerAccessInfo(resource("table:default/sales"), "QUERY", linkedSet("select")),
                         accessContext));
 
                 fail("Expected authorize() to fail");
             } catch (RangerAuthzException e) {
                 assertTrue(e.getMessage().contains("403"));
-                assertTrue(e.getMessage().contains("alice is not authorized"));
+                assertTrue(e.getMessage().contains("abhi is not authorized"));
             } finally {
                 authorizer.close();
             }
@@ -327,7 +327,7 @@ public class TestRemoteAuthorizer {
         RangerResourcePermissions ret = new RangerResourcePermissions();
 
         ret.setResource(resource("table:default/sales", "column:id"));
-        ret.setUsers(Collections.singletonMap("alice", Collections.singletonMap("select", permission("select", AccessDecision.ALLOW))));
+        ret.setUsers(Collections.singletonMap("abhi", Collections.singletonMap("select", permission("select", AccessDecision.ALLOW))));
         ret.setGroups(Collections.singletonMap("analysts", Collections.singletonMap("select", permission("select", AccessDecision.ALLOW))));
         ret.setRoles(Collections.singletonMap("finance", Collections.singletonMap("update", permission("update", AccessDecision.DENY))));
 

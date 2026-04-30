@@ -77,7 +77,7 @@ public class TestRemoteAuthorizer {
                     "{\"requestId\":\"req-1\",\"decision\":\"ALLOW\",\"permissions\":{\"select\":{\"permission\":\"select\",\"access\":{\"decision\":\"ALLOW\",\"policy\":{\"id\":7,\"version\":3}},\"additionalInfo\":{\"source\":\"pdp\"}}}}");
 
             Path trustStore = server.writeClientTrustStore();
-            RangerRemoteAuthorizer authorizer = new RangerRemoteAuthorizer(createTlsNoAuthProperties(server.getBaseUrl(), trustStore));
+            RangerRemoteAuthorizer authorizer = new RangerRemoteAuthorizer(createTlsHeaderAuthProperties(server.getBaseUrl(), trustStore));
 
             try {
                 authorizer.init();
@@ -236,11 +236,24 @@ public class TestRemoteAuthorizer {
         assertTrue(exception.getMessage().contains(RangerRemoteAuthzConfig.PROP_REMOTE_AUTH_JWT_SOURCE));
     }
 
-    private static Properties createTlsNoAuthProperties(String baseUrl, Path trustStore) {
+    @Test
+    public void testUnsupportedAuthType() {
+        Properties props = createNoAuthProperties("http://localhost:6500");
+        props.setProperty(RangerRemoteAuthzConfig.PROP_REMOTE_AUTH_TYPE, "none");
+
+        RangerRemoteAuthorizer authorizer = new RangerRemoteAuthorizer(props);
+
+        RangerAuthzException exception = assertThrows(RangerAuthzException.class, authorizer::init);
+
+        assertTrue(exception.getMessage().toLowerCase().contains("unsupported auth type"));
+    }
+
+    /** TLS + {@link RangerRemoteAuthType#HEADER}: static headers only (no JWT bearer, no SPNEGO). */
+    private static Properties createTlsHeaderAuthProperties(String baseUrl, Path trustStore) {
         Properties props = new Properties();
 
         props.setProperty(RangerRemoteAuthzConfig.PROP_REMOTE_URL, baseUrl);
-        props.setProperty(RangerRemoteAuthzConfig.PROP_REMOTE_AUTH_TYPE, "none");
+        props.setProperty(RangerRemoteAuthzConfig.PROP_REMOTE_AUTH_TYPE, "header");
         props.setProperty(RangerRemoteAuthzConfig.PROP_REMOTE_SSL_TRUSTSTORE_FILE, trustStore.toAbsolutePath().toString());
         props.setProperty(RangerRemoteAuthzConfig.PROP_REMOTE_SSL_TRUSTSTORE_PASSWORD, "changeit");
         props.setProperty(RangerRemoteAuthzConfig.PROP_REMOTE_SSL_TRUSTSTORE_TYPE, "PKCS12");
@@ -249,6 +262,10 @@ public class TestRemoteAuthorizer {
         return props;
     }
 
+    /**
+     * PDP URL only; {@link RangerRemoteAuthzConfig#getAuthType()} defaults to {@link RangerRemoteAuthType#HEADER}
+     * when {@code ranger.authz.remote.authn.type} is unset.
+     */
     private static Properties createNoAuthProperties(String baseUrl) {
         Properties props = new Properties();
 

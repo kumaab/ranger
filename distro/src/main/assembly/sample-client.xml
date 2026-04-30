@@ -43,6 +43,7 @@
                 <fileMode>644</fileMode>
                 <includes>
                     <include>commons-cli:commons-cli</include>
+                    <include>commons-codec:commons-codec</include>
                     <include>commons-logging:commons-logging:jar:${commons.logging.version}</include>
                     <include>org.apache.commons:commons-lang3</include>
                     <include>org.apache.commons:commons-compress</include>
@@ -101,10 +102,13 @@
         <fileSet>
             <directoryMode>755</directoryMode>
             <fileMode>644</fileMode>
-            <outputDirectory>lib</outputDirectory>
+            <outputDirectory></outputDirectory>
             <directory>${project.parent.basedir}/ranger-examples/sample-client/src/main/resources</directory>
             <includes>
                 <include>*.properties</include>
+                <include>request.json</include>
+                <include>logback.xml</include>
+                <include>logging.conf</include>
             </includes>
         </fileSet>
     </fileSets>

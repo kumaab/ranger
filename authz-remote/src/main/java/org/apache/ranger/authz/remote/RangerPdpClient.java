@@ -76,8 +76,6 @@ class RangerPdpClient implements Closeable {
     private static final String PATH_AUTHORIZE            = "/authorize";
     private static final String PATH_AUTHORIZE_MULTI      = "/authorizeMulti";
     private static final String PATH_RESOURCE_PERMISSIONS = "/permissions";
-    private static final String HEADER_AUTHORIZATION      = "Authorization";
-    private static final String JWT_HEADER_PREFIX         = "Bearer ";
 
     private final RangerRemoteAuthzConfig config;
     private final CloseableHttpClient     httpClient;
@@ -132,7 +130,7 @@ class RangerPdpClient implements Closeable {
             }
 
             if (authType == JWT) {
-                request.setHeader(HEADER_AUTHORIZATION, JWT_HEADER_PREFIX + jwtProvider.getJwt());
+                jwtProvider.setAuthnHeader(request);
             }
 
             String responseBody;
@@ -148,8 +146,6 @@ class RangerPdpClient implements Closeable {
             } catch (IOException e) {
                 throw new RangerAuthzException(FAILED_TO_DESERIALIZE_RESPONSE, e, endpoint);
             }
-        } catch (RangerAuthzException e) {
-            throw e;
         } catch (PrivilegedActionException e) {
             Throwable cause = e.getException();
 

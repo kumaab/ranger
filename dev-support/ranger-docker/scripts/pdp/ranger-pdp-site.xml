@@ -106,7 +106,7 @@
   <!-- HTTP Header authentication -->
   <property>
     <name>ranger.pdp.authn.header.enabled</name>
-    <value>false</value>
+    <value>true</value>
   </property>
 
   <property>

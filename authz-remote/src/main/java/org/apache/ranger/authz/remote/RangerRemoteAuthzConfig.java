@@ -105,7 +105,7 @@ public class RangerRemoteAuthzConfig {
     }
 
     public RangerRemoteAuthType getAuthType() throws RangerAuthzException {
-        String value = StringUtils.defaultIfBlank(properties.getProperty(PROP_REMOTE_AUTH_TYPE), RangerRemoteAuthType.NONE.name());
+        String value = StringUtils.defaultIfBlank(properties.getProperty(PROP_REMOTE_AUTH_TYPE), RangerRemoteAuthType.HEADER.name());
 
         try {
             return RangerRemoteAuthType.valueOf(value.trim().toUpperCase());

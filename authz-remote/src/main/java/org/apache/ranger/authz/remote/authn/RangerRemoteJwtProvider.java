@@ -20,6 +20,7 @@
 package org.apache.ranger.authz.remote.authn;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.ranger.authz.api.RangerAuthzException;
 import org.apache.ranger.authz.remote.RangerRemoteAuthzConfig;
 
@@ -29,11 +30,14 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
+import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.FAILED_TO_READ_JWT_FROM_FILE;
 import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.INVALID_PROPERTY_VALUE;
 import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.MISSING_AUTH_CONFIG;
-import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.REMOTE_REQUEST_FAILED;
 
 public class RangerRemoteJwtProvider {
+    private static final String HEADER_AUTHORIZATION = "Authorization";
+    private static final String JWT_HEADER_PREFIX    = "Bearer ";
+
     private static final String SOURCE_ENV  = "env";
     private static final String SOURCE_FILE = "file";
 
@@ -86,6 +90,10 @@ public class RangerRemoteJwtProvider {
         return jwt.trim();
     }
 
+    public void setAuthnHeader(HttpRequestBase request) throws RangerAuthzException {
+        request.setHeader(HEADER_AUTHORIZATION, JWT_HEADER_PREFIX + getJwt());
+    }
+
     private void refreshJwtFromFile() throws RangerAuthzException {
         File file = new File(filePath);
 
@@ -102,7 +110,7 @@ public class RangerRemoteJwtProvider {
 
                 fileLastModified = file.lastModified();
             } catch (IOException e) {
-                throw new RangerAuthzException(REMOTE_REQUEST_FAILED, e, filePath);
+                throw new RangerAuthzException(FAILED_TO_READ_JWT_FROM_FILE, e, filePath);
             }
         }
     }

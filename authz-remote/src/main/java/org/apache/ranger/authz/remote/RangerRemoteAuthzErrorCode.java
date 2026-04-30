@@ -32,7 +32,8 @@ public enum RangerRemoteAuthzErrorCode implements RangerAuthzErrorCode {
     KERBEROS_LOGIN_FAILED(500, "00-008", "failed to initialize Kerberos credentials for Ranger PDP endpoint {0}"),
     FAILED_TO_SERIALIZE_REQUEST(500, "00-009", "failed to serialize request: {0}"),
     FAILED_TO_DESERIALIZE_RESPONSE(500, "00-010", "failed to deserialize response from Ranger PDP endpoint {0}"),
-    REMOTE_CLIENT_CLOSE_FAILED(500, "00-011", "failed to close Ranger PDP client: {0}");
+    REMOTE_CLIENT_CLOSE_FAILED(500, "00-011", "failed to close Ranger PDP client: {0}"),
+    FAILED_TO_READ_JWT_FROM_FILE(500, "00-012", "failed to read JWT from file {0}: {1}");
 
     private static final String ERROR_CODE_MODULE_PREFIX = "R_AUTHZ-";
 

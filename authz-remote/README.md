@@ -21,11 +21,48 @@ under the License.
 
 The `authz-remote` module implements the `ranger-authz-api` authorizer interface and forwards authorization checks to Ranger PDP Service over HTTP(S).
 
-For an end-to-end example (load configuration from a properties file, build a request, and call the authorizer), see:
+## Configs
 
-`ranger-examples/sample-client/src/main/java/org/apache/ranger/examples/pdpclient/RemoteAuthzClient.java`
+### PDP endpoint
 
-Add the dependency (for standalone applications):
+Configure the PDP base URL with **`ranger.authz.remote.pdp.url`**.  
+Other timeouts, TLS, and optional HTTP headers are documented under the same prefix in **`authz-remote/src/conf/ranger-authz-remote.properties`** and **`RangerRemoteAuthzConfig`**.
+
+### Authentication modes
+
+Client authentication is controlled by **`ranger.authz.remote.authn.type`**. Three modes are supported:
+
+- **`header`** (default) — Header-based authentication. Set **`ranger.authz.remote.header.<header_name>=<header_value>`**
+  - example: Set `ranger.authz.remote.header.X-Forwarded-User=test-user`, this header will be passed in all authz calls to PDP Server.
+
+- **`jwt`** 
+  - Set **`ranger.authz.remote.authn.jwt.source`** to **`env`** or **`file`**.  
+  - For **`env`**, set **`ranger.authz.remote.authn.jwt.env`** as the name of the environment variable containing JWT.  
+  - For **`file`**, set **`ranger.authz.remote.authn.jwt.file`** to the token file path.
+
+- **`kerberos`** — SPNEGO from a keytab. Set **`ranger.authz.remote.authn.kerberos.principal`** and **`ranger.authz.remote.authn.kerberos.keytab`**. Optionally set **`ranger.authz.remote.authn.kerberos.debug`** to `true` for JDK Kerberos diagnostics.
+
+## Examples
+
+For an end-to-end example (load configuration from a properties file, pass request as JSON, and call the authorizer), see:
+
+`ranger-examples/sample-client/src/main/java/org/apache/ranger/examples/pdpclient/RemoteAuthzClient.java`  
+**OR** run these commands after unzipping sample-client tarball: `ranger-<version>-sample-client.tar.gz`:
+
+```bash
+# request.json contains the authz request body, and ranger-authz-remote.properties contains the client configs
+
+# header based authn example
+java -cp "lib/*" org.apache.ranger.examples.pdpclient.RemoteAuthzClient request.json ranger-authz-remote-authn-header.properties
+
+# jwt based authn with env variable example
+java -cp "lib/*" org.apache.ranger.examples.pdpclient.RemoteAuthzClient request.json
+
+# kerberos based authn example
+java -cp "lib/*" org.apache.ranger.examples.pdpclient.RemoteAuthzClient request.json ranger-authz-remote-authn-kerberos.properties
+```
+
+Add the dependency (for **applications** that use Ranger for authorization) to your project:
 
 ```xml
 <dependency>
@@ -34,21 +71,3 @@ Add the dependency (for standalone applications):
   <version>${ranger.version}</version>
 </dependency>
 ```
-
-## PDP endpoint
-
-Configure the PDP base URL with **`ranger.authz.remote.pdp.url`**.  
-Other timeouts, TLS, and optional HTTP headers are documented under the same prefix in **`authz-remote/src/conf/ranger-authz-remote.properties`** and **`RangerRemoteAuthzConfig`**.
-
-## Authentication modes
-
-Client authentication is controlled by **`ranger.authz.remote.authn.type`**. Three modes are supported:
-
-- **`none`** — No client-added authentication (`Authorization`/SPNEGO). Omit the property or set it to `none` when the PDP does not expect authenticated clients for these calls.
-
-- **`jwt`** 
-  - Set **`ranger.authz.remote.authn.jwt.source`** to **`env`** or **`file`**.  
-  - For **`env`**, set **`ranger.authz.remote.authn.jwt.env`** as the name of the environment variable containing JWT.  
-  - For **`file`**, set **`ranger.authz.remote.authn.jwt.file`** to the token file path.
-
-- **`kerberos`** — SPNEGO from a keytab. Set **`ranger.authz.remote.authn.kerberos.principal`** and **`ranger.authz.remote.authn.kerberos.keytab`**. Optionally set **`ranger.authz.remote.authn.kerberos.debug`** to `true` for JDK Kerberos diagnostics.

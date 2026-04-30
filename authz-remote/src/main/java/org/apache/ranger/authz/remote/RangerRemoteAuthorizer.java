@@ -32,8 +32,8 @@ import org.apache.ranger.authz.model.RangerResourcePermissionsRequest;
 
 import java.util.Properties;
 
+import static org.apache.ranger.authz.api.RangerAuthzApiErrorCode.AUTHORIZER_CREATION_FAILED;
 import static org.apache.ranger.authz.api.RangerAuthzApiErrorCode.INVALID_REQUEST_SERVICE_NAME_OR_TYPE_MANDATORY;
-import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.INVALID_PROPERTY_VALUE;
 import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.REMOTE_CLIENT_CLOSE_FAILED;
 
 public class RangerRemoteAuthorizer extends RangerAuthorizer {
@@ -101,7 +101,7 @@ public class RangerRemoteAuthorizer extends RangerAuthorizer {
         RangerPdpClient ret = client;
 
         if (ret == null) {
-            throw new RangerAuthzException(INVALID_PROPERTY_VALUE, RangerRemoteAuthzConfig.PROP_REMOTE_URL, "authorizer is not initialized");
+            throw new RangerAuthzException(AUTHORIZER_CREATION_FAILED, "RangerPdpClient");
         }
 
         return ret;

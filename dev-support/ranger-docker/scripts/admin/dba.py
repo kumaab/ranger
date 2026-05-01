@@ -203,7 +203,12 @@ def load_runtime_config() -> dict:
 
     config = dict(props)
     config["DB_FLAVOR"] = db_flavor
-    config["SQL_CONNECTOR_JAR"] = props.get("ranger.jdbc.sqlconnectorjar") or os.environ.get("SQL_CONNECTOR_JAR") or DEFAULT_CONNECTOR_JARS.get(db_flavor, "")
+    # ranger.sh installs the matching jar when RANGER_DB_TYPE is set
+    config["SQL_CONNECTOR_JAR"] = (
+        os.environ.get("SQL_CONNECTOR_JAR")
+        or props.get("ranger.jdbc.sqlconnectorjar")
+        or DEFAULT_CONNECTOR_JARS.get(db_flavor, "")
+    )
     config["db_name"] = db_name
     config["db_host"] = f"{db_host}:{db_port}" if db_port else db_host
     config["db_user"] = db_user

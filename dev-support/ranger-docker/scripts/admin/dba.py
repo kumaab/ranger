@@ -706,8 +706,8 @@ def _resolve_java_bin() -> str:
 # ---------------------------------------------------------------------------
 # Schema file resolution
 # ---------------------------------------------------------------------------
-def _resolve_schema_file(core_file_rel: str) -> str:
-    """Return the absolute path to the core schema SQL file.
+def _resolve_schema_file(core_file_rel: str, *, label: str = "Schema") -> str:
+    """Return the absolute path to a SQL file under admin/.
 
     Raises ConfigError if the file does not exist.
     """
@@ -716,9 +716,9 @@ def _resolve_schema_file(core_file_rel: str) -> str:
     else:
         path = os.path.join(RANGER_HOME, core_file_rel)
 
-    logger.info(f"Schema file path: {path}")
+    logger.info(f"{label} file path: {path}")
     if not os.path.isfile(path):
-        raise ConfigError(f"Schema file not found: {path} (RANGER_HOME={RANGER_HOME})")
+        raise ConfigError(f"{label} file not found: {path} (RANGER_HOME={RANGER_HOME})")
     return path
 
 
@@ -770,7 +770,7 @@ def main(argv: list[str]) -> None:
     db_name, db_user, db_password = config["db_name"], config["db_user"], config["db_password"]
 
     db = create_db(config, java_bin, ssl)
-    schema_file = _resolve_schema_file(config["schema_file"])
+    schema_file = _resolve_schema_file(config["schema_file"], label="Core schema")
 
     db.wait_until_ready(db_name, db_user, db_password)
 

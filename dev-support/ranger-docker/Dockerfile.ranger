@@ -29,7 +29,7 @@ COPY ./scripts/admin/user_password_bootstrap.py       ${RANGER_SCRIPTS}/
 COPY ./scripts/python/log_config.py                   ${RANGER_SCRIPTS}/
 COPY ./scripts/admin/dba.py                           ${RANGER_SCRIPTS}/
 COPY ./scripts/admin/ranger_admin_xml_config.py       ${RANGER_SCRIPTS}/
-COPY ./scripts/admin/create-ranger-services.py        ${RANGER_SCRIPTS}/create_services.py
+COPY ./scripts/admin/create_ranger_services.py        ${RANGER_SCRIPTS}/
 
 RUN    tar xvfz /home/ranger/dist/ranger-${RANGER_VERSION}-admin.tar.gz --directory=${RANGER_HOME} \
     && ln -s ${RANGER_HOME}/ranger-${RANGER_VERSION}-admin ${RANGER_HOME}/admin \

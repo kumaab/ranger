@@ -81,7 +81,7 @@ python3 "/home/ranger/scripts/dba.py"
 if [ ! -f "${SERVICES_MARKER}" ]; then
   if wait_for_admin 240; then
     if python3 "${USER_PASSWORD_BOOTSTRAP_HELPER}"; then
-      if python3 "/home/ranger/scripts/create_services.py"; then
+      if python3 "/home/ranger/scripts/create_ranger_services.py"; then
         touch "${SERVICES_MARKER}" 2>/dev/null || true
       else
         echo "Warning: service creation failed" >&2

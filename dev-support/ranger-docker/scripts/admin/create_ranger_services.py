@@ -172,11 +172,11 @@ def main() -> int:
         try:
             if service_not_exists(ranger_client, service):
                 ranger_client.create_service(service)
-                logger.info("%s service created", service.name)
+                logger.info(f"{service.name} service created")
             else:
-                logger.info("%s service already exists", service.name)
+                logger.info(f"{service.name} service already exists")
         except Exception:
-            logger.exception("Failed to reconcile Ranger service %s", service.name)
+            logger.exception(f"Failed to reconcile Ranger service {service.name}")
             return 1
 
     return 0

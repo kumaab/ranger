@@ -44,10 +44,10 @@ class UserPasswordBootstrap:
                 return 403
             if exc.statusCode == 401:
                 return 401
-            logger.debug("apache-ranger auth probe failed for %s: %s", username, exc, exc_info=True)
+            logger.debug(f"apache-ranger auth probe failed for {username}: {exc}", exc_info=True)
             return exc.statusCode
         except Exception as exc:
-            logger.debug("apache-ranger auth probe failed for %s: %s", username, exc, exc_info=True)
+            logger.debug(f"apache-ranger auth probe failed for {username}: {exc}", exc_info=True)
             return 0
 
     def can_authenticate(self, username: str, password: str) -> bool:
@@ -67,10 +67,13 @@ class UserPasswordBootstrap:
             self._update_user_password_with_client(admin_password, username, desired)
             return 0
         except RangerServiceException as exc:
-            logger.error("apache-ranger client update failed for %s: status=%s, message=%s", username, exc.statusCode, exc.msgDesc or exc)
+            logger.error(
+                f"apache-ranger client update failed for {username}: "
+                f"status={exc.statusCode}, message={exc.msgDesc or exc}"
+            )
             return 1
         except Exception as exc:
-            logger.error("apache-ranger client update failed for %s: %s", username, exc)
+            logger.error(f"apache-ranger client update failed for {username}: {exc}")
             return 1
 
     def set_admin_password_if_needed(self, desired: str) -> int:
@@ -82,7 +85,7 @@ class UserPasswordBootstrap:
             return 0
 
         logger.warning("Unable to authenticate to Ranger as admin with RANGER_ADMIN_PASSWORD.")
-        logger.warning(" admin:<env:RANGER_ADMIN_PASSWORD> -> %s", self.auth_probe_status("admin", desired))
+        logger.warning(f" admin:<env:RANGER_ADMIN_PASSWORD> -> {self.auth_probe_status('admin', desired)}")
         logger.warning("For fresh installs, dba.py seeds the initial admin password from RANGER_ADMIN_PASSWORD during schema import. "
             "If the database already exists, changing only RANGER_ADMIN_PASSWORD will not rotate the stored admin password."
         )
@@ -90,23 +93,23 @@ class UserPasswordBootstrap:
 
     def update_user_password_if_needed(self, admin_password: str, username: str, desired: str) -> int:
         if not desired:
-            logger.warning("No password configured for %s; skipping password update", username)
+            logger.warning(f"No password configured for {username}; skipping password update")
             return 0
 
         if self.can_authenticate(username, desired):
             return 0
 
         if not self.can_authenticate("admin", admin_password):
-            logger.warning("Unable to authenticate as admin; skipping password update for %s.", username)
-            logger.warning(" admin:<provided> -> %s", self.auth_probe_status("admin", admin_password))
+            logger.warning(f"Unable to authenticate as admin; skipping password update for {username}.")
+            logger.warning(f" admin:<provided> -> {self.auth_probe_status('admin', admin_password)}")
             return 0
 
-        logger.info("Updating Ranger user password for %s to configured value", username)
+        logger.info(f"Updating Ranger user password for {username} to configured value")
         if self.update_user_password(admin_password, username, desired) != 0:
             return 1
 
         if not self.can_authenticate(username, desired):
-            logger.error("Password update succeeded but auth check failed for %s", username)
+            logger.error(f"Password update succeeded but auth check failed for {username}")
             return 1
 
         return 0

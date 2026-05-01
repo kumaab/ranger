@@ -18,30 +18,30 @@
     -->
     <property>
         <name>ranger.jdbc.sqlconnectorjar</name>
-<!--        <value>/usr/share/java/postgresql.jar</value>-->
+        <value>/usr/share/java/postgresql.jar</value>
 <!--        <value>/usr/share/java/mysql-connector.jar</value>-->
-        <value>/usr/share/java/oracle.jar</value>
+<!--        <value>/usr/share/java/oracle.jar</value>-->
         <description>SQL connector JAR file path for the dockerized Ranger Admin runtime</description>
     </property>
     <property>
         <name>ranger.jpa.jdbc.driver</name>
-<!--        <value>org.postgresql.Driver</value>-->
+        <value>org.postgresql.Driver</value>
 <!--        <value>com.mysql.cj.jdbc.Driver</value>-->
-        <value>oracle.jdbc.OracleDriver</value>
+<!--        <value>oracle.jdbc.OracleDriver</value>-->
         <description />
     </property>
     <property>
         <name>ranger.jpa.jdbc.url</name>
-<!--        <value>jdbc:postgresql://ranger-db:5432/ranger</value>-->
+        <value>jdbc:postgresql://ranger-db:5432/ranger</value>
 <!--        <value>jdbc:mysql://ranger-db:3306/ranger?useSSL=false</value> &lt;!&ndash; jdbc:mysql with com.mysql.cj.jdbc.Driver; log4jdbc URLs need net.sf.log4jdbc.sql.jdbcapi.DriverSpy &ndash;&gt;-->
-        <value>jdbc:oracle:thin:@//ranger-db:1521/FREEPDB1</value>
+<!--        <value>jdbc:oracle:thin:@//ranger-db:1521/FREEPDB1</value>-->
         <description />
     </property>
     <property>
         <name>ranger.jpa.jdbc.dialect</name>
-<!--        <value>org.eclipse.persistence.platform.database.PostgreSQLPlatform</value>-->
+        <value>org.eclipse.persistence.platform.database.PostgreSQLPlatform</value>
 <!--        <value>org.eclipse.persistence.platform.database.MySQLPlatform</value>-->
-        <value>org.eclipse.persistence.platform.database.OraclePlatform</value>
+<!--        <value>org.eclipse.persistence.platform.database.OraclePlatform</value>-->
         <description>JPA database dialect</description>
     </property>
     <property>

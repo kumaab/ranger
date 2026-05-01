@@ -45,25 +45,27 @@ public final class RemoteAuthzClient {
         String     requestLocation    = args[0];
         String     propertiesLocation = args.length > 1 ? args[1] : DEFAULT_PROPERTIES_LOCATION;
         Properties properties         = loadProperties(propertiesLocation);
-        RangerAuthzRequest request    = loadRequest(requestLocation);
 
-        System.out.println("Loaded request from: " + requestLocation);
         System.out.println("Loaded properties from: " + propertiesLocation);
 
-        RangerAuthzResult result = run(properties, request);
-
-        System.out.println(OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(result));
-    }
-
-    static RangerAuthzResult run(Properties properties, RangerAuthzRequest request) throws Exception {
-        RangerAuthorizer authorizer = RangerAuthorizerFactory.createAuthorizer(properties);
+        RangerAuthorizer authorizer = null;
 
         try {
+            authorizer = RangerAuthorizerFactory.createAuthorizer(properties);
+
             authorizer.init();
 
-            return authorizer.authorize(request);
+            RangerAuthzRequest request = loadRequest(requestLocation);
+
+            System.out.println("Loaded request from: " + requestLocation);
+
+            RangerAuthzResult result = authorizer.authorize(request);
+
+            System.out.println(OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(result));
         } finally {
-            authorizer.close();
+            if (authorizer != null) {
+                authorizer.close();
+            }
         }
     }
 

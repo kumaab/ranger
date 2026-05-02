@@ -22,13 +22,10 @@ package org.apache.ranger.authz.remote;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.authz.api.RangerAuthzException;
 
-import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.INVALID_PROPERTY_VALUE;
 import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.MISSING_MANDATORY_CONFIGURATION;
@@ -85,7 +82,7 @@ public class RangerRemoteAuthzConfig {
         this.properties.forEach((k, v) -> {
             if (k instanceof String) {
                 String key = (String) k;
-    
+
                 if (key.startsWith(PROP_REMOTE_HEADER_PREFIX)) {
                     headers.put(key.substring(PROP_REMOTE_HEADER_PREFIX.length()), String.valueOf(v));
                 } else if (key.startsWith(PROP_REMOTE_AUTH_HEADER_PREFIX)) {

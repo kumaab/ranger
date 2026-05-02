@@ -46,6 +46,7 @@ public class RangerRemoteAuthzConfig {
     public static final String PROP_REMOTE_SSL_TRUSTSTORE_TYPE                       = "ranger.authz.remote.ssl.truststore.type";
     public static final String PROP_REMOTE_SSL_DISABLE_HOSTNAME_VERIFICATION         = "ranger.authz.remote.ssl.disable.hostname.verification";
     public static final String PROP_REMOTE_AUTH_TYPE                                 = "ranger.authz.remote.authn.type";
+    public static final String PROP_REMOTE_AUTH_HEADER_PREFIX                        = "ranger.authz.remote.authn.header.";
     public static final String PROP_REMOTE_AUTH_JWT_SOURCE                           = "ranger.authz.remote.authn.jwt.source";
     public static final String PROP_REMOTE_AUTH_JWT_ENV                              = "ranger.authz.remote.authn.jwt.env";
     public static final String PROP_REMOTE_AUTH_JWT_FILE                             = "ranger.authz.remote.authn.jwt.file";
@@ -70,20 +71,32 @@ public class RangerRemoteAuthzConfig {
     private static final String DEFAULT_KERBEROS_JAAS_CONTEXT_NAME = "RangerRemoteClientKerberos";
     private static final String DEFAULT_KERBEROS_JAAS_LOGIN_MODULE = "com.sun.security.auth.module.Krb5LoginModule";
 
-    private final Properties properties;
+    private final Properties          properties;
     private final Map<String, String> headers;
+    private final Map<String, String> authnHeaders;
 
     public RangerRemoteAuthzConfig(Properties properties) {
         this.properties = properties != null ? properties : new Properties();
 
-        this.headers = Collections.unmodifiableMap(
-                this.properties.stringPropertyNames().stream()
-                        .filter(propName -> propName.startsWith(PROP_REMOTE_HEADER_PREFIX))
-                        .map(propName -> new AbstractMap.SimpleEntry<>(
-                                propName.substring(PROP_REMOTE_HEADER_PREFIX.length()),
-                                this.properties.getProperty(propName)))
-                        .filter(e -> StringUtils.isNotBlank(e.getKey()) && StringUtils.isNotBlank(e.getValue()))
-                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a, LinkedHashMap::new)));
+        Map<String, String> headers      = new HashMap<>();
+        Map<String, String> authnHeaders = new HashMap<>();
+
+        this.properties.forEach((k, v) -> {
+            if (!(k instanceof String)) {
+                continue;
+            }
+
+            String key = (String) k;
+
+            if (key.startsWith(PROP_REMOTE_HEADER_PREFIX)) {
+                headers.put(key.substring(PROP_REMOTE_HEADER_PREFIX.length()), String.valueOf(v));
+            } else if (key.startsWith(PROP_REMOTE_AUTH_HEADER_PREFIX)) {
+                authnHeaders.put(key.substring(PROP_REMOTE_AUTH_HEADER_PREFIX.length()), String.valueOf(v));
+            }
+        });
+
+        this.headers      = Collections.unmodifiableMap(headers);
+        this.authnHeaders = Collections.unmodifiableMap(authnHeaders);
     }
 
     public String getPdpUrl() throws RangerAuthzException {
@@ -115,13 +128,17 @@ public class RangerRemoteAuthzConfig {
     }
 
     public RangerRemoteAuthType getAuthType() throws RangerAuthzException {
-        String value = StringUtils.defaultIfBlank(properties.getProperty(PROP_REMOTE_AUTH_TYPE), RangerRemoteAuthType.HEADER.name());
+        String value = StringUtils.defaultIfBlank(properties.getProperty(PROP_REMOTE_AUTH_TYPE), RangerRemoteAuthType.NONE.name());
 
         try {
             return RangerRemoteAuthType.valueOf(value.trim().toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new RangerAuthzException(UNSUPPORTED_AUTH_TYPE, e, value);
         }
+    }
+
+    public Map<String, String> getAuthnHeaders() {
+        return authnHeaders;
     }
 
     public String getJwtSource() throws RangerAuthzException {

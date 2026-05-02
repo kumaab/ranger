@@ -62,6 +62,7 @@ import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.util.Map;
 
+import static org.apache.ranger.authz.remote.RangerRemoteAuthType.HEADER;
 import static org.apache.ranger.authz.remote.RangerRemoteAuthType.JWT;
 import static org.apache.ranger.authz.remote.RangerRemoteAuthType.KERBEROS;
 import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.FAILED_TO_DESERIALIZE_RESPONSE;

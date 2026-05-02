@@ -77,17 +77,19 @@ class RangerPdpClient implements Closeable {
     private static final String PATH_AUTHORIZE_MULTI      = "/authorizeMulti";
     private static final String PATH_RESOURCE_PERMISSIONS = "/permissions";
 
-    private final RangerRemoteAuthzConfig config;
-    private final CloseableHttpClient     httpClient;
-    private final RangerRemoteJwtProvider jwtProvider;
+    private final RangerRemoteAuthzConfig     config;
+    private final CloseableHttpClient         httpClient;
+    private final Map<String, String>         authnHeaders;
+    private final RangerRemoteJwtProvider     jwtProvider;
     private final RangerRemoteKerberosContext kerberosContext;
-    private final String                  apiEndpointAuthorize;
-    private final String                  apiEndpointAuthorizeMulti;
-    private final String                  apiEndpointResourcePermissions;
+    private final String                      apiEndpointAuthorize;
+    private final String                      apiEndpointAuthorizeMulti;
+    private final String                      apiEndpointResourcePermissions;
 
     RangerPdpClient(RangerRemoteAuthzConfig config) throws RangerAuthzException {
         this.config                         = config;
         RangerRemoteAuthType authType       = config.getAuthType();
+        this.authnHeaders                   = authType == HEADER ? config.getAuthnHeaders() : null;
         this.jwtProvider                    = authType == JWT ? RangerRemoteJwtProvider.create(config) : null;
         this.kerberosContext                = authType == KERBEROS ? RangerRemoteKerberosContext.create(config) : null;
         this.apiEndpointAuthorize           = config.getEndpointUrl(PATH_AUTHORIZE);
@@ -128,7 +130,9 @@ class RangerPdpClient implements Closeable {
                 request.setHeader(header.getKey(), header.getValue());
             }
 
-            if (jwtProvider != null) {
+            if (authnHeaders != null) {
+                authnHeaders.forEach((key, value) -> request.setHeader(key, value));
+            } else if (jwtProvider != null) {
                 jwtProvider.setAuthnHeader(request);
             }
 

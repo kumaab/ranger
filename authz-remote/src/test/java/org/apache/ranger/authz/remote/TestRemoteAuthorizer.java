@@ -239,7 +239,7 @@ public class TestRemoteAuthorizer {
     @Test
     public void testUnsupportedAuthType() {
         Properties props = createNoAuthProperties("http://localhost:6500");
-        props.setProperty(RangerRemoteAuthzConfig.PROP_REMOTE_AUTH_TYPE, "none");
+        props.setProperty(RangerRemoteAuthzConfig.PROP_REMOTE_AUTH_TYPE, "test");
 
         RangerRemoteAuthorizer authorizer = new RangerRemoteAuthorizer(props);
 
@@ -257,7 +257,7 @@ public class TestRemoteAuthorizer {
         props.setProperty(RangerRemoteAuthzConfig.PROP_REMOTE_SSL_TRUSTSTORE_FILE, trustStore.toAbsolutePath().toString());
         props.setProperty(RangerRemoteAuthzConfig.PROP_REMOTE_SSL_TRUSTSTORE_PASSWORD, "changeit");
         props.setProperty(RangerRemoteAuthzConfig.PROP_REMOTE_SSL_TRUSTSTORE_TYPE, "PKCS12");
-        props.setProperty(RangerRemoteAuthzConfig.PROP_REMOTE_HEADER_PREFIX + "X-Request-Source", "integration-test");
+        props.setProperty(RangerRemoteAuthzConfig.PROP_REMOTE_AUTH_HEADER_PREFIX + "X-Request-Source", "integration-test");
 
         return props;
     }

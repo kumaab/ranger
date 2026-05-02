@@ -79,7 +79,6 @@ class RangerPdpClient implements Closeable {
 
     private final RangerRemoteAuthzConfig config;
     private final CloseableHttpClient     httpClient;
-    private final RangerRemoteAuthType    authType;
     private final RangerRemoteJwtProvider jwtProvider;
     private final RangerRemoteKerberosContext kerberosContext;
     private final String                  apiEndpointAuthorize;
@@ -88,7 +87,7 @@ class RangerPdpClient implements Closeable {
 
     RangerPdpClient(RangerRemoteAuthzConfig config) throws RangerAuthzException {
         this.config                         = config;
-        this.authType                       = config.getAuthType();
+        RangerRemoteAuthType authType       = config.getAuthType();
         this.jwtProvider                    = authType == JWT ? RangerRemoteJwtProvider.create(config) : null;
         this.kerberosContext                = authType == KERBEROS ? RangerRemoteKerberosContext.create(config) : null;
         this.apiEndpointAuthorize           = config.getEndpointUrl(PATH_AUTHORIZE);
@@ -129,13 +128,13 @@ class RangerPdpClient implements Closeable {
                 request.setHeader(header.getKey(), header.getValue());
             }
 
-            if (authType == JWT) {
+            if (jwtProvider != null) {
                 jwtProvider.setAuthnHeader(request);
             }
 
             String responseBody;
 
-            if (authType == KERBEROS) {
+            if (kerberosContext != null) {
                 responseBody = kerberosContext.doAs((PrivilegedExceptionAction<String>) () -> execute(request, endpoint));
             } else {
                 responseBody = execute(request, endpoint);

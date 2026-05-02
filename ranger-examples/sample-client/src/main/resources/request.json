@@ -2,9 +2,7 @@
   "requestId": "hive-access-request",
   "user": {
     "name": "hive",
-    "groups": [
-      "public"
-    ]
+    "groups": []
   },
   "access": {
     "resource": {

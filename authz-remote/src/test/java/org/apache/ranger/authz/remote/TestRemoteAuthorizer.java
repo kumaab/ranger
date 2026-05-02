@@ -245,7 +245,7 @@ public class TestRemoteAuthorizer {
 
         RangerAuthzException exception = assertThrows(RangerAuthzException.class, authorizer::init);
 
-        assertTrue(exception.getMessage().toLowerCase().contains("unsupported auth type"));
+        assertTrue(exception.getMessage().toLowerCase().contains("unsupported authentication type"));
     }
 
     /** TLS + {@link RangerRemoteAuthType#HEADER}: static headers only (no JWT bearer, no SPNEGO). */

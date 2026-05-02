@@ -30,8 +30,7 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 
 import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.INVALID_PROPERTY_VALUE;
-import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.MISSING_AUTH_CONFIG;
-import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.MISSING_PDP_URL;
+import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.MISSING_MANDATORY_CONFIGURATION;
 import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.UNSUPPORTED_AUTH_TYPE;
 
 public class RangerRemoteAuthzConfig {
@@ -91,7 +90,7 @@ public class RangerRemoteAuthzConfig {
         String value = normalizeBaseUrl(properties.getProperty(PROP_REMOTE_URL));
 
         if (StringUtils.isBlank(value)) {
-            throw new RangerAuthzException(MISSING_PDP_URL, PROP_REMOTE_URL);
+            throw new RangerAuthzException(MISSING_MANDATORY_CONFIGURATION, PROP_REMOTE_URL);
         }
 
         return value;
@@ -126,10 +125,10 @@ public class RangerRemoteAuthzConfig {
     }
 
     public String getJwtSource() throws RangerAuthzException {
-        String ret = trimToNull(properties.getProperty(PROP_REMOTE_AUTH_JWT_SOURCE));
+        String ret = StringUtils.trimToNull(properties.getProperty(PROP_REMOTE_AUTH_JWT_SOURCE));
 
         if (ret == null) {
-            throw new RangerAuthzException(MISSING_AUTH_CONFIG, PROP_REMOTE_AUTH_JWT_SOURCE);
+            throw new RangerAuthzException(MISSING_MANDATORY_CONFIGURATION, PROP_REMOTE_AUTH_JWT_SOURCE);
         }
 
         return ret;
@@ -144,20 +143,20 @@ public class RangerRemoteAuthzConfig {
     }
 
     public String getKerberosPrincipal() throws RangerAuthzException {
-        String ret = trimToNull(properties.getProperty(PROP_REMOTE_AUTH_KERBEROS_PRINCIPAL));
+        String ret = StringUtils.trimToNull(properties.getProperty(PROP_REMOTE_AUTH_KERBEROS_PRINCIPAL));
 
         if (ret == null) {
-            throw new RangerAuthzException(MISSING_AUTH_CONFIG, PROP_REMOTE_AUTH_KERBEROS_PRINCIPAL);
+            throw new RangerAuthzException(MISSING_MANDATORY_CONFIGURATION, PROP_REMOTE_AUTH_KERBEROS_PRINCIPAL);
         }
 
         return ret;
     }
 
     public String getKerberosKeytab() throws RangerAuthzException {
-        String ret = trimToNull(properties.getProperty(PROP_REMOTE_AUTH_KERBEROS_KEYTAB));
+        String ret = StringUtils.trimToNull(properties.getProperty(PROP_REMOTE_AUTH_KERBEROS_KEYTAB));
 
         if (ret == null) {
-            throw new RangerAuthzException(MISSING_AUTH_CONFIG, PROP_REMOTE_AUTH_KERBEROS_KEYTAB);
+            throw new RangerAuthzException(MISSING_MANDATORY_CONFIGURATION, PROP_REMOTE_AUTH_KERBEROS_KEYTAB);
         }
 
         return ret;
@@ -204,7 +203,7 @@ public class RangerRemoteAuthzConfig {
     }
 
     public String getSslKeyStoreFile() {
-        return trimToNull(properties.getProperty(PROP_REMOTE_SSL_KEYSTORE_FILE));
+        return StringUtils.trimToNull(properties.getProperty(PROP_REMOTE_SSL_KEYSTORE_FILE));
     }
 
     public String getSslKeyStorePassword() {
@@ -216,7 +215,7 @@ public class RangerRemoteAuthzConfig {
     }
 
     public String getSslTrustStoreFile() {
-        return trimToNull(properties.getProperty(PROP_REMOTE_SSL_TRUSTSTORE_FILE));
+        return StringUtils.trimToNull(properties.getProperty(PROP_REMOTE_SSL_TRUSTSTORE_FILE));
     }
 
     public String getSslTrustStorePassword() {
@@ -274,10 +273,10 @@ public class RangerRemoteAuthzConfig {
     }
 
     private String getRequiredProperty(String propertyName) throws RangerAuthzException {
-        String ret = trimToNull(properties.getProperty(propertyName));
+        String ret = StringUtils.trimToNull(properties.getProperty(propertyName));
 
         if (ret == null) {
-            throw new RangerAuthzException(MISSING_AUTH_CONFIG, propertyName);
+            throw new RangerAuthzException(MISSING_MANDATORY_CONFIGURATION, propertyName);
         }
 
         return ret;
@@ -291,9 +290,5 @@ public class RangerRemoteAuthzConfig {
         }
 
         return ret;
-    }
-
-    private static String trimToNull(String value) {
-        return StringUtils.trimToNull(value);
     }
 }

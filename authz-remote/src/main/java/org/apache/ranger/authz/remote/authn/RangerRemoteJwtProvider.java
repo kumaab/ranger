@@ -32,7 +32,7 @@ import java.nio.file.Files;
 
 import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.FAILED_TO_READ_JWT_FROM_FILE;
 import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.INVALID_PROPERTY_VALUE;
-import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.MISSING_AUTH_CONFIG;
+import static org.apache.ranger.authz.remote.RangerRemoteAuthzErrorCode.MISSING_MANDATORY_CONFIGURATION;
 
 public class RangerRemoteJwtProvider {
     private static final String HEADER_AUTHORIZATION = "Authorization";
@@ -84,7 +84,7 @@ public class RangerRemoteJwtProvider {
         }
 
         if (StringUtils.isBlank(jwt)) {
-            throw new RangerAuthzException(MISSING_AUTH_CONFIG, getSourcePropertyName());
+            throw new RangerAuthzException(MISSING_MANDATORY_CONFIGURATION, getSourcePropertyName());
         }
 
         return jwt.trim();

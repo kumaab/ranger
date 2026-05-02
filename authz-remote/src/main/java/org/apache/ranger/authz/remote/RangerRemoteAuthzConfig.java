@@ -24,6 +24,7 @@ import org.apache.ranger.authz.api.RangerAuthzException;
 
 import java.util.AbstractMap;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -82,16 +83,14 @@ public class RangerRemoteAuthzConfig {
         Map<String, String> authnHeaders = new HashMap<>();
 
         this.properties.forEach((k, v) -> {
-            if (!(k instanceof String)) {
-                continue;
-            }
-
-            String key = (String) k;
-
-            if (key.startsWith(PROP_REMOTE_HEADER_PREFIX)) {
-                headers.put(key.substring(PROP_REMOTE_HEADER_PREFIX.length()), String.valueOf(v));
-            } else if (key.startsWith(PROP_REMOTE_AUTH_HEADER_PREFIX)) {
-                authnHeaders.put(key.substring(PROP_REMOTE_AUTH_HEADER_PREFIX.length()), String.valueOf(v));
+            if (k instanceof String) {
+                String key = (String) k;
+    
+                if (key.startsWith(PROP_REMOTE_HEADER_PREFIX)) {
+                    headers.put(key.substring(PROP_REMOTE_HEADER_PREFIX.length()), String.valueOf(v));
+                } else if (key.startsWith(PROP_REMOTE_AUTH_HEADER_PREFIX)) {
+                    authnHeaders.put(key.substring(PROP_REMOTE_AUTH_HEADER_PREFIX.length()), String.valueOf(v));
+                }
             }
         });
 

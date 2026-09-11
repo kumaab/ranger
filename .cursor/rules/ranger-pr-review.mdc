@@ -1,0 +1,556 @@
+---
+description: How to write an Apache Ranger PR that passes committer review the first time
+globs: **/*
+alwaysApply: true
+---
+
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+# Apache Ranger — PR authoring rules
+
+Goal: land a PR in `apache/ranger` with **zero avoidable review rounds**.
+
+Two independent gates decide whether a PR merges:
+
+1. **The build.** Checkstyle, sortpom and the enforcer plugin fail the build on violation. A red
+   build is not reviewed.
+2. **Committer review.** Ranger's most frequent reviewer is **Madhan Neethiraj (`mneethiraj`)**,
+   who reviews the large majority of PRs. His feedback is highly consistent and almost entirely
+   predictable — the recurring themes are captured in §4–§6 below, with verbatim review quotes as
+   evidence.
+
+Gate 1 is mechanical: run the build. Gate 2 is the one that costs weeks. Read §4 before writing
+code, not after.
+
+---
+
+## 1. Pre-flight checklist
+
+Run through this before opening (or updating) a PR:
+
+- [ ] An ASF JIRA exists: <https://issues.apache.org/jira/browse/RANGER>
+- [ ] PR title starts with the JIRA id: `RANGER-XXXX: <short description>`
+- [ ] **The commit message** also starts with the same JIRA id (reviewers check this separately
+      from the PR title)
+- [ ] PR body uses `.github/pull_request_template.md` — both sections filled in
+- [ ] `mvn -T 8 clean verify` passes locally (this is exactly what CI runs)
+- [ ] No binary artifacts, no `.tar.gz`, no jars, no IDE files in the diff
+- [ ] Diff contains **only** what the JIRA describes — no drive-by reformatting, no unrelated renames
+- [ ] Every new/changed config property follows the naming convention in §5.2
+- [ ] If a DB schema changed: **all** DB flavors updated (§5.5)
+- [ ] If a public/plugin-facing API changed: backward compatibility considered and stated (§4.1)
+
+---
+
+## 2. The build is the first reviewer
+
+CI (`.github/workflows/ci.yml`) runs on JDK 17:
+
+```bash
+mvn -T 8 clean verify --no-transfer-progress -B -V
+```
+
+Run the same thing locally. For a fast loop on one module:
+
+```bash
+mvn -pl <module> -am -DskipTests verify
+```
+
+`verify` — not `compile`, not `install -DskipTests` — is the phase that runs Checkstyle. A build
+that only "compiles" proves nothing.
+
+### What fails the build
+
+| Plugin | Phase | Fails on |
+|---|---|---|
+| `maven-checkstyle-plugin` (checkstyle 8.29) | `verify` | any violation of `dev-support/checkstyle.xml` — **including test sources** (`includeTestSourceDirectory=true`, `checkstyle.failOnViolation=true`) |
+| `sortpom-maven-plugin` | `validate` | any `pom.xml` whose contents are not in sorted order (`verifyFail=Stop`, `verifyFailOn=Strict`) |
+| `maven-enforcer-plugin` | `validate` | JDK < 17, Maven < 3.6.3, or a banned dependency |
+
+If you touch any `pom.xml`, run `mvn sortpom:sort` before committing — hand-editing a pom almost
+always breaks the sort check.
+
+### Banned dependencies (enforcer, `searchTransitive=true`)
+
+- `junit:junit` / `junit:junit-dep` at `compile`/`runtime`/`provided` — the project is on **JUnit 5**
+  (`org.junit.jupiter`). Never add a JUnit 4 import to a new test.
+- `com.sun.jersey:*` and `com.sun.jersey.contribs:*` — the project is on **Jersey 2.x**
+  (`org.glassfish.jersey.*`). Only `test`-scoped Jersey 1 is tolerated, for Hadoop mini-cluster
+  test infrastructure.
+
+`spotbugs.failOnViolation` is `false`, so SpotBugs warnings do not break the build — but they are
+still visible to reviewers.
+
+---
+
+## 3. Checkstyle rules, stated plainly
+
+The authoritative files are `dev-support/checkstyle.xml` and
+`dev-support/checkstyle-suppressions.xml`. Read them before a large refactor. The rules that bite
+most often:
+
+### Whitespace and file hygiene
+
+- **No tabs**, ever. 4-space indent. Continuation/line-wrap indent is **8** spaces
+  (`lineWrappingIndentation=8`, `throwsIndent=8`).
+- **LF** line endings; a carriage return anywhere is a violation.
+- Exactly one newline at end of file; no blank line immediately before EOF.
+- No trailing whitespace; no whitespace before a closing `)`.
+- No **two or more consecutive blank lines**.
+- No blank line immediately after `{`, and none immediately before `}`.
+- Lambda: opening brace on the same line as `->`; no whitespace inside an empty lambda body.
+- `new Type[] {` — exactly one space before the array initializer brace, never zero and never two.
+
+### Imports
+
+`ImportOrder` is configured as `groups="*,javax,java"`, `separated=true`, `option="bottom"`,
+alphabetically sorted. So every Java file looks like:
+
+```java
+package org.apache.ranger.plugin.policyengine;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.ranger.plugin.model.RangerPolicy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+
+import java.util.List;
+import java.util.Map;
+
+import static org.apache.ranger.plugin.policyengine.PolicyEvaluatorForTag.MATCH_TYPE_COMPARATOR;
+```
+
+- Everything else first (alphabetical), then `javax`, then `java`, then **static imports last**,
+  blank line between each group.
+- **No star imports.** No unused imports. No redundant imports.
+
+### Static-import rules (the surprising ones)
+
+Must **not** be statically imported:
+
+- `X.of`, `X.copyOf`, `X.valueOf`, `X.builder`
+- anything `.format` other than `java.lang.String.format`
+- any member of `java.util.Optional`
+
+Must **only** be used **via** static import (i.e. write `requireNonNull(x)`, never
+`Objects.requireNonNull(x)`):
+
+- `Objects.requireNonNull`
+- `Math.toIntExact`
+- `ImmutableMap.toImmutableMap`, `ImmutableList.toImmutableList`, `ImmutableSet.toImmutableSet`
+- `org.testng.Assert`
+- `com.google.common.base.MoreObjects`, `Preconditions`, `Verify`
+
+### Structure
+
+- `NeedBraces` — every `if`/`for`/`while`/`do` gets braces, even one-liners.
+- `LeftCurly` at end of line; closing brace of an `else` block alone on its line.
+- `OneStatementPerLine`, `MultipleVariableDeclarations` — one declaration, one statement per line.
+- `EmptyLineSeparator` — blank line between methods, constructors, class defs and import blocks
+  (consecutive fields may be packed).
+- `ExplicitInitialization` — do **not** write `private String name = null;` or `int count = 0;`.
+- `StringLiteralEquality` — never compare strings with `==`.
+- `EqualsHashCode` — override both or neither.
+- `InnerAssignment` — no assignment inside an expression.
+- `HideUtilityClassConstructor` — a class with only static members needs a private constructor.
+- `OneTopLevelClass`, `PackageDeclaration`, `ArrayTypeStyle` (`String[] x`, not `String x[]`).
+- `IllegalToken: LITERAL_ASSERT` — **`assert` is banned** in all sources, tests included. Use a
+  JUnit 5 assertion.
+- `DefaultComesLast`, `ModifierOrder`, `UpperEll` (`1L`, not `1l`), `RedundantModifier`
+  (no `public` on interface methods).
+
+### Naming
+
+`MemberName`, `LocalVariableName`, `LocalFinalVariableName`, `ParameterName`, `StaticVariableName`
+all require `camelCase` (no underscores, no leading `m`/`s` prefixes). `TypeName` requires
+`PascalCase`. Package names are lowercase-only.
+
+Do **not** add new entries to `checkstyle-suppressions.xml`. The existing entries are legacy
+(mostly `TypeName` for `PatchXxx_J100nn` DB-patch classes); new code is expected to comply.
+
+---
+
+## 4. What `mneethiraj` actually asks for
+
+These are the recurring review themes, each backed by a verbatim comment from a real PR. If your
+patch trips one of these, expect a review round.
+
+### 4.1 Backward compatibility is the first question asked
+
+Any change to a public model, a service-def, an audit field, a REST payload or a plugin-facing API
+gets checked against existing deployments.
+
+> "wouldn't swapping setAccessType() and setAction() implementation result in backward
+> compatibility issue in audit logs being generated by all plugins that exist currently?" — PR #243
+
+> "this fix will not address Ranger deployments that already have earlier Trino service-def. In
+> addition to this fix in Trino service-def, I suggest UI updates to not duplicate configurations
+> included in the service-def." — PR #1170
+
+> "Given many existing plugins require JDK8 support, it is critical to be able to build with
+> earlier version JDK as well." — PR #291
+
+**Rule:** when you change a service-def, a stored JSON shape, or a DB row, say in the PR
+description what happens to *already-upgraded* installs, and add the DB patch / upgrade path — or
+explain why none is needed (e.g. *"this service-def is still in DRAFT mode"*, PR #888).
+
+### 4.2 Reuse what exists before adding something new
+
+Adding a parallel API, a parallel property, or a parallel code path is the single most common
+reason a PR gets sent back.
+
+> "GdsREST already has following API to bulk-delete shared resources... Perhaps adding an API to
+> bulk-update is good enough? i.e. is an API to update or delete necessary?" — PR #932
+
+> "Consider using existing property `fasterxml.jackson.version` (line # 215) instead of introducing
+> new one `com.fasterxml.jackson.version`." — PR #252
+
+> "How is `ACCESS_TYPE_SERVICE_NOTIFICATION_POST` different from `ACCESS_TYPE_POST_NOTIFICATION`?
+> If they are not different, I suggest removing `ACCESS_TYPE_SERVICE_NOTIFICATION_POST`." — PR #1219
+
+> "with this approach (of having `isAccessAllowedSync()` methods), every plugin must be updated to
+> call `*Sync()` method version instead of existing calls to `isAccessAllowed()`... I suggest
+> avoiding updates to large number of modules, and go with the approach in this PR." — PR #595
+
+**Rule:** before adding a constant, property, REST endpoint or method overload, grep for an
+existing one. A change that forces every plugin to be updated will be rejected in favour of one
+that doesn't.
+
+### 4.3 Don't add API surface speculatively
+
+> "Is it necessary to expose this method via REST, given `id` is an internal field (i.e, generated
+> by Ranger/DB)?" ... "I suggest to introduce this API when we add UI for this." — PR #683
+
+> "Consider marking `processMessageBatch()` as `private` as it is called only from this class."
+> — PR #886
+
+**Rule:** narrowest visibility that works. No REST API without a caller. No `public` method that
+only this class calls.
+
+### 4.4 Names must state intent
+
+Renames are requested constantly, and they are not optional nits.
+
+> "I suggest renaming method `checkAccountNotDisabled()` to `ensureUserIsActive()`. Also, update
+> the messages to replace 'disabled' with 'not active'." — PR #1174
+
+> "`keysToRemove` ==> `permissionsToRemove`" — PR #988
+
+> "`downloadUserGroupsEnabled` => `includeUserGroupMappings`" — PR #1185
+
+> "Consider renaming SERVICE_NOT_FOUND => NOT_FOUND." — PR #110
+
+> "The API is called `UPDATE_SHARED_RESOURCES`, but the flag is named a `forceDelete`. It will help
+> to add a note on the purpose of this API." — PR #932
+
+> "userLoginId paramter name is misleading. The value sent is the name provided in the view object
+> ... This name should not be trusted." — PR #788
+
+**Rule:** the identifier must describe *what it is*, not *how it got here* or *what triggered it*;
+and the name of a flag must match the name of the API it belongs to.
+
+### 4.5 Do the fix once, at the right layer
+
+> "how about adding `normalize()` method in `RangerServiceDef` which will perform the operation in
+> thread-safe way. This will isolate the details within `RangerServiceDef`." — PR #1112
+
+> "instead of taking this fix and then subsequent patch to move normalization to RangerServiceDef,
+> why not skip the current fix and directly go with the final/desired fix?" — PR #1112
+
+**Rule:** put the logic inside the class that owns the data. Don't land a stop-gap with a promise
+to refactor later — go straight to the intended design.
+
+### 4.6 Keep the diff minimal
+
+> "thank you for the PR. I suggest to keep the fix simpler - by keeping only changes in
+> `dev-support/ranger-docker/scripts/admin/create-ranger-services.py`." — PR #1212
+
+> "the comments have become too noisy, hence my suggestion to keeps the code simple for humans to
+> read. I would suggest only the following 2 changes..." — PR #1143
+
+> "I suggest replacing this file (`log_config.py`) with addition of following line at the begining
+> of `create_ranger_services.py`: `logging.basicConfig(...)`" — PR #920
+
+**Rule:** a new file, a new abstraction or a new helper must earn its place. Solve it inline if
+inline is readable.
+
+### 4.7 Remove redundant work and redundant checks
+
+> "`hivePlugin` will not null here given the caller already references it at line 2847. I suggest
+> removing the `if` at 2884." — PR #988
+
+> "Initialize the header name in `init()` method, instead of reading from config on every call."
+> — PR #873
+
+> "Given this script is executed in the container running ranger admin service, it seem call to
+> `socket.gethostname()` is not necessary; simply using `localhost` would work, right?" — PR #922
+
+**Rule:** read configuration once at init. Don't null-check a reference the caller already
+dereferenced. Don't recompute per-request what is constant per-process.
+
+### 4.8 Correctness of authorization logic gets read line by line
+
+> "when scope is null, shouldn't the return be true if matchType is SELF or
+> SELF_AND_ALL_DESCENDANTS?" — PR #410
+
+> "case blocks for `SELF_OR_DESCENDANTS` and `SELF_AND_ALL_DESCENDANTS` are the same, which doesn't
+> look correct. Can you review?" — PR #410
+
+> "if multiple policies grant this permission to the principal, removing the permission based on
+> just one policy (line 2904) will result in incorrect ACLs." — PR #988
+
+> "Shouldn't admin users be allowed as well? `boolean ret = bizUtil.isAdmin() ||
+> bizUtil.isAuditAdmin();`" — PR #1214
+
+> "this could result in usernames having valid non-English characters (accent characters, CJK
+> character sets) to be skipped with default configuration. This can break environments already
+> have such user names and group names." — PR #903
+
+**Rule:** enumerate every enum/`matchType`/null case explicitly, and check that the
+admin/super-user branch is consistent with the equivalent code elsewhere in the module. Never
+restrict identifiers to ASCII by default.
+
+### 4.9 Packaging and dependencies are part of the change
+
+Removing a library from code is only half the job.
+
+> "With this patch, commons-lang library is no more needed, hence can be removed from packaging as
+> well - in files under `distro/src/main/assembly`. Can you please review and update?" — PR #724
+
+> "can you please verify that the final packaging does not include codehaus jackson library?"
+> — PR #252
+
+> "with inclusion of audit server destination in plugins packaging, I suggest removing other
+> destinations from packaging (hdfs, solr). This will eliminate many dependent libraries from
+> plugins" — PR #969
+
+**Rule:** if you drop a dependency, drop it from `distro/src/main/assembly/*.xml` too, and verify
+the built tarball. If you add one, justify it.
+
+---
+
+## 5. Ranger-specific conventions
+
+### 5.1 Java code style (what the codebase actually looks like)
+
+Reference file for a new model class: `authz-api/src/main/java/org/apache/ranger/authz/model/RangerAuthzRequest.java`.
+Reference for engine-style code: `agents-common/src/main/java/org/apache/ranger/plugin/policyengine/RangerPolicyEngineImpl.java`.
+
+**Vertical alignment.** Consecutive field declarations, and consecutive assignments, are aligned.
+This is not decoration — it is the house style (`ALIGN_GROUP_FIELD_DECLARATIONS`,
+`ALIGN_CONSECUTIVE_ASSIGNMENTS` in `dev-support/RangerCodeScheme-IntelliJ.xml`) and unaligned code
+reads as foreign:
+
+```java
+private final PolicyEngine                 policyEngine;
+private final RangerAccessRequestProcessor requestProcessor;
+private final ServiceConfig                serviceConfig;
+
+public RangerPolicyEngineImpl(...) {
+    policyEngine     = new PolicyEngine(servicePolicies, pluginContext, roles, isUseReadWriteLock);
+    serviceConfig    = new ServiceConfig(servicePolicies.getServiceConfig());
+    requestProcessor = new RangerDefaultRequestProcessor(policyEngine);
+}
+```
+
+Align only within a consecutive block; do not pad unrelated lines.
+
+**Single `ret`, single return.** The dominant idiom in production code is one result variable named
+`ret`, assigned in branches and returned once at the end (~560 `return ret;` sites in
+`agents-common` alone). Prefer it for new and edited methods:
+
+```java
+public static RangerPolicyEngine getPolicyEngine(final RangerPolicyEngineImpl other, final ServicePolicies servicePolicies) {
+    RangerPolicyEngine ret = null;
+
+    if (other != null && servicePolicies != null) {
+        PolicyEngine policyEngine = other.policyEngine.cloneWithDelta(servicePolicies);
+
+        if (policyEngine != null) {
+            ret = (policyEngine == other.policyEngine) ? other : new RangerPolicyEngineImpl(policyEngine, other);
+        }
+    }
+
+    return ret;
+}
+```
+
+Short guard clauses do exist in the codebase (notably in `equals()`), so this is a strong
+preference rather than an absolute ban — but a method that returns from five places will be asked
+to use `ret`.
+
+**Braces.** `} else {`, `} catch (...) {`, `} finally {` all stay on one line with the closing
+brace.
+
+**Logging.** slf4j with `{}` placeholders — never string concatenation, and no
+`if (LOG.isDebugEnabled())` wrapper around a parameterized call:
+
+```java
+LOG.debug("==> RangerAdminRESTClient.getRolesIfUpdated({}, {})", lastKnownRoleVersion, lastActivationTimeInMillis);
+...
+LOG.debug("<== RangerAdminRESTClient.getRolesIfUpdated({}, {}): {}", lastKnownRoleVersion, lastActivationTimeInMillis, ret);
+```
+
+The `==>` / `<==` method entry/exit convention is used throughout (400+ sites in `agents-common`);
+follow it in the class you are editing. Reviewers also ask for an `info` log at the point a change
+takes effect:
+
+> "Add a info level log here: `LOG.info(\"Deleted {} pluginInfo records, for criteria={}\", ...)`" — PR #683
+
+**Model classes.** Jackson annotations, aligned fields, telescoping constructors delegating via
+`this(...)`, `Objects.hash` / `Objects.equals`, `toString()` built by concatenation or a
+`StringBuilder toString(StringBuilder sb)` pair — see `RangerAuthzRequest`.
+
+**Blank lines** are used deliberately: one blank line after a variable-declaration block, around
+`if`/`try` blocks, and before `return`. Dense, unbroken method bodies read as foreign here too.
+
+### 5.2 Configuration property naming
+
+Plugin-side properties follow `ranger.plugin.<serviceType>.<area>.<setting>`; admin-side follow
+`ranger.admin.<area>.<setting>`. The setting name states the behaviour, and boolean settings read
+as predicates.
+
+> "to be consistent with rest of policy related plugin configurations, I suggest using property
+> prefix `ranger.plugin.<serviceType>.policy.` I suggest renaming `cache.refresh.mode` to
+> `refresh.synchronous`, with default value as `false` — `ranger.plugin.hive.policy.refresh.synchronous`.
+> `isSynchronousPolicyCacheUpdateEnabled()` => `isSynchronousPolicyRefresh()`" — PR #595
+
+> "This configuration is used in the plugin side (and not in Ranger admin server). Hence, I suggest
+> using existing convention in naming configurations - `\"ranger.plugin.\" + serviceType + \".policy.refresh.synchronous\"`." — PR #595
+
+> "I suggest renaming the property to `ranger.admin.userstore.include.usergroups.mappings`." — PR #1185
+
+**Rule:** name the property by *where it is read* (plugin vs admin), keep the accessor name and the
+property name in sync, and make the default `false` for a new opt-in flag.
+
+### 5.3 REST API conventions
+
+- `{id}` vs `{name}` are separate endpoints, not overloads of one path:
+  > "to be consistent with use of `{id}` and `{name}` in APIs, I would suggest to retain `{id}` in
+  > this API and introduce another API for using `{name}` - like:
+  > `/api/roles/name/{name}/addUserAndGroups`." — PR #135
+- Prefer query params over a request body for a list of ids on `DELETE`:
+  > "would marking `resourceIds` parameter as `@QueryParam(\"id\")` help to receive the IDs as query
+  > params instead of body?" — PR #932
+- Guard every endpoint with `@PreAuthorize("@rangerPreAuthSecurityHandler.isAPIAccessible(...)")`
+  and make the admin/super-user check consistent with sibling endpoints (§4.8).
+- Never derive an identity used for authorization from a caller-supplied field in the view object
+  (§4.4, PR #788).
+
+### 5.4 Tests
+
+- **JUnit 5 only** (`org.junit.jupiter`). JUnit 4 is banned by the enforcer.
+- `assert` is banned by Checkstyle — use `Assertions.assertEquals` etc.
+- Test sources are checkstyle-checked; the same formatting rules apply.
+- Python: tests live in `intg/src/test/python/test_ranger_client.py`, one `TestCase` per client area.
+
+### 5.5 Database changes
+
+> "Database scripts for other flavors (example: MySQL, Oracle) should be updated as well." — PR #1120
+
+A schema change means **all** of `security-admin/db/{mysql,postgres,oracle,sqlanywhere,sqlserver}`
+plus the corresponding `PatchXxx_J100nn` Java patch class. Updating only Postgres is an automatic
+review round. (Note `sqlserver` is being retired — check current master before adding to it:
+*"`sqlserver` is no more supported."* — PR #1057.)
+
+Also ask whether a DB patch is needed at all:
+
+> "Are changes in `PatchForOzoneServiceDefPolicyConditionUpdate_J10065.java` necessary, given
+> `RangerServiceDefService.java` handles service-def updates based on feature-flag ... If no
+> additional cases are handled here, I suggest reverting" — PR #1073
+
+### 5.6 Docker / dev-support
+
+- Container-specific scripts and configs go in container-specific directories (RANGER-4898).
+- Prefer shipping one config file per flavour and copying the right one at container init over
+  programmatically rewriting XML at runtime (PR #920).
+- Don't download large artifacts on every build (PR #302).
+- Don't start services a compose file doesn't need (PR #1057).
+
+---
+
+## 6. Anti-patterns — reject these in your own diff
+
+| # | Anti-pattern | Why it gets flagged |
+|---|---|---|
+| 1 | Binary files, tarballs, jars in the PR | PR #291 — "Can you please remove this file and update the PR?" |
+| 2 | Unrelated reformatting mixed into a functional change | Hides the real diff; reviewers ask for it to be split |
+| 3 | New constant/property/API that duplicates an existing one | §4.2 |
+| 4 | `*Sync()` / `*V2()` / `*Ex()` parallel method variants | §4.2, PR #595 |
+| 5 | A REST endpoint with no caller or UI | §4.3, PR #683 |
+| 6 | `public` where `private` would do | PR #886 |
+| 7 | Reading config inside a per-request method | PR #873 |
+| 8 | Null-checking a reference the caller already dereferenced | PR #988 |
+| 9 | Names that describe the trigger rather than the value (`downloadUserGroupsEnabled`) | §4.4 |
+| 10 | Flag name that contradicts its API name (`UPDATE_...` + `forceDelete`) | PR #932 |
+| 11 | Service-def / model change with no upgrade path for existing installs | §4.1 |
+| 12 | Schema change in one DB flavor only | §5.5 |
+| 13 | Dropping a library from code but leaving it in `distro/src/main/assembly` | §4.9 |
+| 14 | Stop-gap fix with "will refactor in a follow-up JIRA" | §4.5, PR #1112 |
+| 15 | New helper file/class for something that is one line inline | §4.6, PR #920 |
+| 16 | Verbose commented-out alternatives left in scripts | PR #1143 — "the comments have become too noisy" |
+| 17 | String concatenation in a log call, or `isDebugEnabled()` around a parameterized call | §5.1 |
+| 18 | `assert` in tests, or a JUnit 4 import | §3, §5.4 |
+| 19 | Star imports, unsorted imports, static import of `of`/`valueOf`/`builder` | §3 |
+| 20 | `private String x = null;` / `private int n = 0;` | `ExplicitInitialization` |
+| 21 | Hand-edited `pom.xml` (breaks sortpom) | §2 |
+| 22 | Tabs, CRLF, trailing whitespace, double blank lines | §3 |
+| 23 | Restricting usernames/groups to ASCII | PR #903 |
+| 24 | Trusting a caller-supplied name for an authorization decision | PR #788 |
+| 25 | Wrong/missing JIRA id in the **commit message** (even when the PR title is right) | Flagged on PR #1185 |
+
+---
+
+## 7. Responding to review
+
+- Address **every** comment — either with a code change or with a reply explaining why not.
+  Silent force-pushes over open threads stall a PR.
+- When a reviewer proposes a concrete alternative (often as a code block, sometimes as an attached
+  `.patch`), take it or explain precisely why it doesn't work. The suggestions are usually the
+  final shape the committer intends to merge.
+- Push fixes as new commits during review; don't rewrite history mid-review.
+- "This is a nit" is not a category that exists here — rename requests are expected to be applied.
+- Re-run `mvn -T 8 clean verify` after every review round. A style fix that breaks Checkstyle costs
+  another full cycle.
+
+---
+
+## 8. Quick reference
+
+```bash
+# what CI runs
+mvn -T 8 clean verify --no-transfer-progress -B -V
+
+# fast single-module check (includes checkstyle)
+mvn -pl <module> -am -DskipTests verify
+
+# after touching any pom.xml
+mvn sortpom:sort
+
+# checkstyle config
+dev-support/checkstyle.xml
+dev-support/checkstyle-suppressions.xml
+dev-support/RangerCodeScheme-IntelliJ.xml   # import into IntelliJ
+```
+
+Related rules: `.cursor/rules/ranger-checkstyle.mdc` (checkstyle detail),
+`.cursor/rules/ranger-python.mdc` (Python client conventions).

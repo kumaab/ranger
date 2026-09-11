@@ -25,3 +25,19 @@ Security model: [SECURITY.md](./SECURITY.md)
 
 Agents that scan this repository should consult `SECURITY.md` and the
 threat model it links before reporting issues.
+
+## Contributing code
+
+Before writing or modifying code in this repository, read
+[.cursor/rules/ranger-pr-review.mdc](./.cursor/rules/ranger-pr-review.mdc).
+
+It covers what the build enforces (Checkstyle, sortpom and the enforcer
+plugin all fail `mvn verify` on violation), the Java and configuration
+conventions this codebase follows, and the recurring review feedback that
+Ranger committers give on pull requests — with an anti-pattern list to
+check your own diff against before opening a PR.
+
+Supporting rules:
+
+- [.cursor/rules/ranger-checkstyle.mdc](./.cursor/rules/ranger-checkstyle.mdc) — Checkstyle detail
+- [.cursor/rules/ranger-python.mdc](./.cursor/rules/ranger-python.mdc) — Python client conventions

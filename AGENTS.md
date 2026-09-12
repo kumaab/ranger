@@ -41,3 +41,6 @@ Supporting rules:
 
 - [.cursor/rules/ranger-checkstyle.mdc](./.cursor/rules/ranger-checkstyle.mdc) — Checkstyle detail
 - [.cursor/rules/ranger-python.mdc](./.cursor/rules/ranger-python.mdc) — Python client conventions
+- [.cursor/rules/kumaab-fork-preferences.mdc](./.cursor/rules/kumaab-fork-preferences.mdc) —
+  personal preferences for this fork, layered on the rules above. Fork-only: not part of
+  upstream `apache/ranger`, and should be kept out of any PR raised against it.

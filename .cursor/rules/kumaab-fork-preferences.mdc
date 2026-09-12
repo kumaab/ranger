@@ -1,0 +1,95 @@
+---
+description: Personal code preferences for the kumaab/ranger fork, layered on the upstream Ranger rules
+globs: **/*
+alwaysApply: true
+---
+
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+# Fork preferences (kumaab/ranger)
+
+These are personal preferences for work done in this fork. They sit **on top of**
+`ranger-pr-review.mdc` and `ranger-checkstyle.mdc`, which remain authoritative for
+everything not listed here.
+
+This file is fork-only and is not part of upstream `apache/ranger`. Exclude it from the
+diff of any PR raised against upstream.
+
+## 1. Comment syntax — overrides the codebase norm
+
+Use `/* .. */` block syntax, never `//`. Keep every comment to 2 lines or fewer.
+
+```java
+/* single-line form */
+
+/* two-line form, where the explanation continues onto
+ * the second and final line. */
+```
+
+Applies to comments you add or rewrite. Leave pre-existing comments in untouched code alone.
+
+This diverges from the surrounding code on purpose: `agents-common/src/main/java` carries
+roughly 428 `//` line comments against 6 non-javadoc block comments. Nothing enforces either
+style — `dev-support/checkstyle.xml` has no comment-style module. The 2-line cap reinforces
+the "comments have become too noisy" feedback recorded in `ranger-pr-review.mdc` §5.6; the
+syntax is preference. Expect a reviewer nit if the code goes upstream.
+
+## 2. Member order in test classes
+
+`ranger-pr-review.mdc` specifies member order for main sources but not for tests. Apply the
+same decreasing-visibility rule, private last:
+
+    @Test methods (public) -> public static nested fixtures -> private helpers
+
+Both shapes exist in the repo today — `TestInlinePolicyEvaluator` puts private helpers before
+its nested classes, while `TestRangerAbstractContextEnricher`, `TestJsonUtilsV2` and
+`TestRangerResourceEvaluatorsRetriever` put fixtures first. Prefer private-last.
+
+## 3. Reflectively loaded pluggable classes
+
+A class loaded by name from configuration must not stop the component from initializing.
+
+- Catch `Throwable`, not just `ReflectiveOperationException` — it covers `LinkageError` and
+  `NoClassDefFoundError` thrown by a custom class on an incomplete classpath.
+- Log an error naming the config key and the real consequence, then fall back. Never throw
+  out of a constructor.
+- Word the message as what will happen ("Requests may be sent without a bearer token"), not
+  merely the name of the fallback class.
+
+Precedent: `RangerCustomConditionEvaluator`, `RangerGdsEnricher`, `JavaScriptEngineCreator`.
+
+Related trap: do not construct a default object when the feature is unconfigured if some
+`isXEnabled()` predicate keys off that object's presence — the feature then reports itself as
+enabled for every caller. Return `null` and let callers null-check (RANGER-5795).
+
+## 4. Running tests locally
+
+`ranger-pr-review.mdc` covers `mvn -pl <module> -am -DskipTests verify`. To actually run tests:
+
+```
+mvn -q -pl agents-common test -Dtest='TestSomething' -DfailIfNoTests=false
+```
+
+- `-Dtest` takes a comma-separated list, not `+`.
+- `-q` suppresses the pass counts. Read `<module>/target/surefire-reports/*.txt` instead.
+- A local JaCoCo/JDK mismatch prints `Unsupported class file major version 70` instrumentation
+  noise on stderr. It is unrelated to test results.
+- Bare `mvn checkstyle:check` runs default sun_checks and reports tens of thousands of bogus
+  violations. The project config is bound to `verify` via
+  `configLocation=./dev-support/checkstyle.xml`.

@@ -25,3 +25,10 @@ Security model: [SECURITY.md](./SECURITY.md)
 
 Agents that scan this repository should consult `SECURITY.md` and the
 threat model it links before reporting issues.
+
+## Coding conventions and module guides
+
+Repository conventions and per-module architecture notes for AI assistants live in
+`CLAUDE.md` and `.claude/skills/*/SKILL.md` (progressive disclosure: the skill
+body is loaded on demand and links deeper `references/` documents). Editor
+rules for Java checkstyle and the Python client are in `.cursor/rules/`.

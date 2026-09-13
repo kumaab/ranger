@@ -37,7 +37,7 @@ public class RangerTagSyncStarter {
     static class TagSynchronizerthread extends Thread {
         @Override
         public void run() {
-            TagSynchronizer.main(null);
+            TagSynchronizer.main(new String[0]);
         }
     }
 }

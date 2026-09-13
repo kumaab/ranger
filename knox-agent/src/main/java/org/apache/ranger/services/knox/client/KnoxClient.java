@@ -335,21 +335,14 @@ public class KnoxClient {
             }
         }
         try {
+            for (String topologyName : knoxTopologyList) {
+                validateResourceName(topologyName, "topology name");
+            }
+
             final String finalDecryptedPwd = decryptedPwd;
             // Use RangerJersey2ClientBuilder instead of unsafe ClientBuilder.newBuilder() to prevent MOXy usage
             Client client = RangerJersey2ClientBuilder.newBuilder().build();
 
-/*            try {
-                client = Client.create();
-
-                client.addFilter(new HTTPBasicAuthFilter(userName, decryptedPwd));
-
-                for (String topologyName : knoxTopologyList) {
-                    validateResourceName(topologyName, "topology name");
-                    WebResource webResource = client.resource(knoxUrl + "/" + topologyName);
-
-                    response = webResource.accept(EXPECTED_MIME_TYPE).get(ClientResponse.class);
-*/
             // Register providers on the client
             client.register(JacksonJaxbJsonProvider.class);
             client.register(new javax.ws.rs.client.ClientRequestFilter() {

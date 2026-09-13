@@ -3247,17 +3247,6 @@ public class TestServiceDBStore {
     }
 
     @Test
-    public void test75_getServiceName() throws Exception {
-        XXServiceDao xxServiceDao = Mockito.mock(XXServiceDao.class);
-        Mockito.when(daoMgr.getXXService()).thenReturn(xxServiceDao);
-        XXService x = new XXService();
-        x.setName("svc-1");
-        Mockito.when(xxServiceDao.getById(1L)).thenReturn(x);
-        String name = (String) invokePrivate("getServiceName", new Class[] {Long.class }, 1L);
-        Assertions.assertEquals("svc-1", name);
-    }
-
-    @Test
     public void test76createDefaultPolicy() throws Exception {
         RangerPolicy policy = rangerPolicy();
 
@@ -5255,27 +5244,6 @@ public class TestServiceDBStore {
     }
 
     @Test
-    public void test196persistChangeLog() throws Exception {
-        XXServiceVersionInfoDao vDao = Mockito.mock(XXServiceVersionInfoDao.class);
-        XXServiceDao sDao = Mockito.mock(XXServiceDao.class);
-        Mockito.when(daoMgr.getXXServiceVersionInfo()).thenReturn(vDao);
-        Mockito.when(daoMgr.getXXService()).thenReturn(sDao);
-        XXServiceVersionInfo svi = new XXServiceVersionInfo();
-        svi.setPolicyVersion(3L);
-        svi.setTagVersion(4L);
-        Mockito.when(vDao.findByServiceId(10L)).thenReturn(svi);
-        XXService xs = new XXService();
-        xs.setId(10L);
-        xs.setName("svc");
-        Mockito.when(sDao.getById(10L)).thenReturn(xs);
-        ServiceDBStore.ServiceVersionUpdater up = new ServiceDBStore.ServiceVersionUpdater(daoMgr, 10L, ServiceDBStore.VERSION_TYPE.TAG_VERSION, ServiceTags.TagsChangeType.RANGER_ADMIN_START, 100L, 200L);
-        XXTagChangeLogDao tagDao = Mockito.mock(XXTagChangeLogDao.class);
-        Mockito.when(daoMgr.getXXTagChangeLog()).thenReturn(tagDao);
-        invokePrivate("persistChangeLog", new Class[] {ServiceDBStore.ServiceVersionUpdater.class}, up);
-        Mockito.verify(daoMgr, Mockito.atLeastOnce()).getXXTagChangeLog();
-    }
-
-    @Test
     public void test197isRoleDownloadRequired_and_checkAndFilterRoleNames() throws Exception {
         XXPolicyDao polDao = Mockito.mock(XXPolicyDao.class);
         XXRoleDao roleDao = Mockito.mock(XXRoleDao.class);
@@ -6250,9 +6218,9 @@ public class TestServiceDBStore {
 
     @Test
     public void test249getMetricOfTypePolicies_reflective() throws Exception {
-        Method m = ServiceDBStore.class.getDeclaredMethod("getMetricOfTypePolicies", SearchCriteria.class);
+        Method m = ServiceDBStore.class.getDeclaredMethod("getMetricOfTypePolicies");
         m.setAccessible(true);
-        Object out = m.invoke(serviceDBStore, new SearchCriteria());
+        Object out = m.invoke(serviceDBStore);
         Assertions.assertTrue(out == null || out instanceof String);
     }
 

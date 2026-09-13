@@ -190,8 +190,8 @@ public class RangerAccessControlEnforcer implements AccessControlEnforcer {
                     ancestorIndex = inodes.length - 1;
                 }
 
-                for (; ancestorIndex >= 0 && inodes[ancestorIndex] == null; ancestorIndex--) {
-                    // empty
+                while (ancestorIndex >= 0 && inodes[ancestorIndex] == null) {
+                    ancestorIndex--;
                 }
 
                 ancestor = inodes.length > ancestorIndex && ancestorIndex >= 0 ? inodes[ancestorIndex] : null;
@@ -359,8 +359,10 @@ public class RangerAccessControlEnforcer implements AccessControlEnforcer {
                                 }
                                 dirINodeAttrs[idx] = dirAttribs;
 
-                                for (dirAncestorIndex = dirINodes.length - 1; dirAncestorIndex >= 0 && dirINodes[dirAncestorIndex] == null; dirAncestorIndex--) {
-                                    // empty
+                                dirAncestorIndex = dirINodes.length - 1;
+
+                                while (dirAncestorIndex >= 0 && dirINodes[dirAncestorIndex] == null) {
+                                    dirAncestorIndex--;
                                 }
 
                                 dirAncestor   = dirINodes.length > dirAncestorIndex && dirAncestorIndex >= 0 ? dirINodes[dirAncestorIndex] : null;

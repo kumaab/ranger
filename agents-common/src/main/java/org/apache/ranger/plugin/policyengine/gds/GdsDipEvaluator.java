@@ -70,13 +70,8 @@ public class GdsDipEvaluator {
     }
 
     public boolean isAllowed(RangerAccessRequest request) {
-        boolean ret = isActive();
-
-        if (ret) {
-            // TODO:
-        }
-
-        return ret;
+        /* TODO: evaluate the request once DIP evaluation is implemented */
+        return isActive();
     }
 
     public void getResourceACLs(RangerAccessRequest request, RangerResourceACLs acls, boolean isConditional, Set<String> allowedAccessTypes) {

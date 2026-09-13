@@ -1434,7 +1434,7 @@ public class RangerResourceTrie<T extends RangerResourceEvaluator> {
             }
         }
 
-        private void removeEvaluatorFromSubtree(U evaluator) {
+        void removeEvaluatorFromSubtree(U evaluator) {
             LOG.debug("==> removeEvaluatorFromSubtree({})", evaluator.getId());
 
             if (CollectionUtils.isNotEmpty(wildcardEvaluators) && wildcardEvaluators.contains(evaluator)) {

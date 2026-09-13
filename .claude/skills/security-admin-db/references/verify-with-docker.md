@@ -34,6 +34,12 @@ export AUDIT_DESTINATIONS=audit-store-${AUDIT_INDEX_STORE}
 docker compose --profile ${AUDIT_DESTINATIONS} -f docker-compose.ranger.yml -f docker-compose.ranger-audit-service.yml up -d
 ```
 
+Published ports: ranger 6080, kdc 88 (+udp) / 749, zk 2181, postgres 5432, mysql 3306, oracle 1521, sqlserver 1433, solr 8983, opensearch 9200/9300,
+audit-ingestor 7081/7182, dispatcher-solr 7091, dispatcher-hdfs 7092, dispatcher-opensearch 7093. Containers: `ranger`, `ranger-kdc`, `ranger-zk`,
+`ranger-postgres|mysql|oracle|sqlserver` (all reachable as `ranger-db.rangernw`, network `rangernw`). Compose `--profile` values are audit stores only
+(`audit-store-solr|opensearch|hdfs`); everything else is chosen with `-f <file>`. `.env` holds image/version pins (`RANGER_BASE_VERSION`, component versions),
+`*_MAX_HEAP=256m`, `KERBEROS_ENABLED=true`, `KERBEROS_REALM=EXAMPLE.COM`, `DEBUG_*=false`; `RANGER_DB_TYPE` is exported by `ranger_in_docker` (default `postgres`), not in `.env`.
+
 `Dockerfile.ranger` picks the JDBC driver via `ARG RANGER_DB_TYPE`. The entrypoint `scripts/admin/ranger.sh` runs `setup.sh` on first start (guarded by
 `${RANGER_HOME}/.setupDone`), which runs `db_setup.py` and `db_setup.py -javapatch`. Per-flavor properties: `scripts/admin/ranger-admin-install-<db>.properties`.
 

@@ -91,6 +91,9 @@ RangerAccessResult  result  = plugin.isAccessAllowed(request);
 boolean             allowed = result != null && result.getIsAllowed();
 ```
 
+`RangerAccessRequestImpl.setResourceMatchingScope(ResourceMatchingScope.SELF | SELF_OR_DESCENDANTS)` widens matching to descendants (used by `authz-embedded` and HDFS).
+Full `.policyengine.option.*` table, trie mechanics, evaluator selection and `getResourceACLs`: [policy-engine-internals.md](policy-engine-internals.md).
+
 ## Engine flow
 
 ```
@@ -111,6 +114,10 @@ RangerBasePlugin.isAccessAllowed(request, resultProcessor)
   policyEngine.evaluateAuditPolicies(ret)
   resultProcessor.processResult(ret)
 ```
+
+`policyRepository.getLikelyMatchPolicyEvaluators` is backed by one `RangerResourceTrie` per resource-def level (`policyengine/RangerResourceTrie.java`), a prefix
+trie over policy resource values that pre-filters evaluators before matching; `ranger.plugin.<svc>.policyengine.option.optimize.trie.for.retrieval` (default false)
+trades build time for lookup speed. Wildcard and dynamic (`{USER}`, `${{...}}`) values fall into a catch-all bucket.
 
 Rules inside the loop: after tag policies `isAccessDetermined` is reset so resource policies may override; a tag DENY is final unless a resource policy has strictly
 higher `policyPriority`; for ACCESS an earlier allow is final when `ret.getPolicyPriority() > evaluator.getPolicyPriority()`, for mask/row-filter when `>=`;

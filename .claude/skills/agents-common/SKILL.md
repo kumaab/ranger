@@ -26,7 +26,7 @@ Resources: `agents-common/src/main/resources/service-defs/ranger-servicedef-*.js
 Building a whole new plugin module on top of this: `ranger-plugin`.
 
 Not here, despite the package name: `RangerPerfTracer`, `JsonUtilsV2`, `RangerCache`, `RangerReadWriteLock` (`common-utils`), `RangerPluginClassLoader`
-(`ranger-plugin-classloader`), `RangerAuthorizer` (`authz-api`).
+(`ranger-plugin-classloader`), `RangerAuthorizer` (`authz-api`, skill `ranger-authz`), audit queues/destinations (`agents-audit`, skill `ranger-audit-server`).
 
 ## Package map
 
@@ -95,4 +95,8 @@ Shape and other test families: [references/testing.md](references/testing.md).
 - [references/access-evaluation.md](references/access-evaluation.md): `RangerBasePlugin` API and config, engine flow, zones/tags/priority, `RangerAccessResult`, context keys.
 - [references/models-and-validation.md](references/models-and-validation.md): `RangerBaseModelObject`, `RangerPolicy` nested types, Jackson conventions, validators and `ValidationErrorCode`.
 - [references/policy-refresh.md](references/policy-refresh.md): `PolicyRefresher`, cache files, deltas, `RangerAdminClient`, `RangerRESTClient`/`RangerRESTUtils`.
+- [references/policy-engine-internals.md](references/policy-engine-internals.md): tries and prefiltering, evaluator selection, `.policyengine.option.*` table, unprefixed service-config keys, `getResourceACLs`, config load order.
+- [references/masking-and-rowfilter.md](references/masking-and-rowfilter.md): DATAMASK/ROWFILTER evaluation, result fields, Hive consumption.
+- [references/chained-plugins.md](references/chained-plugins.md): `RangerChainedPlugin` contract, config keys, merge rules.
+- [references/audit-handler-and-filters.md](references/audit-handler-and-filters.md): `RangerDefaultAuditHandler`, `RangerMultiResourceAuditHandler`, `ranger.plugin.audit.filters`. Transport: `ranger-audit-server`.
 - [references/testing.md](references/testing.md): JSON test-case shapes and test families.

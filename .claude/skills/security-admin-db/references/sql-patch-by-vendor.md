@@ -225,6 +225,11 @@ GO
 EXIT
 ```
 
+## Vendor widths are not identical
+
+Column sizes and types diverge between vendor files (`x_portal_user.first_name` 1022 mysql vs 256 postgres, `x_group_users.group_name` 740 vs 767,
+`x_db_version_h.active` ENUM vs `VARCHAR(1) CHECK`). Copy the neighbouring definition from the vendor file you are editing, not from another vendor.
+
 ## Optimized schema edits (`optimized/current/ranger_core_db_<vendor>.sql`)
 
 1. Drop-list near the top, FK children first:

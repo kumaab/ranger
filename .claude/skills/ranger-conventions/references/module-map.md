@@ -26,14 +26,14 @@ Root `pom.xml` lists ~70 modules under profiles `all` and `linux` (Linux auto-ac
 | `common-utils` | `ranger-common-utils` | low-level helpers in `org.apache.ranger.plugin.util`: `RangerPerfTracer`, `JsonUtilsV2`, `RangerCache`, `RangerReadWriteLock` |
 | `ranger-util` | | `RangerVersionInfo`, `RangerVersionAnnotation` (build-time version stamp) |
 | `agents-common` | `ranger-plugins-common` | plugin framework: `RangerBasePlugin`, policy engine, models, service-defs, validators (skill `agents-common`) |
-| `agents-audit` | `ranger-audit-core`, `ranger-audit-dest-*` | `AuditProviderFactory`, `AuditDestination` impls for solr/es/os/hdfs/kafka/log4j/cloudwatch/auditserver |
+| `agents-audit` | `ranger-audit-core`, `ranger-audit-dest-*` | `AuditProviderFactory`, `AuditDestination` impls for solr/es/os/hdfs/kafka/log4j/cloudwatch/auditserver; skill `ranger-audit-server` |
 | `agents-cred` | `ranger-plugins-cred` | credential providers (`RangerCredentialProvider`, Kerberos JAAS helpers) |
 | `credentialbuilder` | | `buildks` CLI for jceks stores |
 | `ranger-plugin-classloader` | | `RangerPluginClassLoader`, `PluginClassLoaderActivator` (child-first isolation for shims) |
 | `agents-installer` | `ranger-plugins-installer` | `XmlConfigChanger`, applies `*-changes.cfg` |
 | `embeddedwebserver` | | embedded Tomcat `EmbeddedServer` used by admin/kms/usersync/tagsync, index bootstrappers |
 | `ranger-authn` | | JWT/auth handlers for the newer HTTP services |
-| `ranger-common-ha` | | Curator leader election for usersync/tagsync |
+| `ranger-common-ha` | | Curator leader election; depended on by `ugsync` and `tagsync` only (Admin HA is LB + shared DB) |
 | `ranger-metrics` | | Hadoop-metrics2 wrapper, JSON/Prometheus sinks |
 | `jisql` | | vendored JDBC script runner used by the DB installer |
 
@@ -42,19 +42,19 @@ Root `pom.xml` lists ~70 modules under profiles `all` and `linux` (Linux auto-ac
 | Module | Purpose |
 |---|---|
 | `security-admin` | Ranger Admin: REST, biz, JPA, React UI, DB schema, installer (skills `security-admin`, `security-admin-webapp`, `security-admin-db`) |
-| `kms` | Ranger KMS (`org.apache.hadoop.crypto.key.*`, own `XXRangerKeyStore`/`XXRangerMasterKey` entities) |
-| `ugsync`, `ugsync-util`, `ugsync/ldapconfigchecktool/ldapconfigcheck` | user/group sync (`UserGroupSync`, `LdapUserGroupBuilder`, `PolicyMgrUserGroupBuilder`) |
-| `tagsync` | Atlas tag sync, now a webapp (`RangerTagSyncServer`, `AtlasRESTTagSource`) |
+| `kms` | Ranger KMS (`org.apache.hadoop.crypto.key.*`, tables `ranger_keystore`/`ranger_masterkey`, own `kms/scripts/db_setup.py`); skill `ranger-kms` |
+| `ugsync`, `ugsync-util`, `ugsync/ldapconfigchecktool/ldapconfigcheck` | user/group sync, skill `ranger-sync-services` (`UserGroupSync`, `LdapUserGroupBuilder`, `PolicyMgrUserGroupBuilder`) |
+| `tagsync` | Atlas tag sync (`RangerTagSyncServer`, `TagSynchronizer`, `AtlasTagSource` Kafka / `AtlasRESTTagSource`, `TagAdminRESTSink`); jar module that also builds a WAR served by its own `EmbeddedServer` with a metrics REST endpoint since RANGER PR #1107 |
 | `unixauthservice`, `unixauthclient`, `unixauthnative`, `unixauthpam` | Unix password authentication (disabled by default since RANGER-5698) |
-| `pdp` | standalone Policy Decision Point server (`RangerPdpServer`, `RangerPdpREST`, port 6500) |
-| `audit-server` | `audit-ingestor` + `audit-dispatcher` (hdfs/opensearch/solr) pipeline |
-| `authz-api`, `authz-embedded`, `authz-remote` | provider-agnostic authorization API (`RangerAuthorizer`, `RangerEmbeddedAuthorizer`, `RangerRemoteAuthorizer`/`RangerPdpClient`) |
-| `intg` | Java `RangerClient` and the `apache-ranger` Python package (`intg/src/main/python`) |
+| `pdp` | standalone Policy Decision Point server (`RangerPdpServer`, `RangerPdpREST` at `/authz/v1/*`, port 6500; tarball bundles `authz-embedded`); skill `ranger-authz` |
+| `audit-server` | `audit-common`, `audit-ingestor` (`AuditREST` -> Kafka), `audit-dispatcher/{dispatcher-app,dispatcher-common,dispatcher-hdfs,dispatcher-opensearch,dispatcher-solr}`; skill `ranger-audit-server` |
+| `authz-api`, `authz-embedded`, `authz-remote` | provider-agnostic authorization API (abstract `RangerAuthorizer`, `RangerEmbeddedAuthorizer`, `RangerRemoteAuthorizer`); artifacts `ranger-authz-api`, `authz-embedded`, `authz-remote`; skill `ranger-authz` |
+| `intg` | Java `RangerClient` and the `apache-ranger` Python package (`intg/src/main/python`); skill `ranger-clients` |
 
 ## Plugins
 
 Impl modules `hdfs-agent`, `hive-agent`, `hbase-agent`, `knox-agent`, `storm-agent`, `plugin-{atlas,elasticsearch,kafka,kms,kudu,kylin,nestedstructure,nifi,nifi-registry,ozone,presto,schema-registry,solr,sqoop,trino,yarn}`
-and shims `ranger-<svc>-plugin-shim` (15). Structure: skill `ranger-plugin`. `ranger-examples` holds the minimal `plugin-sampleapp`, `sampleapp`, `conditions-enrichers`, `sample-client`.
+and shims `ranger-<svc>-plugin-shim` (15). Structure: skill `ranger-plugin`. `ranger-examples` holds the minimal `plugin-sampleapp`, `sampleapp`, `conditions-enrichers`, `sample-client` (Java `SampleClient`, `RemoteAuthzClient`; Python `sample_client.py`, `sample_gds_client.py`, `sample_kms_client.py`, `sample_pdp_client.py`, `user_mgmt.py`, `security_zone_v2.py`).
 
 ## Packaging, tooling, docs
 

@@ -89,6 +89,12 @@ Reserved ids in shipped JSON: hdfs 1, hbase 2, hive 3, yarn 4, knox 5, storm 6, 
 elasticsearch 16, presto 17, tag 100, wasb 101, abfs 103, kudu 105, ozone 201, schema-registry 202, trino 203. `gds`, `nestedstructure`, `polaris` have no id.
 Pick an unused id above 203 for a new embedded def, or omit it.
 
+## Resource hierarchy as a path
+
+`RangerServiceDefHelper.getRrnTemplate(resourceType)` returns the `/`-joined hierarchy (`database/table/column`, `bucket/path`) computed from the resource
+graph; `getAllResourceNames()` lists leaves. `authz-api`'s `RangerResourceNameParser` parses `table:db/tbl` against it (see `ranger-authz`). There is no
+`rrnTemplate` key in the JSON.
+
 ## Updating an existing def
 
 Editing the JSON only affects fresh installs. Existing deployments need a Java patch in `security-admin` (`Patch*_J<n>`) that loads the def from the store,

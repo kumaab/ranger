@@ -48,7 +48,8 @@ Java (`src/main/java/org/apache/ranger/`):
   per request builds `Ranger<Svc>Resource` + `Ranger<Svc>AccessRequest`, calls `isAccessAllowed`, returns `result.getIsAllowed()`.
 - `Ranger<Svc>Resource extends RangerAccessResourceImpl` with `KEY_<RESOURCE>` constants matching the service-def resource names.
 - `Ranger<Svc>AccessRequest extends RangerAccessRequestImpl` (sets `accessType`, `action`, `user`, `userGroups`, `accessTime`, `clientIPAddress`, `clusterName`, `requestData`).
-- `Ranger<Svc>AuditHandler extends RangerDefaultAuditHandler` (batching, `flushAudit()`).
+- `Ranger<Svc>AuditHandler extends RangerDefaultAuditHandler`; if you need to accumulate events per request and emit once, copy `RangerMultiResourceAuditHandler.flushAudit()`
+  (`agents-common/.../plugin/audit/`), as `RangerHiveAuditHandler` does. The default handler logs each result immediately.
 - `services/<svc>/RangerService<Svc>.java extends RangerBaseService` and `client/{<Svc>Client, <Svc>ConnectionMgr, <Svc>ResourceMgr}.java`.
 
 Conf (`conf/`), copied and renamed from a sibling:
@@ -61,7 +62,10 @@ ranger.plugin.<svc>.policy.pollIntervalMs 30000                                 
 ranger.plugin.<svc>.policy.cache.dir      %POLICY_CACHE_DIR%                                      mod create-if-not-exists
 ```
 
-`scripts/install.properties`: `POLICY_MGR_URL`, `REPOSITORY_NAME`, `COMPONENT_INSTALL_DIR_NAME`, `XAAUDIT.*`, `SSL_KEYSTORE_*`, `SSL_TRUSTSTORE_*`, `CUSTOM_USER`, `CUSTOM_GROUP`.
+`scripts/install.properties`: `POLICY_MGR_URL`, `REPOSITORY_NAME`, `COMPONENT_INSTALL_DIR_NAME`, `SSL_KEYSTORE_*`, `SSL_TRUSTSTORE_*`, `CUSTOM_USER`, `CUSTOM_GROUP`,
+and one `XAAUDIT.<DEST>.ENABLE` toggle per audit destination the `*-audit-changes.cfg` supports: `SUMMARY`, `SOLR`, `ELASTICSEARCH`, `HDFS`, `LOG4J`,
+`AMAZON_CLOUDWATCH`, `AUDITSERVER` (+ `XAAUDIT.AUDITSERVER.URL`, `.FILE_SPOOL_DIR`, routes to the audit-server ingestor). Hive and HBase add
+`UPDATE_XAPOLICIES_ON_GRANT_REVOKE` so SQL `GRANT`/`REVOKE` writes back to Ranger policies via `RangerBasePlugin.grantAccess/revokeAccess`.
 
 Tests: `src/test/java/...` (JUnit 5), `src/test/resources/{logback.xml, ranger-<svc>-security.xml, <svc>-policies.json}`; filter `*.xml` test resources in the pom like `plugin-kafka`.
 

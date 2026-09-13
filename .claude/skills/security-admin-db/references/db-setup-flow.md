@@ -56,6 +56,9 @@ Directories (like `patches/audit`) are skipped by the `os.path.isfile` guard in 
 | `active` | `'N'` claimed / in progress, `'Y'` applied. There is no numeric flag. |
 | `inst_at` | used for stale-lock detection (10 min, `STALE_PATCH_ENTRY_HOLD_TIME`) |
 
+Password markers: `DEFAULT_ADMIN_UPDATE`, `DEFAULT_KEYADMIN_UPDATE`, `DEFAULT_RANGER_USERSYNC_UPDATE`, `DEFAULT_RANGER_TAGSYNC_UPDATE`. Retry/stale knobs default to
+`retryPatchAfterSeconds=120` / `stalePatchEntryHoldTimeInMinutes=10` and are overridden by the optional `install.properties` keys `PATCH_RETRY_INTERVAL` / `STALE_PATCH_ENTRY_HOLD_TIME`.
+
 Locking algorithm in `import_db_patches` (mirrored for core schema and Java patches):
 
 1. `(version, 'Y')` exists -> skip.
@@ -72,7 +75,7 @@ repeat installs of the same version and re-armed on a version bump.
 `java_patch_regex = "^Patch.*?J\d{5}.class$"` scanned in `ews/webapp/WEB-INF/classes/org/apache/ranger/patch`. For each unapplied `J<n>`: claim row, run
 
 ```
-java -Xmx<ranger_admin_max_heap_size> -Dlogdir=... -Dlogback.configurationFile=file:<conf>/logback.xml -cp <webapp classpath>:<SQL_CONNECTOR_JAR> org.apache.ranger.patch.<Class>
+java -XX:MetaspaceSize=100m -XX:MaxMetaspaceSize=200m -Xmx<ranger_admin_max_heap_size> -Xms1g -Duser=<db_user> -Dhostname=<host> -Dlogdir=... -Dlogback.configurationFile=file:<conf>/logback.xml -cp <webapp classpath>:<SQL_CONNECTOR_JAR> org.apache.ranger.patch.<Class>
 ```
 
 then flip to `'Y'`. Non-zero exit deletes the claim and aborts.

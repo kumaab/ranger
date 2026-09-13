@@ -24,7 +24,7 @@
 - `@ExtendWith(MockitoExtension.class)`; add `@MockitoSettings(strictness = Strictness.LENIENT)` when stubs are shared across methods (security-admin does).
 - Static imports from `org.junit.jupiter.api.Assertions` (`assertEquals`, `assertTrue`, `assertNotNull`, `assertThrows`) and `org.mockito.Mockito`/`ArgumentMatchers`
   (`when`, `mock`, `verify`, `times`, `any`, `eq`). AssertJ and Hamcrest are available but rarely used.
-- Naming: `Test*.java` dominates (`agents-common`, `security-admin`, `authz-*`); `*Test.java` in newer modules (`pdp`, `ranger-metrics`, matcher tests). Follow the module.
+- Naming: `Test*.java` dominates (`agents-common`, `security-admin`, `authz-*`); `*Test.java` in newer modules (`pdp`, `ranger-metrics`, `agents-audit`, matcher tests); `audit-server` mixes both. Follow the module.
 - No JUnit `@Tag`/categories. Fixtures in `src/test/resources` (`logback.xml`, `ranger-<svc>-security.xml`, `*-policies.json`, `*.jks`); filter `*.xml` but not `*.jks`.
 - Checkstyle runs on tests (`includeTestSourceDirectory=true`); license header required on test Java.
 - Surefire (root pom `pluginManagement`): JaCoCo `${argLine}`, `--add-opens` for `java.base` reflection and crypto, system properties `logdir`, `catalina.base`,
@@ -47,13 +47,19 @@ Add `-am` when upstream modules are not in the local repo. Coverage: `dev-suppor
 ## Python
 
 - Client (`intg/`): `unittest`, one `TestCase` per client area in `intg/src/test/python/test_ranger_client.py`, mock at `Session` or `client_http.call_api`.
-  Run from `intg/`: `PYTHONPATH=src/main/python python -B src/test/python/test_ranger_client.py`.
+  Run from `intg/`: `PYTHONPATH=src/main/python python -B src/test/python/test_ranger_client.py`. Also wired into `intg/pom.xml` via `exec-maven-plugin` at the `test` phase, so `mvn verify` runs it.
 - Functional (`functional-tests/`, pytest): suites `rolerest`, `xuserrest`, `servicerest`, `hdfs`, `kms`; markers in `pytest.ini`; `run-tests.sh <db-type> [services]`
   against docker compose. Not a Maven module and not run in CI.
 
 ## JavaScript
 
 None. `npm test` is a stub; `babel-plugin-istanbul` instrumentation exists behind `-DskipJSCoverage=false` for an out-of-tree Cypress suite.
+
+## Odds and ends
+
+- `RangerPolicyResourceSignature` hashes with SHA-256 (SHA-512/SHA-384 when `RangerAdminConfig.isFipsEnabled()`); this fills `x_policy.resource_signature`.
+- `build_ranger_using_docker.sh` builds image `ranger_dev` from `ubuntu:22.04` with OpenJDK 11 and Maven 3.9.9, which lags the JDK 17 requirement in the root pom; prefer a local JDK 17.
+- `ranger-tools` entry points: `RangerPolicyenginePerfTester`, `PerfTestEngine`, `PerfTestClient`, `PerfTestOptions`.
 
 ## CI
 

@@ -20,6 +20,7 @@
 Centralized authorization and audit for the Hadoop ecosystem and beyond. Maven multi-module (~70 modules), Java 17, React 18 UI, Python installers and
 client, shell installers, SQL for five databases. Version `3.0.0-SNAPSHOT`, branch `master`, squash-merge only, JIRA prefix `RANGER-NNNN`.
 
+Architecture map, ports and data flows between processes: `.claude/skills/ranger-conventions/references/topology-and-ports.md`.
 Detailed guidance is split into skills under `.claude/skills/` and loaded on demand (progressive disclosure). Start with `ranger-conventions`,
 then the skill for the module you are touching. Each skill's `references/` folder holds the deeper recipes; read them only when the task needs them.
 
@@ -31,6 +32,11 @@ then the skill for the module you are touching. Each skill's `references/` folde
 | `security-admin-db` | SQL under `security-admin/db`, installer scripts under `security-admin/scripts` |
 | `agents-common` | plugin framework: policy engine, service-defs, conditions, enrichers, matchers, models, validators |
 | `ranger-plugin` | creating or packaging a `plugin-<svc>` / `ranger-<svc>-plugin-shim` module |
+| `ranger-sync-services` | `ugsync/`, `ugsync-util/`, `unixauthservice/`, `tagsync/` |
+| `ranger-kms` | `kms/`, `plugin-kms/` |
+| `ranger-authz` | `authz-api/`, `authz-embedded/`, `authz-remote/`, `pdp/` |
+| `ranger-audit-server` | `agents-audit/`, `audit-server/`, `*-audit-changes.cfg`, `xasecure.audit.*` |
+| `ranger-clients` | `intg/` (Java `RangerClient`, Python `apache-ranger`), `ranger-examples/sample-client/` |
 
 ## Commands
 

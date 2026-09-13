@@ -23,7 +23,8 @@ description: Cross-cutting Apache Ranger conventions that every change must foll
 
 Apache Ranger 3.0.0-SNAPSHOT, a Maven multi-module repo (~70 modules) in Java 17 with a React UI, Python installers/clients, shell installers, and SQL for
 five databases. Module-specific skills: `security-admin` (Admin backend), `security-admin-webapp` (React UI), `security-admin-db` (schema + installer),
-`agents-common` (plugin framework), `ranger-plugin` (plugin modules). Existing editor rules: `.cursor/rules/ranger-checkstyle.mdc`, `.cursor/rules/ranger-python.mdc`.
+`agents-common` (plugin framework), `ranger-plugin` (plugin modules), `ranger-sync-services` (ugsync/tagsync), `ranger-kms` (KMS), `ranger-authz` (authz-api/embedded/remote/pdp), `ranger-audit-server` (agents-audit/audit-server),
+`ranger-clients` (intg). Existing editor rules: `.cursor/rules/ranger-checkstyle.mdc`, `.cursor/rules/ranger-python.mdc`.
 
 ## Build and verify
 
@@ -36,7 +37,7 @@ mvn -pl <module> test -Dtest=ClassName                    # one test class
 ./ranger_in_docker up                                     # full local stack
 ```
 
-CI (`.github/workflows/ci.yml`) runs `mvn -T 8 clean verify` on JDK 17 only, then docker builds. `distro` must stay the last module.
+Requires JDK 17 and Maven 3.6.3+ (enforcer). CI (`.github/workflows/ci.yml`) runs `mvn -T 8 clean verify` on JDK 17 only, then docker builds. `distro` must stay the last module.
 `-DskipTests` must be passed explicitly (`${skipTests}` is undefined otherwise).
 
 ## Every new file
@@ -96,3 +97,5 @@ Module docs as `README.md` inside the module. No ADRs. Security reporting: `SECU
 - [references/license-headers.md](references/license-headers.md): exact header text for `.java/.js/.jsx`, `.xml/.md`, `.sh/.py/.properties/.yml`, `.sql`, and RAT exclusions.
 - [references/testing.md](references/testing.md): test framework rules, surefire config, running tests, Python and functional tests.
 - [references/module-map.md](references/module-map.md): one paragraph per module and how they fit together.
+- [references/ha-and-metrics.md](references/ha-and-metrics.md): Admin HA is LB + shared DB only; usersync/tagsync Curator HA keys; the shared `ranger-metrics` pipeline per service.
+- [references/topology-and-ports.md](references/topology-and-ports.md): processes, ports, daemon/installer scripts per server, and the data flows between them.

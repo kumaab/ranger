@@ -21,7 +21,7 @@ description: Conventions for Ranger Admin database schema and installer scriptin
 
 # Ranger Admin DB schema and installer
 
-Schema lives in `security-admin/db/<vendor>/` for `mysql`, `oracle`, `postgres`, `sqlserver`, `sqlanywhere`. Installer scripts in `security-admin/scripts/`.
+KMS has a separate schema and its own `kms/scripts/db_setup.py` (see `ranger-kms`). Admin schema lives in `security-admin/db/<vendor>/` for `mysql`, `oracle`, `postgres`, `sqlserver`, `sqlanywhere`. Installer scripts in `security-admin/scripts/`.
 JPA/Java side of a table is covered by the `security-admin` skill. Style and license headers: `ranger-conventions`.
 
 ## The invariant: 2 files x 5 vendors
@@ -82,6 +82,8 @@ Full per-vendor templates with guards: [references/sql-patch-by-vendor.md](refer
 Details: [references/installer-scripts.md](references/installer-scripts.md), [references/db-setup-flow.md](references/db-setup-flow.md).
 
 ## References (load on demand)
+
+- [references/schema-map.md](references/schema-map.md): the 85 core tables by group, their entity classes, `policy_text` vs ref tables, version/change-log tables, vendor caveats.
 
 - [references/sql-patch-by-vendor.md](references/sql-patch-by-vendor.md): complete patch skeletons for all five vendors, column-add idiom, optimized-schema edits.
 - [references/db-setup-flow.md](references/db-setup-flow.md): `db_setup.py` flow, `x_db_version_h` semantics and locking, `BaseDB` subclasses, Java patch execution.

@@ -68,9 +68,10 @@ public class VXUser extends VXDataObject implements java.io.Serializable {
 
 ## Metrics (`metrics/`)
 
-`RangerAdminMetricsWrapper` (`@Component`) registers each `metrics/source/RangerAdminMetricsSource*` bean as a `RangerMetricsSourceWrapper`
-into `RangerMetricsSystemWrapper` (module `ranger-metrics`). `RangerMetricsFetcher` supplies DB counts. Exposed by `rest/MetricsREST` (`/metrics/status`,
-`/metrics/prometheus`, `/metrics/json`). To add a metric: new `RangerAdminMetricsSourceFoo extends RangerAdminMetricsSourceBase`, autowire it in the wrapper, register.
+`RangerAdminMetricsWrapper` (`@Component`) registers nine `metrics/source/RangerAdminMetricsSource*` beans (`UserGroup`, `Service`, `PolicyResourceAccess`,
+`PolicyRowFiltering`, `PolicyMasking`, `ContextEnricher`, `DenyConditions`, `Summary`, `Gds`) as a `RangerMetricsSourceWrapper`
+into `RangerMetricsSystemWrapper` (module `ranger-metrics`). `RangerMetricsFetcher` supplies DB counts. Exposed by `rest/MetricsREST` at `/service/metrics/{status,prometheus,json}`
+(usersync, tagsync and KMS use `/api/metrics/*`; see `ranger-conventions/references/ha-and-metrics.md`). To add a metric: new `RangerAdminMetricsSourceFoo extends RangerAdminMetricsSourceBase`, autowire it in the wrapper, register.
 
 ## Config sources
 

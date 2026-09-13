@@ -53,6 +53,8 @@ public class XXGlobalState extends XXGlobalStateBase implements java.io.Serializ
 `ADDED_BY_ID`, `UPD_BY_ID`. `sequenceName` must equal the Oracle/Postgres sequence created by the SQL patch (`<table>_SEQ`). Override `equals`,
 `hashCode`, and `toString` like neighbours. No `@NamedQuery` annotations anywhere.
 
+Table-by-table map with entity names: `security-admin-db` `references/schema-map.md`.
+
 ## 2. persistence.xml
 
 `security-admin/src/main/resources/META-INF/persistence.xml`, unit `defaultPU`: one `<class>` per entity class (Base classes too).

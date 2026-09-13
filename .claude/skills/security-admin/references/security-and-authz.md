@@ -48,7 +48,8 @@ Failure throws `restErrorUtil.generateRESTException(...)` with 403 and "User is 
 
 Tab names in `RangerAPIMapping` equal module names in `x_modules_master` (`entity/XXModuleDef`) and `RangerConstants.MODULE_*`:
 `Resource Based Policies`, `Users/Groups`, `Reports`, `Audit`, `Permissions`, `Key Manager`, `Tag Based Policies`, `Security Zone`, `Governed Data Sharing`.
-Roles: `ROLE_SYS_ADMIN`, `ROLE_ADMIN`, `ROLE_KEY_ADMIN`, `ROLE_USER`, `ROLE_ADMIN_AUDITOR`, `ROLE_KEY_ADMIN_AUDITOR`.
+Assignable roles (`RangerConstants.VALID_USER_ROLE_LIST`): `ROLE_SYS_ADMIN`, `ROLE_KEY_ADMIN`, `ROLE_USER`, `ROLE_ADMIN_AUDITOR`, `ROLE_KEY_ADMIN_AUDITOR`.
+`ROLE_ADMIN` and `ROLE_OTHER` are constants only. Zone-scoped checks: `ServiceMgr.isZoneAdmin/isZoneAuditor`.
 Permissions are cached per session and refreshed by `SessionMgr.refreshPermissionsIfNeeded` after `SESSION_UPDATE_INTERVAL_IN_MILLIS`.
 
 Biz-level guards in `RangerBizUtil`: `hasAdminPermissions(objName)`, `hasKMSPermissions(objName, implClass)`, `blockAuditorRoleUser()`,
@@ -60,8 +61,22 @@ Biz-level guards in `RangerBizUtil`: `hasAdminPermissions(objName)`, `hasKMSPerm
 (`getLdapAuthentication`, `getADBindAuthentication`, `getLdapBindAuthentication`, `getJDBCAuthentication`, `getSSOAuthentication`).
 Filters in `security/web/filter/`: `RangerKRBAuthenticationFilter`, `RangerSSOAuthenticationFilter`, `RangerJwtAuthFilter`/`RangerJwtAuthWrapper`,
 `RangerHeaderPreAuthFilter`, `RangerCSRFPreventionFilter`, `RangerMDCFilter`, `RangerUsernamePasswordAuthenticationFilter`, `RangerSecurityContextFormationFilter`.
-Filter order and `@PreAuthorize` enablement live in `src/main/resources/conf.dist/security-applicationContext.xml`
-(`<security:global-method-security pre-post-annotations="enabled" />`).
+Chain order in `src/main/resources/conf.dist/security-applicationContext.xml` (which also enables `@PreAuthorize` via
+`<security:global-method-security pre-post-annotations="enabled" />`):
+
+```
+PRE_AUTH_FILTER                -> headerPreAuthFilter          (RangerHeaderPreAuthFilter)
+after BASIC_AUTH_FILTER        -> ssoAuthenticationFilter      (RangerSSOAuthenticationFilter)
+before SERVLET_API_SUPPORT     -> rangerJwtAuthWrapper         (RangerJwtAuthWrapper)
+after SERVLET_API_SUPPORT      -> krbAuthenticationFilter      (RangerKRBAuthenticationFilter)
+after REMEMBER_ME_FILTER       -> CSRFPreventionFilter         (RangerCSRFPreventionFilter)
+FORM_LOGIN_FILTER              -> customUsernamePasswordAuthenticationFilter
+LAST                           -> userContextFormationFilter   (RangerSecurityContextFormationFilter)
+```
+
+`RangerMDCFilter` is a bean but is wired in `web.xml`, not in this chain. CSRF: `ranger.rest-csrf.enabled` (default **true**),
+`ranger.rest-csrf.custom-header` (`X-XSRF-HEADER`), `ranger.rest-csrf.methods-to-ignore`, `ranger.rest-csrf.browser-useragents-regex`; the UI fetches
+them from `GET /plugins/csrfconf`.
 
 ## Spring wiring
 

@@ -1,6 +1,6 @@
 ---
 name: security-admin-webapp
-description: Conventions for the Ranger Admin React UI under security-admin/src/main/webapp/react-webapp (React 18, react-router 6 HashRouter, react-bootstrap 5, react-final-form, react-table v7, axios via fetchApi). Use when adding or changing a page, list table, form, modal, route, sidebar entry, or utility in any .jsx/.js file there.
+description: Conventions for the Ranger Admin React UI under security-admin/src/main/webapp/react-webapp (React 18, react-router 6 HashRouter, react-bootstrap 2 on Bootstrap 5 CSS, react-final-form, react-table v7, axios via fetchApi). Use when adding or changing a page, list table, form, modal, route, sidebar entry, or utility in any .jsx/.js file there.
 ---
 <!--
  - Licensed to the Apache Software Foundation (ASF) under one or more

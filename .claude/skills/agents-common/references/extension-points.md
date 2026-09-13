@@ -164,6 +164,4 @@ Register per resource element: `"matcher": "<fqcn>", "matcherOptions": { ... }`.
 
 ## Chained plugin
 
-`RangerChainedPlugin` (abstract) lets one plugin consult another service (Hive -> HDFS). Implement `init()`, `isAccessAllowed(RangerAccessRequest)`,
-`isAccessAllowed(Collection<RangerAccessRequest>)`, `getResourceACLs(request[, policyType])`. Configured through `ranger.plugin.<svc>.chained.services`
-(comma-separated names) and `ranger.plugin.<svc>.chained.services.<name>.impl` (class name), read in `RangerBasePlugin.initChainedPlugins()`.
+See [chained-plugins.md](chained-plugins.md): abstract surface (`init()` is concrete), two-arg reflective constructor, the three config keys, merge rules.

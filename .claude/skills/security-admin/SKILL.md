@@ -40,7 +40,8 @@ SQL schema patches and installer scripts: see `security-admin-db`. React UI: see
 
 Two parallel service hierarchies: `RangerBaseModelService<XX, Ranger*>` (newer, models from `agents-common`) and
 `AbstractBaseResourceService<XX, VX*>` (legacy views). Follow whichever the neighbouring code uses.
-Full flow walk-through: [references/request-flow.md](references/request-flow.md).
+Full flow walk-through: [references/request-flow.md](references/request-flow.md). Policy write -> version bump -> change log -> plugin download:
+[references/policy-lifecycle-end-to-end.md](references/policy-lifecycle-end-to-end.md).
 
 ## Non-negotiables
 
@@ -95,8 +96,13 @@ Details: [references/testing.md](references/testing.md).
 ## References (load on demand)
 
 - [references/request-flow.md](references/request-flow.md): GET/POST walk-throughs across layers, the two service hierarchies, transactions and post-commit hooks.
+- [references/policy-lifecycle-end-to-end.md](references/policy-lifecycle-end-to-end.md): `createPolicy` -> ref tables -> async `ServiceVersionUpdater` -> `x_policy_change_log` -> `/policies/download`, Admin's own policy engine.
 - [references/add-rest-endpoint.md](references/add-rest-endpoint.md): full endpoint template, `RangerAPIList`/`RangerAPIMapping`, web.xml, arg validation idioms.
 - [references/add-entity-dao-service.md](references/add-entity-dao-service.md): entity/DAO/named-query/service/view recipe, `SearchField`/`SortField`, `trxLogAttrs`, `RangerAuditFields`.
+- [references/rest-inventory.md](references/rest-inventory.md): every `*REST` class, its `@Path`, collaborators, `ServiceREST` endpoint families, `PublicAPIsv2` facade rule.
+- [references/service-management.md](references/service-management.md): `ServiceMgr` plugin classloader, connection test / lookup timeouts via `TimedExecutor`, zone admin checks.
+- [references/security-zones-and-gds.md](references/security-zones-and-gds.md): zone and GDS layers, entities, constants, `gds` def vs `_gds` service.
+- [references/user-group-model.md](references/user-group-model.md): `x_portal_user` vs `x_user` (joined by name), `XUserMgr`/`UserMgr` split, user-store version bump, assignable roles.
 - [references/security-and-authz.md](references/security-and-authz.md): `RangerContextHolder`, `RangerPreAuthSecurityHandler`, module/tab names, filters, Spring XML wiring.
 - [references/java-patches.md](references/java-patches.md): `Patch*_J10xxx` template, `BaseLoader`, how `db_setup.py` runs them, `patch/cliutil`.
 - [references/utilities.md](references/utilities.md): `common/` utility catalog, `MessageEnums`, constants, naming prefix table, DTO annotations, metrics package.

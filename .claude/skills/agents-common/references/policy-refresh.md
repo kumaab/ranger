@@ -17,6 +17,9 @@
 
 # Policy refresh, caching, and Admin client
 
+Admin side of this flow (how a write becomes a new version and a `x_policy_change_log` row): `security-admin` skill,
+`references/policy-lifecycle-end-to-end.md`.
+
 ## `PolicyRefresher extends Thread` (`util/`)
 
 - Cache file `String.format("%s_%s.json", appId, serviceName)` (separators replaced by `_`) under `ranger.plugin.<svc>.policy.cache.dir`.

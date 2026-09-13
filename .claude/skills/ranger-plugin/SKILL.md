@@ -24,7 +24,8 @@ description: How a Ranger service plugin module is structured and wired - plugin
 A plugin for service `<svc>` is up to three Maven modules plus packaging: the impl module (`plugin-<svc>`, or legacy `<svc>-agent`), the shim
 (`ranger-<svc>-plugin-shim`), and the shared `ranger-plugin-classloader`. The framework it builds on is documented in `agents-common`.
 Reference implementations: `plugin-kafka` (plain `RangerBasePlugin`), `hive-agent` (nested `RangerHivePlugin extends RangerBasePlugin`, masking, row filter),
-`hdfs-agent` (top-level `RangerHdfsPlugin`), `ranger-examples/plugin-sampleapp` (minimal).
+`hdfs-agent` (top-level `RangerHdfsPlugin`), `ranger-examples/plugin-sampleapp` (minimal). How each attaches to its host: [references/host-hook-points.md](references/host-hook-points.md).
+Audit transport and `xasecure.audit.*` keys: `ranger-audit-server`.
 
 ## Impl module layout
 
@@ -60,7 +61,10 @@ plugin-<svc>/
 - Resource names set on `RangerAccessResourceImpl.setValue(name, value)` must match `resources[].name` in the service-def.
 - Audit through `RangerDefaultAuditHandler` (or a subclass); set with `plugin.setResultProcessor(...)` before `init()`.
 - Excluded from the impl assembly (host provides them): jackson, jersey, hk2, slf4j, log4j. Check `distro/src/main/assembly/plugin-kafka.xml` before adding a dependency.
-- Trino and nestedstructure have no shim (Trino uses `META-INF/services/io.trino.spi.Plugin`); everything else does.
+- `plugin-kms` is the odd one: `RangerKmsAuthorizer implements KeyACLs` is loaded by Hadoop KMS itself (`hadoop.kms.security.authorization.manager`), with
+  `RangerKMSPlugin` built as `super("kms", "kms")`; see `ranger-kms`.
+- No shim for Trino (its authorizer moved to the Trino repo in RANGER-4859; only `RangerServiceTrino` remains here), NiFi, NiFi Registry, Kudu, Schema Registry
+  (Admin-side lookup only) or nestedstructure (library API). Every other plugin has one.
 
 ## `RangerService<Svc>` (Admin-side lookup and test-connection)
 
@@ -102,3 +106,4 @@ into `ranger.plugin.<svc>.policy.cache.dir`.
 
 - [references/new-plugin-checklist.md](references/new-plugin-checklist.md): every file to create or edit, with the pom/assembly snippets.
 - [references/shim.md](references/shim.md): shim class template and classloader mechanics, `.cfg` format, `enable-agent.sh` flow.
+- [references/host-hook-points.md](references/host-hook-points.md): per-service entry class, host property, and behaviour keys (HDFS ACL fallback, Hive grant/revoke, HBase, YARN).

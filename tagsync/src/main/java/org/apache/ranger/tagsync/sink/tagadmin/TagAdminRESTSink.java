@@ -317,9 +317,7 @@ public class TagAdminRESTSink implements TagSink, Runnable {
             }
 
             if (response != null) {
-                if (response.getStatus() == HttpServletResponse.SC_NOT_FOUND) {
-                    // This will be handled by the status check
-                } else if (response.getStatus() == HttpServletResponse.SC_UNAUTHORIZED) {
+                if (response.getStatus() == HttpServletResponse.SC_UNAUTHORIZED) {
                     LOG.warn("Credentials response from ranger is 401.");
                     sessionId = null; // Clear session on unauthorized
                     isValidRangerCookie = false;

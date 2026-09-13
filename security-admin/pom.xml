@@ -37,11 +37,6 @@
             <version>${aopalliance.version}</version>
         </dependency>
         <dependency>
-            <groupId>asm</groupId>
-            <artifactId>asm-all</artifactId>
-            <version>${asm.all.version}</version>
-        </dependency>
-        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>

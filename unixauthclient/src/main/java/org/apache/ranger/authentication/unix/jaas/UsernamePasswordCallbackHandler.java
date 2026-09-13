@@ -30,8 +30,8 @@ public class UsernamePasswordCallbackHandler implements CallbackHandler {
 
     public UsernamePasswordCallbackHandler(String user, String password) {
         super();
-        user     = user;
-        password = password;
+        this.user     = user;
+        this.password = password;
     }
 
     @Override

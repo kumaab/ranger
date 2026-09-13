@@ -29,7 +29,7 @@
         <unpack>false</unpack>
         <directoryMode>755</directoryMode>
         <fileMode>644</fileMode>
-        <outputDirectory>/lib</outputDirectory>
+        <outputDirectory>lib</outputDirectory>
       </binaries>
     </moduleSet>
 

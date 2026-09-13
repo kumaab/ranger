@@ -463,7 +463,7 @@
         <include>org.apache.ranger:ranger-kudu-plugin</include>
       </includes>
       <binaries>
-        <outputDirectory>/ews/webapp/WEB-INF/classes/ranger-plugins/kudu</outputDirectory>
+        <outputDirectory>ews/webapp/WEB-INF/classes/ranger-plugins/kudu</outputDirectory>
         <includeDependencies>false</includeDependencies>
         <unpack>false</unpack>
         <directoryMode>755</directoryMode>
@@ -476,7 +476,7 @@
         <include>org.apache.ranger:ranger-schema-registry-plugin</include>
       </includes>
       <binaries>
-        <outputDirectory>/ews/webapp/WEB-INF/classes/ranger-plugins/schema-registry</outputDirectory>
+        <outputDirectory>ews/webapp/WEB-INF/classes/ranger-plugins/schema-registry</outputDirectory>
         <includeDependencies>false</includeDependencies>
         <unpack>false</unpack>
         <directoryMode>755</directoryMode>

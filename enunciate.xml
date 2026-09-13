@@ -33,6 +33,7 @@
 		<php-xml-client disabled="true"/>
 		<php-json-client disabled="true"/>
 		<jaxws disabled="true"/>
+		<obj-c-xml-client disabled="true"/>
 	</modules>
   <api-classes>
     <include pattern="org.apache.hadoop.crypto.key.kms.server.*"/>

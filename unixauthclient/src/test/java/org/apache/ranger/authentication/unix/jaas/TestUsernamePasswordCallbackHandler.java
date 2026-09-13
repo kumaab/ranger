@@ -34,7 +34,6 @@ import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -46,11 +45,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @TestMethodOrder(MethodOrderer.MethodName.class)
 public class TestUsernamePasswordCallbackHandler {
     @Test
-    public void test01_handle_name_only_constructorBug_setsNullName() throws IOException, UnsupportedCallbackException {
-        UsernamePasswordCallbackHandler handler      = new UsernamePasswordCallbackHandler("alice", "secret");
-        NameCallback                    nameCallback = new NameCallback("User:");
-        handler.handle(new Callback[] {nameCallback});
-        assertNull(nameCallback.getName());
+    public void test01_handle_setsNameAndPassword_fromConstructor() throws IOException, UnsupportedCallbackException {
+        UsernamePasswordCallbackHandler handler          = new UsernamePasswordCallbackHandler("alice", "secret");
+        NameCallback                    nameCallback     = new NameCallback("User:");
+        PasswordCallback                passwordCallback = new PasswordCallback("Pass:", false);
+        handler.handle(new Callback[] {nameCallback, passwordCallback});
+        assertEquals("alice", nameCallback.getName());
+        assertArrayEquals("secret".toCharArray(), passwordCallback.getPassword());
     }
 
     @Test

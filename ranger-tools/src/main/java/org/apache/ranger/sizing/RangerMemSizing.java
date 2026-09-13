@@ -60,11 +60,11 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +76,7 @@ public class RangerMemSizing {
     private static final String OPT_MODE_SPACE      = "space";
     private static final String OPT_MODEL_RETRIEVAL = "retrieval";
 
-    private static final SimpleDateFormat                         DATE_FORMAT        = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+    private static final DateTimeFormatter                        DATE_FORMAT        = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
     private static final TypeReference<List<RangerAccessRequest>> TYPE_LIST_REQUESTS = new TypeReference<List<RangerAccessRequest>>() {};
 
     private final String      policyFile;
@@ -483,7 +483,7 @@ public class RangerMemSizing {
 
         for (int idxClient = 0; idxClient < evalClientsCount; idxClient++) {
             clients[idxClient] = new Thread(() -> {
-                do {
+                while (true) {
                     int idxReq = idxNextRequest.getAndIncrement();
 
                     if (idxReq >= requests.size()) {
@@ -504,7 +504,6 @@ public class RangerMemSizing {
 
                     requests.set(idxReq, null); // so that objects associated with the request can be freed
                 }
-                while (true);
             });
         }
 
@@ -607,11 +606,11 @@ public class RangerMemSizing {
     }
 
     private void log(String msg) {
-        out.println(DATE_FORMAT.format(new Date()) + ": " + msg);
+        out.println(DATE_FORMAT.format(LocalDateTime.now()) + ": " + msg);
     }
 
     private void log(String msg, Throwable excp) {
-        out.println(DATE_FORMAT.format(new Date()) + ": " + msg);
+        out.println(DATE_FORMAT.format(LocalDateTime.now()) + ": " + msg);
 
         excp.printStackTrace(out);
     }

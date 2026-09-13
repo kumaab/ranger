@@ -4468,18 +4468,6 @@ public class ServiceDBStore extends AbstractServiceStore {
         }
     }
 
-    private void persistChangeLog(ServiceVersionUpdater serviceVersionUpdater) {
-        XXServiceVersionInfoDao serviceVersionInfoDao   = serviceVersionUpdater.daoManager.getXXServiceVersionInfo();
-        XXServiceVersionInfo    serviceVersionInfoDbObj = serviceVersionInfoDao.findByServiceId(serviceVersionUpdater.serviceId);
-        XXService               service                 = serviceVersionUpdater.daoManager.getXXService().getById(serviceVersionUpdater.serviceId);
-
-        if (service != null) {
-            Long version = serviceVersionUpdater.versionType == VERSION_TYPE.TAG_VERSION ? serviceVersionInfoDbObj.getTagVersion() : serviceVersionInfoDbObj.getPolicyVersion();
-
-            persistChangeLog(service, serviceVersionUpdater.versionType, version, serviceVersionUpdater);
-        }
-    }
-
     private static void persistChangeLog(XXService service, VERSION_TYPE versionType, Long version, ServiceVersionUpdater serviceVersionUpdater) {
         Date now = new Date();
 
@@ -4541,20 +4529,6 @@ public class ServiceDBStore extends AbstractServiceStore {
         }
 
         return true;
-    }
-
-    private String getServiceName(Long serviceId) {
-        String ret = null;
-
-        if (serviceId != null) {
-            XXService service = daoMgr.getXXService().getById(serviceId);
-
-            if (service != null) {
-                ret = service.getName();
-            }
-        }
-
-        return ret;
     }
 
     private boolean isAccessTypeInList(String accessType, List<XXAccessTypeDef> xAccessTypeDefs) {
@@ -5832,7 +5806,7 @@ public class ServiceDBStore extends AbstractServiceStore {
         return ret;
     }
 
-    private String getMetricOfTypeAudits(final SearchCriteria searchCriteria) {
+    private String getMetricOfTypeAudits() {
         String ret = null;
 
         try {
@@ -5894,7 +5868,7 @@ public class ServiceDBStore extends AbstractServiceStore {
         return ret;
     }
 
-    private String getMetricOfTypeServices(final SearchCriteria searchCriteria) {
+    private String getMetricOfTypeServices() {
         String ret = null;
 
         try {
@@ -5935,7 +5909,7 @@ public class ServiceDBStore extends AbstractServiceStore {
         return ret;
     }
 
-    private String getMetricOfTypePolicies(final SearchCriteria searchCriteria) {
+    private String getMetricOfTypePolicies() {
         String ret = null;
 
         try {
@@ -6007,7 +5981,7 @@ public class ServiceDBStore extends AbstractServiceStore {
         return ret;
     }
 
-    private String getMetricOfTypeDatabase(final SearchCriteria searchCriteria) {
+    private String getMetricOfTypeDatabase() {
         String ret = null;
 
         try {
@@ -6023,7 +5997,7 @@ public class ServiceDBStore extends AbstractServiceStore {
         return ret;
     }
 
-    private String getMetricOfTypeContextEnrichers(final SearchCriteria searchCriteria) {
+    private String getMetricOfTypeContextEnrichers() {
         String ret = null;
 
         try {
@@ -6055,7 +6029,7 @@ public class ServiceDBStore extends AbstractServiceStore {
         return ret;
     }
 
-    private String getMetricOfTypeDenyConditions(final SearchCriteria searchCriteria) {
+    private String getMetricOfTypeDenyConditions() {
         String ret = null;
 
         try {
@@ -6596,37 +6570,37 @@ public class ServiceDBStore extends AbstractServiceStore {
         AUDITS {
             @Override
             public String getMetric(ServiceDBStore ref, SearchCriteria searchCriteria) {
-                return ref.getMetricOfTypeAudits(searchCriteria);
+                return ref.getMetricOfTypeAudits();
             }
         },
         SERVICES {
             @Override
             public String getMetric(ServiceDBStore ref, SearchCriteria searchCriteria) {
-                return ref.getMetricOfTypeServices(searchCriteria);
+                return ref.getMetricOfTypeServices();
             }
         },
         POLICIES {
             @Override
             public String getMetric(ServiceDBStore ref, SearchCriteria searchCriteria) {
-                return ref.getMetricOfTypePolicies(searchCriteria);
+                return ref.getMetricOfTypePolicies();
             }
         },
         DATABASE {
             @Override
             public String getMetric(ServiceDBStore ref, SearchCriteria searchCriteria) {
-                return ref.getMetricOfTypeDatabase(searchCriteria);
+                return ref.getMetricOfTypeDatabase();
             }
         },
         CONTEXT_ENRICHERS {
             @Override
             public String getMetric(ServiceDBStore ref, SearchCriteria searchCriteria) {
-                return ref.getMetricOfTypeContextEnrichers(searchCriteria);
+                return ref.getMetricOfTypeContextEnrichers();
             }
         },
         DENY_CONDITIONS {
             @Override
             public String getMetric(ServiceDBStore ref, SearchCriteria searchCriteria) {
-                return ref.getMetricOfTypeDenyConditions(searchCriteria);
+                return ref.getMetricOfTypeDenyConditions();
             }
         };
 

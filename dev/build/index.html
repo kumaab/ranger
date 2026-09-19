@@ -1,0 +1,2323 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://apache.github.io/ranger/dev/build/">
+      
+      
+        <link rel="prev" href="../../features/client-interface/python/">
+      
+      
+        <link rel="next" href="../rest-api/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/brand/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Building from source - Apache Ranger</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/css/custom.css">
+    
+      <link rel="stylesheet" href="../../assets/css/table.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Building from source - Apache Ranger" />
+<meta property="og:image" content="https://apache.github.io/ranger/assets/images/social/dev/build.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://apache.github.io/ranger/dev/build/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="Building from source - Apache Ranger" />
+<meta property="twitter:image" content="https://apache.github.io/ranger/assets/images/social/dev/build.png" />
+</head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#building-from-source" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="https://ranger.apache.org" title="Apache Ranger" class="md-header__button md-logo" aria-label="Apache Ranger" data-md-component="logo">
+      
+  <img src="../../assets/brand/merged-logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apache Ranger
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Building from source
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 2c-1.82 0-3.53.5-5 1.35C8 5.08 10 8.3 10 12s-2 6.92-5 8.65C6.47 21.5 8.18 22 10 22a10 10 0 0 0 10-10A10 10 0 0 0 10 2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/apache/ranger" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    apache/ranger
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/introduction/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Getting started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../arch/architecture/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../plugins/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Plugins
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../services/admin/service/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Services
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../features/policies/resource-policies/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Features
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Developer guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../project/contributing/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Project
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../release-notes/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Releases
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../blog/blog/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://ranger.apache.org" title="Apache Ranger" class="md-nav__button md-logo" aria-label="Apache Ranger" data-md-component="logo">
+      
+  <img src="../../assets/brand/merged-logo.svg" alt="logo">
+
+    </a>
+    Apache Ranger
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/apache/ranger" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    apache/ranger
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../getting-started/introduction/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../arch/architecture/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plugins/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugins
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    
+  
+  
+  
+    <a href="../../services/admin/service/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Services
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    
+  
+  
+  
+    <a href="../../features/policies/resource-policies/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer guide
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Developer guide
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building from source
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building from source
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick build
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build artifacts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-in-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building in Docker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maven-profiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maven profiles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful flags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests-and-code-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests and code checks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#continuous-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Continuous integration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-the-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building the documentation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ide-import" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IDE import
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Further reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rest-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REST API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authz-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authorization API and PDP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom-conditions-enrichers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom conditions and enrichers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing-and-tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing and tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../project/contributing/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../release-notes/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Releases
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../blog/blog/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick build
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build artifacts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-in-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building in Docker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maven-profiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maven profiles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful flags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests-and-code-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests and code checks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#continuous-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Continuous integration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-the-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building the documentation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ide-import" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IDE import
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Further reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Developer guide
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<!---
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<h1 id="building-from-source">Building from source<a class="headerlink" href="#building-from-source" title="Permanent link">&para;</a></h1>
+<p>Apache Ranger is a multi-module Apache Maven project. A full build compiles roughly seventy modules (Admin,
+UserSync, TagSync, KMS, PDP, the audit server, every plugin and its shim, the client libraries, and the
+examples) and packages each deployable component as a <code>ranger-&lt;version&gt;-&lt;component&gt;.tar.gz</code> archive in the
+root <code>target/</code> directory. Those archives are what the Docker images in <code>dev-support/ranger-docker</code> are built
+from.</p>
+<p>You can build on your own machine with a JDK and Maven, or inside a container so that you do not have to
+install a toolchain. Both paths are described below, followed by the profiles that let you build a subset of
+modules, how to run tests and code checks, and how to import the project into an IDE.</p>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<p>The versions below are enforced by <code>maven-enforcer-plugin</code> in the root <code>pom.xml</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JDK</td>
+<td>17 (<code>java.version.required</code>)</td>
+</tr>
+<tr>
+<td>Apache Maven</td>
+<td>3.6.3 or newer (<code>maven.version.required</code>)</td>
+</tr>
+<tr>
+<td>Git</td>
+<td>any</td>
+</tr>
+<tr>
+<td>Maven heap</td>
+<td>4–5 GB</td>
+</tr>
+<tr>
+<td>Disk</td>
+<td>several GB</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Source and target level are 17 (<code>javac.source.version</code>). CI builds with Temurin 17.</li>
+<li>You do not need Node.js. <code>frontend-maven-plugin</code> downloads Node <code>v20.19.5</code> and npm <code>10.8.2</code> into
+  <code>security-admin/target/react-webapp</code> to build the Admin UI; the build only needs network access.</li>
+<li>CI uses <code>MAVEN_OPTS=-Xmx5g</code>; the docker build script uses <code>-Xms512m -Xmx5g</code>.</li>
+<li>A full build downloads the dependency trees of every component Ranger integrates with (Trino, Ozone, Kafka,
+  Knox, HBase, Hive, Hadoop and others).</li>
+</ul>
+<p>Set <code>JAVA_HOME</code> to the JDK 17 installation and make sure <code>mvn -v</code> reports it.</p>
+<h2 id="quick-build">Quick build<a class="headerlink" href="#quick-build" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/apache/ranger.git
+<span class="nb">cd</span><span class="w"> </span>ranger
+mvn<span class="w"> </span>clean<span class="w"> </span>package<span class="w"> </span>-DskipTests
+ls<span class="w"> </span>target/ranger-*.tar.gz
+</code></pre></div>
+<p><code>package</code> is enough to produce the tarballs; use <code>install</code> if other Maven projects on the same machine (for
+example an application that depends on <code>ranger-intg</code> or <code>authz-remote</code>) need the snapshot jars in your local
+repository:</p>
+<div class="highlight"><pre><span></span><code>mvn<span class="w"> </span>clean<span class="w"> </span>install<span class="w"> </span>-DskipTests
+</code></pre></div>
+<p>Expect the first build to take a long time (up to an hour on a cold <code>~/.m2</code>); later builds are much faster.
+CI runs the full verification build in parallel with <code>mvn -T 8 clean verify --no-transfer-progress -B -V</code>.</p>
+<h2 id="build-artifacts">Build artifacts<a class="headerlink" href="#build-artifacts" title="Permanent link">&para;</a></h2>
+<p>After a successful build the root <code>target/</code> directory contains one archive per assembly descriptor in
+<code>distro/src/main/assembly/</code> (the <code>all</code> profile in <code>distro/pom.xml</code>), plus a <code>version</code> file:</p>
+<table>
+<thead>
+<tr>
+<th>Archive</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger-&lt;version&gt;-admin.tar.gz</code></td>
+<td>Ranger Admin (policy manager web application, embedded Tomcat, DB scripts).</td>
+</tr>
+<tr>
+<td><code>ranger-&lt;version&gt;-usersync.tar.gz</code></td>
+<td>UserSync.</td>
+</tr>
+<tr>
+<td><code>ranger-&lt;version&gt;-tagsync.tar.gz</code></td>
+<td>TagSync.</td>
+</tr>
+<tr>
+<td><code>ranger-&lt;version&gt;-kms.tar.gz</code></td>
+<td>Ranger KMS.</td>
+</tr>
+<tr>
+<td><code>ranger-&lt;version&gt;-pdp.tar.gz</code></td>
+<td>Ranger PDP (policy decision point) server.</td>
+</tr>
+<tr>
+<td><code>ranger-&lt;version&gt;-audit-ingestor.tar.gz</code></td>
+<td>Audit server: ingestor.</td>
+</tr>
+<tr>
+<td><code>ranger-&lt;version&gt;-audit-dispatcher.tar.gz</code></td>
+<td>Audit server: dispatcher.</td>
+</tr>
+<tr>
+<td><code>ranger-&lt;version&gt;-&lt;name&gt;-plugin.tar.gz</code></td>
+<td>One archive per plugin with the plugin and shim jars.</td>
+</tr>
+<tr>
+<td><code>ranger-&lt;version&gt;-ranger-tools.tar.gz</code></td>
+<td>Policy-engine performance and load tools (see <a href="../testing-and-tools/">Testing and tools</a>).</td>
+</tr>
+<tr>
+<td><code>ranger-&lt;version&gt;-sample-client.tar.gz</code></td>
+<td>Java sample clients for the Admin REST API and the PDP.</td>
+</tr>
+<tr>
+<td><code>ranger-&lt;version&gt;-migration-util.tar.gz</code></td>
+<td>Migration utility.</td>
+</tr>
+<tr>
+<td><code>ranger-&lt;version&gt;-solr_audit_conf.tar.gz</code></td>
+<td>Solr collection configuration for audits.</td>
+</tr>
+<tr>
+<td><code>ranger-&lt;version&gt;-src.tar.gz</code></td>
+<td>Source archive.</td>
+</tr>
+</tbody>
+</table>
+<p>Plugin archives are built for these <code>&lt;name&gt;</code> values: <code>trino</code>, <code>ozone</code>, <code>schema-registry</code>, <code>presto</code>,
+<code>elasticsearch</code>, <code>kylin</code>, <code>sqoop</code>, <code>atlas</code>, <code>kafka</code>, <code>solr</code>, <code>yarn</code>, <code>knox</code>, <code>storm</code>, <code>hbase</code>, <code>hive</code>
+and <code>hdfs</code>. The <code>kms</code> plugin assembly (<code>plugin-kms.xml</code>) is not in the descriptor list of the <code>all</code> profile; it
+is referenced only by the <code>ranger-kms-plugin</code> profile of <code>distro/pom.xml</code>.</p>
+<p>The NiFi, NiFi Registry, Kudu and nested-structure plugins build jars in their module <code>target/</code> directories but
+have no tarball assembly.</p>
+<h2 id="building-in-docker">Building in Docker<a class="headerlink" href="#building-in-docker" title="Permanent link">&para;</a></h2>
+<p>Two container-based options exist; both mount your <code>~/.m2</code> so dependency downloads are cached between runs.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">docker compose (recommended)</label><label for="__tabbed_1_2">build_ranger_using_docker.sh</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>The <code>ranger-build</code> service in <code>dev-support/ranger-docker/docker-compose.ranger-build.yml</code> builds an image from
+<code>Dockerfile.ranger-build</code> (based on <code>apache/ranger-base</code>, which already contains the JDK, Maven and git) and
+runs <code>scripts/build/ranger-build.sh</code> inside it. The script runs
+<code>mvn -P${PROFILE} ${BUILD_OPTS} -DskipTests -DskipDocs clean package</code> and moves <code>target/ranger-*</code> and
+<code>target/version</code> into <code>dev-support/ranger-docker/dist/</code>, where the service Dockerfiles expect them.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>dev-support/ranger-docker
+chmod<span class="w"> </span>+x<span class="w"> </span>scripts/**/*.sh
+
+<span class="c1"># optional: rebuild the build image (e.g. after a base-image change)</span>
+docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-build.yml<span class="w"> </span>build
+
+docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-build.yml<span class="w"> </span>up
+</code></pre></div>
+<p>Environment variables read by <code>ranger-build.sh</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BUILD_HOST_SRC</code></td>
+<td><code>true</code></td>
+<td>Build the checkout mounted from the host (<code>RANGER_HOME</code>, default the repo root). Set to <code>false</code> to clone instead.</td>
+</tr>
+<tr>
+<td><code>GIT_URL</code></td>
+<td><code>https://github.com/apache/ranger.git</code></td>
+<td>Repository to clone when <code>BUILD_HOST_SRC=false</code>.</td>
+</tr>
+<tr>
+<td><code>BRANCH</code></td>
+<td><code>master</code></td>
+<td>Branch to clone when <code>BUILD_HOST_SRC=false</code>.</td>
+</tr>
+<tr>
+<td><code>PROFILE</code></td>
+<td>unset</td>
+<td>Maven profile id passed as <code>-P&lt;PROFILE&gt;</code> (see <a href="#maven-profiles">Maven profiles</a>).</td>
+</tr>
+<tr>
+<td><code>BUILD_OPTS</code></td>
+<td>unset</td>
+<td>Extra Maven arguments.</td>
+</tr>
+<tr>
+<td><code>SKIPTESTS</code></td>
+<td>unset (<code>-DskipTests</code>)</td>
+<td>Set to <code>false</code> to run unit tests in the container.</td>
+</tr>
+<tr>
+<td><code>JAVA_OPTS</code></td>
+<td>unset</td>
+<td>Appended to <code>MAVEN_OPTS</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>After cloning, the script applies any patches placed in <code>dev-support/ranger-docker/patches/</code> with <code>git apply</code>.</p>
+<p>The <code>ranger_in_docker up</code> script at the repository root runs this same build automatically when
+<code>dev-support/ranger-docker/dist/</code> holds fewer than 20 tarballs (or when <code>RANGER_REBUILD=1</code>), then starts the
+services. Set <code>DOCKER_MAVEN_BUILD=1</code> to have it run <code>mvn clean package -DskipTests</code> on the host instead. See
+<a href="../../getting-started/docker/">Running Ranger with Docker</a>.</p>
+</div>
+<div class="tabbed-block">
+<p>The older <code>build_ranger_using_docker.sh</code> at the repository root builds a throw-away Ubuntu image named
+<code>ranger_dev</code> with Maven 3.9.9 and runs Maven in it, mounting the source tree at <code>/ranger</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># default: mvn -Pall -DskipTests=true clean compile package install</span>
+./build_ranger_using_docker.sh
+
+<span class="c1"># custom maven command</span>
+./build_ranger_using_docker.sh<span class="w"> </span>mvn<span class="w"> </span>-Pall<span class="w"> </span>clean<span class="w"> </span>install<span class="w"> </span>-DskipTests<span class="o">=</span><span class="nb">true</span>
+
+<span class="c1"># force re-creation of the image</span>
+./build_ranger_using_docker.sh<span class="w"> </span>-build_image<span class="w"> </span>mvn<span class="w"> </span>-Pall<span class="w"> </span>clean<span class="w"> </span>install<span class="w"> </span>-DskipTests<span class="o">=</span><span class="nb">true</span>
+</code></pre></div>
+<p>Run it with <code>sudo</code> on Linux. Note that this image installs OpenJDK 11, which no longer satisfies the JDK 17
+requirement of master; prefer the docker compose build above.</p>
+</div>
+</div>
+</div>
+<h2 id="maven-profiles">Maven profiles<a class="headerlink" href="#maven-profiles" title="Permanent link">&para;</a></h2>
+<p>Profiles are declared in the root <code>pom.xml</code> (<code>grep '&lt;profile&gt;' pom.xml</code>). <code>all</code> is active by default and lists
+every module; the component profiles compile only one component plus the modules it depends on, which is much
+faster when you are working on a single plugin. The component profiles do not include the <code>distro</code> module, so
+they produce jars (and the Admin <code>war</code>) in the module <code>target/</code> directories, not tarballs.</p>
+<table>
+<thead>
+<tr>
+<th>Profile</th>
+<th>Modules</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>all</code> (default)</td>
+<td>Everything, including <code>distro</code>, which must remain the last module.</td>
+</tr>
+<tr>
+<td><code>ranger-admin</code></td>
+<td><code>agents-common</code>, <code>common-utils</code>, <code>security-admin</code>, <code>ugsync-util</code>.</td>
+</tr>
+<tr>
+<td><code>ranger-&lt;name&gt;-plugin</code></td>
+<td>One plugin: the shared agent modules, the plugin module and its shim (Trino and nested structure have no shim).</td>
+</tr>
+<tr>
+<td><code>ranger-examples</code></td>
+<td><code>agents-common</code>, <code>agents-cred</code>, <code>common-utils</code>, <code>intg</code>, <code>ranger-examples</code>.</td>
+</tr>
+<tr>
+<td><code>linux</code></td>
+<td>Activated automatically on Linux; same module list as <code>all</code>. It stays active when you pass <code>-P &lt;profile&gt;</code>, so on Linux a component profile does not narrow the build.</td>
+</tr>
+<tr>
+<td><code>sign-artifacts</code></td>
+<td>GPG-signs artifacts; used by release managers (<code>-Dsign-artifacts=true</code>).</td>
+</tr>
+</tbody>
+</table>
+<p>Plugin profiles exist for these <code>&lt;name&gt;</code> values: <code>trino</code>, <code>ozone</code>, <code>nestedstructure</code>, <code>presto</code>, <code>elasticsearch</code>,
+<code>kylin</code>, <code>sqoop</code>, <code>atlas</code>, <code>kafka</code>, <code>solr</code>, <code>kms</code>, <code>yarn</code>, <code>knox</code>, <code>storm</code>, <code>hbase</code>, <code>hive</code> and <code>hdfs</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># only the Hive plugin</span>
+mvn<span class="w"> </span>clean<span class="w"> </span>package<span class="w"> </span>-DskipTests<span class="w"> </span>-P<span class="w"> </span>ranger-hive-plugin
+ls<span class="w"> </span>hive-agent/target/*.jar<span class="w"> </span>ranger-hive-plugin-shim/target/*.jar
+
+<span class="c1"># only Ranger Admin</span>
+mvn<span class="w"> </span>clean<span class="w"> </span>package<span class="w"> </span>-DskipTests<span class="w"> </span>-P<span class="w"> </span>ranger-admin
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Rebuilding a single module</p>
+<p>Within the default profile you can also restrict Maven to one module and what it needs, e.g.
+<code>mvn -pl agents-common -am clean install -DskipTests</code>. The tarballs are produced by <code>distro</code>, which depends
+on every packaged component, so run the full build if you need an archive.</p>
+</div>
+<h2 id="useful-flags">Useful flags<a class="headerlink" href="#useful-flags" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-DskipTests</code></td>
+<td>Compile tests but do not run them (<code>skipTests</code> is wired into surefire).</td>
+</tr>
+<tr>
+<td><code>-DskipDocs</code></td>
+<td>Passed by the docker build script. No <code>pom.xml</code> in the current tree reads this property.</td>
+</tr>
+<tr>
+<td><code>-Dcheckstyle.skip=true</code></td>
+<td>Skip Checkstyle (default <code>false</code>; violations fail the build).</td>
+</tr>
+<tr>
+<td><code>-Dspotbugs.failOnViolation=true</code></td>
+<td>Make SpotBugs findings fail the build (default <code>false</code>, report only).</td>
+</tr>
+<tr>
+<td><code>-T 8</code></td>
+<td>Parallel build with 8 threads, as used in CI.</td>
+</tr>
+<tr>
+<td><code>--no-transfer-progress -B</code></td>
+<td>Quieter, non-interactive output for CI logs.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tests-and-code-checks">Tests and code checks<a class="headerlink" href="#tests-and-code-checks" title="Permanent link">&para;</a></h2>
+<p>Unit tests use JUnit 5 (the enforcer's <code>ban-legacy-dependencies</code> rule bans JUnit 4 in the compile, runtime
+and provided scopes) and run with
+<code>maven-surefire-plugin</code>. Code checks are bound to the <code>verify</code> phase:</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Plugin</th>
+<th>Configuration</th>
+<th>Fails build?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Checkstyle</td>
+<td><code>maven-checkstyle-plugin</code></td>
+<td><code>dev-support/checkstyle.xml</code>, suppressions in <code>dev-support/checkstyle-suppressions.xml</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td>PMD</td>
+<td><code>maven-pmd-plugin</code></td>
+<td><code>dev-support/ranger-pmd-ruleset.xml</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td>SpotBugs</td>
+<td><code>spotbugs-maven-plugin</code></td>
+<td><code>dev-support/spotbugsIncludeFile.xml</code></td>
+<td>no (unless <code>-Dspotbugs.failOnViolation=true</code>)</td>
+</tr>
+<tr>
+<td>Coverage</td>
+<td><code>jacoco-maven-plugin</code></td>
+<td>per-module <code>jacoco.exec</code></td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<p><code>dev-support/checks/coverage.sh</code> merges the per-module coverage data into <code>target/coverage/all</code> (HTML and XML).</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># full verification, as in CI</span>
+mvn<span class="w"> </span>clean<span class="w"> </span>verify
+
+<span class="c1"># run the tests of one module</span>
+mvn<span class="w"> </span>-pl<span class="w"> </span>agents-common<span class="w"> </span><span class="nb">test</span>
+
+<span class="c1"># a single test class</span>
+mvn<span class="w"> </span>-pl<span class="w"> </span>agents-common<span class="w"> </span><span class="nb">test</span><span class="w"> </span>-Dtest<span class="o">=</span>TestPolicyEngine
+
+<span class="c1"># merged coverage report after a `verify` build</span>
+./dev-support/checks/coverage.sh
+open<span class="w"> </span>target/coverage/all/index.html
+</code></pre></div>
+<p>The style rules that Checkstyle enforces are explained in <a href="../../project/java-code-style/">Java code style</a>;
+<code>dev-support/RangerCodeScheme-IntelliJ.xml</code> is an IntelliJ code-style scheme matching them. More on test
+suites and tools in <a href="../testing-and-tools/">Testing and tools</a>.</p>
+<h2 id="continuous-integration">Continuous integration<a class="headerlink" href="#continuous-integration" title="Permanent link">&para;</a></h2>
+<p><code>.github/workflows/ci.yml</code> runs on every push and on pull requests against <code>master</code>:</p>
+<ol>
+<li><code>build-17</code>: JDK 17, <code>mvn -T 8 clean verify</code>, then <code>dev-support/checks/coverage.sh</code>; uploads <code>target/*</code> as
+   an artifact.</li>
+<li><code>services-docker-build</code>: downloads the tarballs into <code>dev-support/ranger-docker/dist</code>, builds the Admin,
+   PDP, UserSync, TagSync, KMS and audit-service images with PostgreSQL and OpenSearch, starts them, and
+   checks every container is running.</li>
+<li><code>plugins-docker-build</code>: the same for the Hadoop, HBase, Hive, Knox and Ozone plugin containers (with a KDC).</li>
+</ol>
+<p><code>.github/workflows/docs.yml</code> builds this documentation site with <code>mkdocs build</code> and publishes it on pushes to
+<code>dev</code> and <code>master</code>. <code>upgrade-ranger.yaml</code> is a manually triggered workflow that installs an earlier release in Docker and
+upgrades it to the freshly built version.</p>
+<h2 id="building-the-documentation">Building the documentation<a class="headerlink" href="#building-the-documentation" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>mkdocs
+python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+mkdocs<span class="w"> </span>serve<span class="w"> </span>--strict<span class="w">          </span><span class="c1"># http://localhost:8000</span>
+mkdocs<span class="w"> </span>build
+</code></pre></div>
+<h2 id="ide-import">IDE import<a class="headerlink" href="#ide-import" title="Permanent link">&para;</a></h2>
+<p>Import the root <code>pom.xml</code> as a Maven project.</p>
+<ul>
+<li><strong>IntelliJ IDEA</strong>: <em>File → New → Project from Existing Sources</em> (or <em>Open</em>) on the repository root; select
+  the Maven model. Import <code>dev-support/RangerCodeScheme-IntelliJ.xml</code> under <em>Settings → Editor → Code Style</em>
+  so that formatting matches Checkstyle. Set the project SDK to JDK 17.</li>
+<li><strong>Eclipse</strong>: <code>mvn eclipse:eclipse</code> from the root generates project files, then <em>Import → Existing Projects
+  into Workspace</em>; or use m2e and import the root as a Maven project.</li>
+</ul>
+<p>Build once from the command line (<code>mvn clean install -DskipTests</code>) before importing so that generated
+sources and the Admin UI resources exist.</p>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause / fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Detected JDK version ... is not in the allowed range [17,)</code></td>
+<td>Enforcer rule: point <code>JAVA_HOME</code> to JDK 17.</td>
+</tr>
+<tr>
+<td><code>java.lang.OutOfMemoryError</code> during the build</td>
+<td>Increase <code>MAVEN_OPTS</code> (e.g. <code>-Xmx5g</code>).</td>
+</tr>
+<tr>
+<td><code>npm</code> errors in <code>security-admin</code></td>
+<td>The UI build could not download or run Node. Run <code>npm cache clean --force</code> (as CI does) and check proxy settings.</td>
+</tr>
+<tr>
+<td>Checkstyle or PMD violations</td>
+<td>Fix them (see <a href="../../project/java-code-style/">Java code style</a>); <code>-Dcheckstyle.skip=true</code> only for local iteration.</td>
+</tr>
+<tr>
+<td>Stale <code>dev-support/ranger-docker/dist</code> after a rebuild</td>
+<td>Copy <code>target/ranger-*</code> and <code>target/version</code> into <code>dist/</code> again, or set <code>RANGER_REBUILD=1</code> for <code>ranger_in_docker</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="further-reading">Further reading<a class="headerlink" href="#further-reading" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../getting-started/docker/">Running Ranger with Docker</a>.</li>
+<li><a href="../../project/contributing/">Contributing</a> — review process and patch guidelines.</li>
+<li><a href="https://github.com/apache/ranger/blob/master/dev-support/ranger-docker/README.md"><code>dev-support/ranger-docker/README.md</code></a>.</li>
+</ul>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 18, 2026 19:47:56 PDT">September 18, 2026</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2014-2025 The Apache Software Foundation
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://the-asf.slack.com/archives/C4SC5NXAA" target="_blank" rel="noopener" title="the-asf.slack.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M94.1 315.1c0 25.9-21.2 47.1-47.1 47.1S0 341 0 315.1 21.2 268 47.1 268h47.1v47.1zm23.7 0c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1v117.8c0 25.9-21.2 47.1-47.1 47.1s-47.1-21.2-47.1-47.1zm47.1-189c-25.9 0-47.1-21.2-47.1-47.1s21.2-47 47.1-47S212 53.2 212 79.1v47.1h-47.1zm0 23.7c25.9 0 47.1 21.2 47.1 47.1S190.8 244 164.9 244H47.1C21.2 244 0 222.8 0 196.9s21.2-47.1 47.1-47.1zm189 47.1c0-25.9 21.2-47.1 47.1-47.1s47 21.2 47 47.1-21.2 47.1-47.1 47.1h-47.1v-47.1zm-23.7 0c0 25.9-21.2 47.1-47.1 47.1S236 222.8 236 196.9V79.1c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1zm-47.1 189c25.9 0 47.1 21.2 47.1 47.1s-21.2 47-47.1 47-47.1-21.2-47.1-47.1v-47.1h47.1zm0-23.7c-25.9 0-47.1-21.2-47.1-47.1s21.2-47.1 47.1-47.1h117.8c25.9 0 47.1 21.2 47.1 47.1s-21.2 47.1-47.1 47.1z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="mailto:dev@ranger.apache.org" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l208 156a48 48 0 0 0 57.6 0l208-156c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48zM0 196v188c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V196L313.6 344.8c-34.1 25.6-81.1 25.6-115.2 0z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/apache/ranger" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://hub.docker.com/r/apache/ranger" target="_blank" rel="noopener" title="hub.docker.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M349.9 236.3h-66.1v-59.4h66.1zm0-204.3h-66.1v60.7h66.1zm78.2 144.8H362v59.4h66.1zm-156.3-72.1h-66.1v60.1h66.1zm78.1 0h-66.1v60.1h66.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1zm78.1 0h-66.1v59.4h66.1zm-78.1-72.1h-66.1v60.1h66.1z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.top", "navigation.tracking", "navigation.tabs", "navigation.path", "navigation.indexes", "navigation.prune", "content.code.copy", "toc.follow", "announce.dismiss"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/js/typewriter.js"></script>
+      
+        <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+      
+    
+  </body>
+</html>

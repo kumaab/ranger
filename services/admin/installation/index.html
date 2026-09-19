@@ -1,0 +1,4039 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://apache.github.io/ranger/services/admin/installation/">
+      
+      
+        <link rel="prev" href="../service/">
+      
+      
+        <link rel="next" href="../authentication/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/brand/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Deployment and configuration - Apache Ranger</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/css/custom.css">
+    
+      <link rel="stylesheet" href="../../../assets/css/table.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Deployment and configuration - Apache Ranger" />
+<meta property="og:image" content="https://apache.github.io/ranger/assets/images/social/services/admin/installation.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://apache.github.io/ranger/services/admin/installation/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="Deployment and configuration - Apache Ranger" />
+<meta property="twitter:image" content="https://apache.github.io/ranger/assets/images/social/services/admin/installation.png" />
+</head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#deployment-and-configuration" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="https://ranger.apache.org" title="Apache Ranger" class="md-header__button md-logo" aria-label="Apache Ranger" data-md-component="logo">
+      
+  <img src="../../../assets/brand/merged-logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apache Ranger
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Deployment and configuration
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 2c-1.82 0-3.53.5-5 1.35C8 5.08 10 8.3 10 12s-2 6.92-5 8.65C6.47 21.5 8.18 22 10 22a10 10 0 0 0 10-10A10 10 0 0 0 10 2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/apache/ranger" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    apache/ranger
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../getting-started/introduction/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Getting started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../arch/architecture/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../plugins/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Plugins
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../service/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Services
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../features/policies/resource-policies/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Features
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../dev/build/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Developer guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../project/contributing/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Project
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../release-notes/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Releases
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../blog/blog/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://ranger.apache.org" title="Apache Ranger" class="md-nav__button md-logo" aria-label="Apache Ranger" data-md-component="logo">
+      
+  <img src="../../../assets/brand/merged-logo.svg" alt="logo">
+
+    </a>
+    Apache Ranger
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/apache/ranger" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    apache/ranger
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../getting-started/introduction/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../arch/architecture/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../plugins/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugins
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Services
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Services
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ranger Admin
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ranger Admin
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../service/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment and configuration
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment and configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-with-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run with Docker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-from-the-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run from the distribution
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Run from the distribution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#directory-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directory layout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#start-stop-and-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start, stop and check
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#audit-store" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Audit store
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Audit store">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#solr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solr
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#elasticsearch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Elasticsearch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opensearch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenSearch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#amazon-cloudwatch-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Amazon CloudWatch Logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#web-server-and-ports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Web server and ports
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kerberos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kerberos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advanced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#log-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Log files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upgrade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrade
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Further reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../users-groups-roles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users, groups and roles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../high-availability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    High availability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security-hardening/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security hardening
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Admin UI guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Metrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../usersync/service/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ranger UserSync
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tagsync/service/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ranger TagSync
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../kms/service/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ranger KMS
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pdp/service/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ranger PDP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../audit/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Audit
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    
+  
+  
+  
+    <a href="../../../features/policies/resource-policies/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../dev/build/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer guide
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../project/contributing/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../release-notes/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Releases
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../blog/blog/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-with-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run with Docker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-from-the-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run from the distribution
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Run from the distribution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#directory-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directory layout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#start-stop-and-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start, stop and check
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#audit-store" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Audit store
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Audit store">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#solr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solr
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#elasticsearch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Elasticsearch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opensearch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenSearch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#amazon-cloudwatch-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Amazon CloudWatch Logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#web-server-and-ports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Web server and ports
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kerberos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kerberos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advanced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#log-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Log files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upgrade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrade
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Further reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../service/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Services
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../service/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Ranger Admin
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<!---
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<h1 id="deployment-and-configuration">Deployment and configuration<a class="headerlink" href="#deployment-and-configuration" title="Permanent link">&para;</a></h1>
+<p>This page explains how to run Ranger Admin and how to configure it. Ranger Admin is a Java web application
+with an embedded Tomcat server. It needs three things to run: a relational database for policies and
+users, an audit store it can query for the <strong>Audits</strong> screens, and a configuration directory that tells it
+where those are.</p>
+<p>All settings live in one file, <code>ranger-admin-site.xml</code>. The first half of this page covers running Admin
+with the Docker images and compose files from <code>dev-support/ranger-docker</code>, and with the service script
+<code>ranger-admin-services.sh</code>. The second half is a reference for <code>ranger-admin-site.xml</code>, grouped by topic.</p>
+<h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Java.</strong> The master branch is compiled for Java 17 (<code>javac.source.version</code> / <code>javac.target.version</code> in
+  the root <code>pom.xml</code>). <code>JAVA_HOME</code> must be set for the service script.</li>
+<li><strong>Database.</strong> MySQL/MariaDB, PostgreSQL, Oracle, SQL Server or SQL Anywhere, reachable from the Admin
+  host, with its JDBC driver jar on the Admin classpath (<code>ews/webapp/WEB-INF/lib</code>). See
+  <a href="../database/">Database</a>.</li>
+<li><strong>Audit store.</strong> Solr, Elasticsearch, OpenSearch or Amazon CloudWatch Logs. Admin only <em>reads</em> from it;
+  plugins write to it. See <a href="../../audit/audit-stores/">Audit stores</a>.</li>
+<li><strong>Network.</strong> Plugins, UserSync, TagSync and browsers must reach the Admin HTTP port (6080) or HTTPS port
+  (6182).</li>
+<li><strong>Python 3</strong> for the maintenance utilities shipped in the distribution (password change, credential
+  store helper).</li>
+</ul>
+<h2 id="run-with-docker">Run with Docker<a class="headerlink" href="#run-with-docker" title="Permanent link">&para;</a></h2>
+<p>The compose files in
+<a href="https://github.com/apache/ranger/blob/master/dev-support/ranger-docker"><code>dev-support/ranger-docker</code></a>
+build and start Ranger Admin together with everything it depends on.
+<code>docker-compose.ranger.yml</code> defines four services on the <code>rangernw</code> network:</p>
+<dl>
+<dt><code>ranger</code></dt>
+<dd>Ranger Admin, image <code>ranger:latest</code> built from <code>Dockerfile.ranger</code>, published on port 6080.</dd>
+<dt><code>ranger-db</code></dt>
+<dd>The policy database. The flavor is selected with <code>RANGER_DB_TYPE</code> (<code>postgres</code>, <code>mysql</code> or <code>oracle</code>)
+from <code>docker-compose.ranger-db.yml</code>.</dd>
+<dt><code>ranger-zk</code></dt>
+<dd>ZooKeeper, shared by the Solr audit store and by component containers such as Kafka, HBase and Hive.</dd>
+<dt><code>ranger-kdc</code></dt>
+<dd>A Kerberos KDC, used when <code>KERBEROS_ENABLED=true</code>.</dd>
+</dl>
+<p>The audit store is added with <code>docker-compose.ranger-audit-service.yml</code> and a compose profile:
+<code>audit-store-opensearch</code> (default) or <code>audit-store-solr</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>dev-support/ranger-docker
+
+<span class="nb">export</span><span class="w"> </span><span class="nv">RANGER_DB_TYPE</span><span class="o">=</span>postgres
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUDIT_INDEX_STORE</span><span class="o">=</span>opensearch
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUDIT_DESTINATIONS</span><span class="o">=</span>audit-store-<span class="si">${</span><span class="nv">AUDIT_INDEX_STORE</span><span class="si">}</span>
+
+docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span><span class="si">${</span><span class="nv">AUDIT_DESTINATIONS</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-f<span class="w"> </span>docker-compose.ranger.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-f<span class="w"> </span>docker-compose.ranger-audit-service.yml<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+<p>Ranger Admin is then available at <a href="http://localhost:6080">http://localhost:6080</a>; log in as <code>admin</code> with the password
+<code>rangerR0cks!</code>. On its first start the container prepares the database schema, starts Admin with
+<code>ranger-admin-services.sh</code> and creates a set of sample services (<code>create-ranger-services.py</code>).</p>
+<p>The variables below are read from <code>.env</code> or the shell and passed to the <code>ranger</code> container.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RANGER_VERSION</code></td>
+<td><code>3.0.0-SNAPSHOT</code></td>
+<td>Version of the Admin archive in <code>dist/</code> that is built into the image.</td>
+</tr>
+<tr>
+<td><code>RANGER_DB_TYPE</code></td>
+<td>(none)</td>
+<td>Database flavor: <code>postgres</code>, <code>mysql</code> or <code>oracle</code>. Not set in <code>.env</code>; export it before running compose.</td>
+</tr>
+<tr>
+<td><code>AUDIT_INDEX_STORE</code></td>
+<td><code>opensearch</code></td>
+<td>Audit store Admin reads from: <code>opensearch</code> or <code>solr</code>. Must match the compose profile.</td>
+</tr>
+<tr>
+<td><code>KERBEROS_ENABLED</code></td>
+<td><code>true</code></td>
+<td>Wait for keytabs from <code>ranger-kdc</code> and enable Kerberos.</td>
+</tr>
+<tr>
+<td><code>RANGER_ADMIN_MAX_HEAP</code></td>
+<td><code>256m</code></td>
+<td>JVM heap (<code>-Xmx</code> and <code>-Xms</code>).</td>
+</tr>
+<tr>
+<td><code>RANGER_JVM_METASPACE</code></td>
+<td><code>100m</code></td>
+<td>Initial metaspace size.</td>
+</tr>
+<tr>
+<td><code>RANGER_JVM_MAX_METASPACE</code></td>
+<td><code>200m</code></td>
+<td>Maximum metaspace size.</td>
+</tr>
+<tr>
+<td><code>JAVA_OPTS</code></td>
+<td>JDK 17 <code>--add-opens</code> flags</td>
+<td>Extra JVM options.</td>
+</tr>
+<tr>
+<td><code>DEBUG_ADMIN</code></td>
+<td><code>false</code></td>
+<td>Switch Admin logging to <code>debug</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Inside the container, Admin is installed under <code>/opt/ranger/admin</code>, its configuration directory is
+<code>$RANGER_CONF_DIR</code> (<code>/opt/ranger/admin/ews/webapp/WEB-INF/classes/conf</code>) and keytabs are mounted at
+<code>/etc/keytabs</code>. Building the images, the <code>ranger_in_docker</code> wrapper, Docker Hub images and the other
+compose files are covered in <a href="../../../getting-started/docker/">Running Ranger with Docker</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The compose environment uses fixed passwords and a self-contained KDC. It is meant for development
+and evaluation. For production, build your own image or host layout from the same distribution and
+supply your own <code>ranger-admin-site.xml</code>, credential store and keystores.</p>
+</div>
+<h2 id="run-from-the-distribution">Run from the distribution<a class="headerlink" href="#run-from-the-distribution" title="Permanent link">&para;</a></h2>
+<p>The Admin distribution is <code>ranger-&lt;version&gt;-admin.tar.gz</code>, produced by <code>mvn package</code> in the Ranger source
+tree (<code>target/</code>); for the master branch the version is <code>3.0.0-SNAPSHOT</code>.</p>
+<h3 id="directory-layout">Directory layout<a class="headerlink" href="#directory-layout" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ews/ranger-admin-services.sh</code></td>
+<td>Service script: start, stop, restart, version, metrics</td>
+</tr>
+<tr>
+<td><code>ews/lib/</code></td>
+<td>Embedded web server (Tomcat) jars</td>
+</tr>
+<tr>
+<td><code>ews/webapp/</code></td>
+<td>The exploded web application</td>
+</tr>
+<tr>
+<td><code>ews/webapp/WEB-INF/classes/conf.dist/</code></td>
+<td>Configuration templates</td>
+</tr>
+<tr>
+<td><code>ews/webapp/WEB-INF/classes/conf/</code></td>
+<td>Active configuration directory (first entry on the classpath)</td>
+</tr>
+<tr>
+<td><code>ews/webapp/WEB-INF/lib/</code></td>
+<td>Application jars; place the JDBC driver here</td>
+</tr>
+<tr>
+<td><code>ews/webapp/WEB-INF/classes/ranger-plugins/&lt;service&gt;/</code></td>
+<td>Service-specific jars for <em>Test Connection</em> and resource lookup</td>
+</tr>
+<tr>
+<td><code>ews/webapp/apidocs/</code></td>
+<td>Generated REST API documentation, served at <code>/apidocs/</code></td>
+</tr>
+<tr>
+<td><code>ews/logs/</code></td>
+<td>Default log directory</td>
+</tr>
+<tr>
+<td><code>db/&lt;flavor&gt;/</code></td>
+<td>Core schema and SQL patches per database flavor</td>
+</tr>
+<tr>
+<td><code>cred/lib/</code></td>
+<td>Credential-store builder used by <code>ranger_credential_helper.py</code></td>
+</tr>
+<tr>
+<td><code>*.py</code></td>
+<td>Maintenance utilities, for example <code>changepasswordutil.py</code> and <code>deleteUserGroupUtil.py</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="configuration-files">Configuration files<a class="headerlink" href="#configuration-files" title="Permanent link">&para;</a></h3>
+<p>Admin reads its configuration from the classpath, in this order; later files override earlier ones.</p>
+<dl>
+<dt><code>core-site.xml</code></dt>
+<dd>Optional Hadoop configuration. <code>hadoop.security.authentication=kerberos</code> turns on Kerberos, and
+<code>hadoop.security.auth_to_local</code> maps principals to user names.</dd>
+<dt><code>ranger-admin-default-site.xml</code></dt>
+<dd>Shipped defaults (pool sizes, CSRF, account lockout, password encryption, access log). Do not edit;
+override values in <code>ranger-admin-site.xml</code>.</dd>
+<dt><code>ranger-admin-site.xml</code></dt>
+<dd>Your deployment's settings: database, external URL, audit store, authentication, TLS, Kerberos.</dd>
+</dl>
+<p>Other files in the same directory are <code>security-applicationContext.xml</code> (Spring Security filter chain),
+<code>logback.xml</code> (logging), optional <code>ranger-admin-env*.sh</code> scripts sourced by the service script, and the
+credential store (<code>.jceks</code>) referenced by <code>ranger.credential.provider.path</code>.</p>
+<p>A minimal <code>ranger-admin-site.xml</code> for PostgreSQL and OpenSearch:</p>
+<div class="highlight"><span class="filename">ranger-admin-site.xml</span><pre><span></span><code><span class="nt">&lt;configuration&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;&lt;name&gt;</span>ranger.jpa.jdbc.driver<span class="nt">&lt;/name&gt;&lt;value&gt;</span>org.postgresql.Driver<span class="nt">&lt;/value&gt;&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;&lt;name&gt;</span>ranger.jpa.jdbc.url<span class="nt">&lt;/name&gt;&lt;value&gt;</span>jdbc:postgresql://db.example.com:5432/ranger<span class="nt">&lt;/value&gt;&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;&lt;name&gt;</span>ranger.jpa.jdbc.user<span class="nt">&lt;/name&gt;&lt;value&gt;</span>rangeradmin<span class="nt">&lt;/value&gt;&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;&lt;name&gt;</span>ranger.jpa.jdbc.dialect<span class="nt">&lt;/name&gt;&lt;value&gt;</span>org.eclipse.persistence.platform.database.PostgreSQLPlatform<span class="nt">&lt;/value&gt;&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;&lt;name&gt;</span>ranger.credential.provider.path<span class="nt">&lt;/name&gt;&lt;value&gt;</span>/etc/ranger/admin/rangeradmin.jceks<span class="nt">&lt;/value&gt;&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;&lt;name&gt;</span>ranger.jpa.jdbc.credential.alias<span class="nt">&lt;/name&gt;&lt;value&gt;</span>ranger.db.password<span class="nt">&lt;/value&gt;&lt;/property&gt;</span>
+
+<span class="w">  </span><span class="nt">&lt;property&gt;&lt;name&gt;</span>ranger.externalurl<span class="nt">&lt;/name&gt;&lt;value&gt;</span>http://ranger.example.com:6080<span class="nt">&lt;/value&gt;&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;&lt;name&gt;</span>ranger.service.host<span class="nt">&lt;/name&gt;&lt;value&gt;</span>ranger.example.com<span class="nt">&lt;/value&gt;&lt;/property&gt;</span>
+
+<span class="w">  </span><span class="nt">&lt;property&gt;&lt;name&gt;</span>ranger.audit.source.type<span class="nt">&lt;/name&gt;&lt;value&gt;</span>opensearch<span class="nt">&lt;/value&gt;&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;&lt;name&gt;</span>ranger.audit.opensearch.urls<span class="nt">&lt;/name&gt;&lt;value&gt;</span>opensearch.example.com<span class="nt">&lt;/value&gt;&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;&lt;name&gt;</span>ranger.audit.opensearch.port<span class="nt">&lt;/name&gt;&lt;value&gt;</span>9200<span class="nt">&lt;/value&gt;&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;&lt;name&gt;</span>ranger.audit.opensearch.index<span class="nt">&lt;/name&gt;&lt;value&gt;</span>ranger_audits<span class="nt">&lt;/value&gt;&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div>
+<p>Store the database password in the credential store under the alias named by
+<code>ranger.jpa.jdbc.credential.alias</code>:</p>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>ranger_credential_helper.py<span class="w"> </span>-l<span class="w"> </span><span class="s2">"cred/lib/*"</span><span class="w"> </span>-f<span class="w"> </span>/etc/ranger/admin/rangeradmin.jceks<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-k<span class="w"> </span>ranger.db.password<span class="w"> </span>-v<span class="w"> </span><span class="s1">'&lt;db-password&gt;'</span><span class="w"> </span>-c<span class="w"> </span><span class="m">1</span>
+</code></pre></div>
+<h3 id="start-stop-and-check">Start, stop and check<a class="headerlink" href="#start-stop-and-check" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>ews/ranger-admin-services.sh<span class="w"> </span>start
+ews/ranger-admin-services.sh<span class="w"> </span>stop
+ews/ranger-admin-services.sh<span class="w"> </span>restart
+ews/ranger-admin-services.sh<span class="w"> </span>version
+ews/ranger-admin-services.sh<span class="w"> </span>metric<span class="w"> </span>-type<span class="w"> </span>policies
+</code></pre></div>
+<p><code>start</code> launches <code>org.apache.ranger.server.tomcat.EmbeddedServer</code> in the background with the <code>conf</code>
+directory, <code>ews/lib</code> and <code>ews/webapp/WEB-INF/lib</code> on the classpath, and writes stdout to <code>catalina.out</code>.
+<code>stop</code> sends the shutdown command to the Tomcat shutdown port (6085), waits up to about 30 seconds and
+then kills the process. <code>metric</code> is described in <a href="../metrics/#command-line-metrics">Metrics</a>.</p>
+<p>The script sources every <code>conf/ranger-admin-env*.sh</code> file before it starts the JVM, so persistent values
+for the following environment variables belong in such a file.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>JAVA_HOME</code></td>
+<td>(none)</td>
+<td>JDK used to run Admin; <code>$JAVA_HOME/bin</code> is put first on <code>PATH</code>.</td>
+</tr>
+<tr>
+<td><code>RANGER_ADMIN_MAX_HEAP</code></td>
+<td><code>1g</code></td>
+<td>JVM heap, applied as both <code>-Xmx</code> and <code>-Xms</code>.</td>
+</tr>
+<tr>
+<td><code>RANGER_JVM_METASPACE</code></td>
+<td><code>100m</code></td>
+<td><code>-XX:MetaspaceSize</code>.</td>
+</tr>
+<tr>
+<td><code>RANGER_JVM_MAX_METASPACE</code></td>
+<td><code>200m</code></td>
+<td><code>-XX:MaxMetaspaceSize</code>.</td>
+</tr>
+<tr>
+<td><code>JAVA_OPTS</code></td>
+<td>(none)</td>
+<td>Extra JVM options. <code>-Duser.timezone=UTC</code> is added when no time zone is given.</td>
+</tr>
+<tr>
+<td><code>RANGER_ADMIN_LOG_DIR</code></td>
+<td><code>ews/logs</code></td>
+<td>Log directory, passed to the JVM as <code>-Dlogdir</code>.</td>
+</tr>
+<tr>
+<td><code>RANGER_ADMIN_LOGBACK_CONF_FILE</code></td>
+<td><code>conf/logback.xml</code></td>
+<td>Logback configuration file.</td>
+</tr>
+<tr>
+<td><code>RANGER_PID_DIR_PATH</code></td>
+<td><code>/var/run/ranger</code></td>
+<td>Directory of the PID file.</td>
+</tr>
+<tr>
+<td><code>RANGER_ADMIN_PID_NAME</code></td>
+<td><code>rangeradmin.pid</code></td>
+<td>PID file name.</td>
+</tr>
+<tr>
+<td><code>RANGER_USER</code></td>
+<td><code>ranger</code></td>
+<td>Owner given to the PID file.</td>
+</tr>
+<tr>
+<td><code>RANGER_HADOOP_CONF_DIR</code></td>
+<td>(none)</td>
+<td>Hadoop configuration directory added to the classpath.</td>
+</tr>
+<tr>
+<td><code>DB_SSL_PARAM</code></td>
+<td>(none)</td>
+<td>Extra <code>-Djavax.net.ssl.*</code> options for TLS to the database.</td>
+</tr>
+</tbody>
+</table>
+<p>Verify that Admin is up:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:6080/service/actuator/health
+curl<span class="w"> </span>-s<span class="w"> </span>-u<span class="w"> </span>admin:<span class="s1">'&lt;password&gt;'</span><span class="w"> </span>http://localhost:6080/service/public/v2/api/servicedef<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-c<span class="w"> </span><span class="m">300</span>
+</code></pre></div>
+<p>Then open <code>http://&lt;host&gt;:6080/</code> and log in as <code>admin</code>.</p>
+<h2 id="configuration-reference">Configuration reference<a class="headerlink" href="#configuration-reference" title="Permanent link">&para;</a></h2>
+<p>Every key below is a property of <code>ranger-admin-site.xml</code>. Defaults are the values shipped in
+<code>conf.dist/ranger-admin-site.xml</code> and <code>conf.dist/ranger-admin-default-site.xml</code>, or the fallback in the
+code that reads the key when neither file sets it. <code>(none)</code> means no default. Restart Admin after a change.</p>
+<h3 id="database">Database<a class="headerlink" href="#database" title="Permanent link">&para;</a></h3>
+<p>Connection to the policy database through JPA (EclipseLink) and a HikariCP pool. The flavor is detected
+from the dialect and the JDBC URL. Examples for each database and the TLS options are in
+<a href="../database/#connection-settings">Database</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.jpa.jdbc.url</code></td>
+<td><code>jdbc:log4jdbc:mysql://localhost/ranger</code></td>
+<td>URL</td>
+<td>JDBC URL of the Ranger database.</td>
+</tr>
+<tr>
+<td><code>ranger.jpa.jdbc.driver</code></td>
+<td><code>net.sf.log4jdbc.DriverSpy</code></td>
+<td>Class</td>
+<td>JDBC driver class.</td>
+</tr>
+<tr>
+<td><code>ranger.jpa.jdbc.dialect</code></td>
+<td><code>org.eclipse.persistence.platform.database.MySQLPlatform</code></td>
+<td>Class</td>
+<td>EclipseLink database platform for the flavor.</td>
+</tr>
+<tr>
+<td><code>ranger.jpa.jdbc.user</code></td>
+<td><code>rangeradmin</code></td>
+<td>String</td>
+<td>Database user.</td>
+</tr>
+<tr>
+<td><code>ranger.jpa.jdbc.password</code></td>
+<td><code>rangeradmin</code></td>
+<td>Password</td>
+<td>Database password. Replaced at start-up by the credential-store entry when one exists.</td>
+</tr>
+<tr>
+<td><code>ranger.credential.provider.path</code></td>
+<td><code>/etc/ranger/admin/rangeradmin.jceks</code></td>
+<td>Path</td>
+<td>Credential store (<code>.jceks</code>) holding passwords for the database, audit store, keystores and LDAP bind.</td>
+</tr>
+<tr>
+<td><code>ranger.jpa.jdbc.credential.alias</code></td>
+<td><code>ranger.db.password</code></td>
+<td>String</td>
+<td>Alias of the database password in the credential store.</td>
+</tr>
+<tr>
+<td><code>ranger.jpa.jdbc.maxpoolsize</code></td>
+<td><code>40</code></td>
+<td>Integer</td>
+<td>Maximum connections in the pool.</td>
+</tr>
+<tr>
+<td><code>ranger.jpa.jdbc.minpoolsize</code></td>
+<td><code>5</code></td>
+<td>Integer</td>
+<td>Minimum idle connections.</td>
+</tr>
+<tr>
+<td><code>ranger.jpa.jdbc.connectiontimeout</code></td>
+<td><code>30000</code></td>
+<td>Duration (ms)</td>
+<td>Wait for a connection from the pool.</td>
+</tr>
+<tr>
+<td><code>ranger.jpa.jdbc.idletimeout</code></td>
+<td><code>300000</code></td>
+<td>Duration (ms)</td>
+<td>Idle time before a connection is retired.</td>
+</tr>
+<tr>
+<td><code>ranger.jpa.jdbc.maxlifetime</code></td>
+<td><code>1800000</code></td>
+<td>Duration (ms)</td>
+<td>Maximum lifetime of a connection.</td>
+</tr>
+<tr>
+<td><code>ranger.jpa.jdbc.preferredtestquery</code></td>
+<td><code>select 1</code></td>
+<td>String</td>
+<td>Validation query.</td>
+</tr>
+<tr>
+<td><code>ranger.jpa.showsql</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Log SQL statements.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="audit-store">Audit store<a class="headerlink" href="#audit-store" title="Permanent link">&para;</a></h3>
+<p>Admin queries one audit store to populate <strong>Audits &gt; Access</strong> and the audit metrics. Select it with
+<code>ranger.audit.source.type</code>, then configure the matching group. On start-up Admin can also create the Solr
+collection or the Elasticsearch/OpenSearch index when it is missing (the <em>bootstrap</em> settings).</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.audit.source.type</code></td>
+<td><code>solr</code></td>
+<td>Enum</td>
+<td>Audit store to read from: <code>solr</code>, <code>elasticsearch</code>, <code>opensearch</code>, <code>cloudwatch</code>.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="solr">Solr<a class="headerlink" href="#solr" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.audit.solr.urls</code></td>
+<td><code>http://##solr_host##:6083/solr/ranger_audits</code></td>
+<td>URL</td>
+<td>Solr collection URL. Replace the placeholder host.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.solr.zookeepers</code></td>
+<td>(none)</td>
+<td>String</td>
+<td>ZooKeeper connect string of a SolrCloud cluster, for example <code>zk1:2181,zk2:2181/ranger_audits</code>. Takes precedence over the URL.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.solr.collection.name</code></td>
+<td><code>ranger_audits</code></td>
+<td>String</td>
+<td>Collection name.</td>
+</tr>
+<tr>
+<td><code>ranger.solr.audit.user</code></td>
+<td>(none)</td>
+<td>String</td>
+<td>User for Solr basic authentication.</td>
+</tr>
+<tr>
+<td><code>ranger.solr.audit.user.password</code></td>
+<td>(none)</td>
+<td>Password</td>
+<td>Password for that user. Read from the credential store when the alias exists.</td>
+</tr>
+<tr>
+<td><code>ranger.solr.audit.credential.alias</code></td>
+<td><code>ranger.solr.password</code></td>
+<td>String</td>
+<td>Credential-store alias of the Solr password.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.solr.bootstrap.enabled</code></td>
+<td><code>true</code></td>
+<td>Boolean</td>
+<td>Create the collection on start-up (SolrCloud only).</td>
+</tr>
+<tr>
+<td><code>ranger.audit.solr.config.name</code></td>
+<td><code>ranger_audits</code></td>
+<td>String</td>
+<td>Config set name used by the bootstrap.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.solr.configset.location</code></td>
+<td>(none)</td>
+<td>Path</td>
+<td>Directory of a custom config set to upload.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.solr.no.shards</code></td>
+<td>live node count</td>
+<td>Integer</td>
+<td>Number of shards for a new collection.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.solr.no.replica</code></td>
+<td><code>1</code></td>
+<td>Integer</td>
+<td>Replication factor for a new collection.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.solr.max.shards.per.node</code></td>
+<td><code>1</code></td>
+<td>Integer</td>
+<td>Maximum shards per node.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.solr.time.interval</code></td>
+<td><code>60000</code></td>
+<td>Duration (ms)</td>
+<td>Wait between bootstrap attempts.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.solr.max.retry</code></td>
+<td><code>30</code></td>
+<td>Integer</td>
+<td>Bootstrap attempts before giving up; <code>-1</code> retries until it succeeds. The shipped <code>ranger-admin-site.xml</code> carries this key with an empty value, which also results in <code>-1</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>For a kerberized Solr, Admin logs in with a JAAS <code>Client</code> section built from the
+<code>xasecure.audit.jaas.Client.*</code> properties (<code>loginModuleName</code>, <code>loginModuleControlFlag</code>,
+<code>option.useKeyTab</code>, <code>option.storeKey</code>, <code>option.useTicketCache</code>, <code>option.serviceName</code>, <code>option.keyTab</code>,
+<code>option.principal</code>); all of them are empty by default.</p>
+<h4 id="elasticsearch">Elasticsearch<a class="headerlink" href="#elasticsearch" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.audit.elasticsearch.urls</code></td>
+<td><code>127.0.0.1</code></td>
+<td>List</td>
+<td>Comma-separated host names (no scheme or port).</td>
+</tr>
+<tr>
+<td><code>ranger.audit.elasticsearch.port</code></td>
+<td><code>9200</code></td>
+<td>Integer</td>
+<td>REST port.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.elasticsearch.protocol</code></td>
+<td><code>http</code></td>
+<td>Enum</td>
+<td><code>http</code> or <code>https</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.elasticsearch.index</code></td>
+<td><code>ranger_audits</code></td>
+<td>String</td>
+<td>Index name.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.elasticsearch.user</code></td>
+<td>(none)</td>
+<td>String</td>
+<td>User for basic authentication.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.elasticsearch.password</code></td>
+<td>(none)</td>
+<td>Password</td>
+<td>Password for that user.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.elasticsearch.bootstrap.enabled</code></td>
+<td><code>true</code></td>
+<td>Boolean</td>
+<td>Create the index on start-up.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.elasticsearch.no.shards</code></td>
+<td><code>1</code></td>
+<td>Integer</td>
+<td>Shards for a new index.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.elasticsearch.no.replica</code></td>
+<td><code>1</code></td>
+<td>Integer</td>
+<td>Replicas for a new index.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.elasticsearch.time.interval</code></td>
+<td><code>60000</code></td>
+<td>Duration (ms)</td>
+<td>Wait between bootstrap attempts.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.elasticsearch.max.retry</code></td>
+<td><code>30</code></td>
+<td>Integer</td>
+<td>Bootstrap attempts before giving up.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="opensearch">OpenSearch<a class="headerlink" href="#opensearch" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.audit.opensearch.urls</code></td>
+<td>(none)</td>
+<td>List</td>
+<td>Comma-separated host names.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.opensearch.port</code></td>
+<td><code>9200</code></td>
+<td>Integer</td>
+<td>REST port.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.opensearch.protocol</code></td>
+<td><code>http</code></td>
+<td>Enum</td>
+<td><code>http</code> or <code>https</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.opensearch.index</code></td>
+<td><code>ranger_audits</code></td>
+<td>String</td>
+<td>Index name.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.opensearch.authentication.type</code></td>
+<td>(none)</td>
+<td>Enum</td>
+<td><code>kerberos</code>, <code>basic</code> or <code>none</code>. Inferred from the other settings when empty.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.opensearch.user</code></td>
+<td>(none)</td>
+<td>String</td>
+<td>User for basic authentication.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.opensearch.password</code></td>
+<td>(none)</td>
+<td>Password</td>
+<td>Password for that user.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.opensearch.kerberos.principal</code></td>
+<td>(none)</td>
+<td>String</td>
+<td>Principal for Kerberos authentication.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.opensearch.kerberos.keytab</code></td>
+<td>(none)</td>
+<td>Path</td>
+<td>Keytab of that principal.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.opensearch.bootstrap.enabled</code></td>
+<td><code>true</code></td>
+<td>Boolean</td>
+<td>Create the index on start-up.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.opensearch.no.shards</code></td>
+<td><code>1</code></td>
+<td>Integer</td>
+<td>Shards for a new index.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.opensearch.no.replica</code></td>
+<td><code>1</code></td>
+<td>Integer</td>
+<td>Replicas for a new index.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.opensearch.time.interval</code></td>
+<td><code>60000</code></td>
+<td>Duration (ms)</td>
+<td>Wait between bootstrap attempts.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.opensearch.max.retry</code></td>
+<td><code>30</code></td>
+<td>Integer</td>
+<td>Bootstrap attempts before giving up.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="amazon-cloudwatch-logs">Amazon CloudWatch Logs<a class="headerlink" href="#amazon-cloudwatch-logs" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.audit.amazon_cloudwatch.region</code></td>
+<td><code>us-east-2</code></td>
+<td>String</td>
+<td>AWS region of the log group.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.amazon_cloudwatch.log_group</code></td>
+<td><code>ranger_audits</code></td>
+<td>String</td>
+<td>Log group name.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.amazon_cloudwatch.log_stream_prefix</code></td>
+<td>(none)</td>
+<td>String</td>
+<td>Prefix of the log streams to query.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="web-server-and-ports">Web server and ports<a class="headerlink" href="#web-server-and-ports" title="Permanent link">&para;</a></h3>
+<p>Settings of the embedded Tomcat server. When HTTPS is enabled, the HTTPS connector replaces the HTTP
+connector, so Admin listens on one of the two ports.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.externalurl</code></td>
+<td><code>http://localhost:6080</code></td>
+<td>URL</td>
+<td>URL by which users and other services reach Admin. Use the load-balancer URL in an HA setup.</td>
+</tr>
+<tr>
+<td><code>ranger.service.host</code></td>
+<td><code>localhost</code></td>
+<td>String</td>
+<td>Host name of this instance; replaces <code>_HOST</code> in Kerberos principals.</td>
+</tr>
+<tr>
+<td><code>ranger.service.http.port</code></td>
+<td><code>6080</code></td>
+<td>Integer</td>
+<td>HTTP port.</td>
+</tr>
+<tr>
+<td><code>ranger.service.https.port</code></td>
+<td><code>6182</code></td>
+<td>Integer</td>
+<td>HTTPS port, used when <code>ranger.service.https.attrib.ssl.enabled=true</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.service.shutdown.port</code></td>
+<td><code>6085</code></td>
+<td>Integer</td>
+<td>Tomcat shutdown port, used by <code>ranger-admin-services.sh stop</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.service.shutdown.command</code></td>
+<td><code>SHUTDOWN</code></td>
+<td>String</td>
+<td>Command string expected on the shutdown port.</td>
+</tr>
+<tr>
+<td><code>ranger.contextName</code></td>
+<td><code>/</code></td>
+<td>String</td>
+<td>Web application context path.</td>
+</tr>
+<tr>
+<td><code>ranger.tomcat.work.dir</code></td>
+<td>(none)</td>
+<td>Path</td>
+<td>Tomcat work directory.</td>
+</tr>
+<tr>
+<td><code>ajp.enabled</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Open an AJP connector on the HTTP port instead of HTTP/HTTPS.</td>
+</tr>
+<tr>
+<td><code>ranger.service.http.connector.attrib.maxPostSize</code></td>
+<td><code>2097152</code></td>
+<td>Integer</td>
+<td>Maximum POST body size in bytes parsed by the container.</td>
+</tr>
+<tr>
+<td><code>ranger.service.http.connector.attrib.maxParameterCount</code></td>
+<td><code>10000</code></td>
+<td>Integer</td>
+<td>Maximum number of request parameters.</td>
+</tr>
+<tr>
+<td><code>ranger.service.http.connector.attrib.asyncTimeout</code></td>
+<td><code>10000</code></td>
+<td>Duration (ms)</td>
+<td>Timeout for asynchronous requests.</td>
+</tr>
+<tr>
+<td><code>ranger.service.http.connector.attrib.allowTrace</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Allow the HTTP <code>TRACE</code> method.</td>
+</tr>
+<tr>
+<td><code>ranger.service.http.connector.attrib.enableLookups</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Resolve client host names with DNS.</td>
+</tr>
+<tr>
+<td><code>ranger.service.http.connector.attrib.URIEncoding</code></td>
+<td><code>UTF-8</code></td>
+<td>String</td>
+<td>Character encoding of request URIs.</td>
+</tr>
+</tbody>
+</table>
+<p>Any property named <code>ranger.service.http.connector.property.&lt;name&gt;</code> is passed to the Tomcat connector as
+the connector property <code>&lt;name&gt;</code>, which gives access to settings that have no dedicated key (for example
+<code>maxThreads</code>).</p>
+<h3 id="tls">TLS<a class="headerlink" href="#tls" title="Permanent link">&para;</a></h3>
+<p>HTTPS for the UI and REST API, and the keystore and truststore Admin uses for its own outbound
+connections (database, LDAP, audit store, resource lookup). Step-by-step procedures are in
+<a href="../security-hardening/#https-for-the-admin-ui-and-api">Security hardening</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.service.https.attrib.ssl.enabled</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Serve HTTPS on <code>ranger.service.https.port</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.service.https.attrib.keystore.file</code></td>
+<td><code>/etc/ranger/admin/keys/server.jks</code></td>
+<td>Path</td>
+<td>Server keystore.</td>
+</tr>
+<tr>
+<td><code>ranger.service.https.attrib.keystore.keyalias</code></td>
+<td><code>myKey</code></td>
+<td>String</td>
+<td>Alias of the server key in the keystore.</td>
+</tr>
+<tr>
+<td><code>ranger.service.https.attrib.keystore.credential.alias</code></td>
+<td><code>keyStoreCredentialAlias</code></td>
+<td>String</td>
+<td>Credential-store alias of the keystore password.</td>
+</tr>
+<tr>
+<td><code>ranger.service.https.attrib.keystore.pass</code></td>
+<td><code>_</code></td>
+<td>Password</td>
+<td>Keystore password, used only when the credential store has no entry.</td>
+</tr>
+<tr>
+<td><code>ranger.service.https.attrib.ssl.protocol</code></td>
+<td><code>TLS</code></td>
+<td>String</td>
+<td>SSL context protocol.</td>
+</tr>
+<tr>
+<td><code>ranger.service.https.attrib.ssl.enabled.protocols</code></td>
+<td><code>TLSv1.2</code></td>
+<td>List</td>
+<td>Protocol versions offered to clients.</td>
+</tr>
+<tr>
+<td><code>ranger.tomcat.ciphers</code></td>
+<td>(none)</td>
+<td>List</td>
+<td>Cipher suites to allow. Empty means the JVM defaults.</td>
+</tr>
+<tr>
+<td><code>ranger.service.https.attrib.client.auth</code></td>
+<td><code>false</code></td>
+<td>Enum</td>
+<td>Client certificates: <code>false</code>, <code>want</code> or <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.service.http.enabled</code></td>
+<td><code>true</code></td>
+<td>Boolean</td>
+<td>When <code>false</code>, policy download and grant/revoke requests from plugins are accepted only over HTTPS with a client certificate that matches the service's <code>commonNameForCertificate</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.keystore.file</code></td>
+<td>(none)</td>
+<td>Path</td>
+<td>Client keystore for outbound TLS; exported as <code>javax.net.ssl.keyStore</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.keystore.file.type</code></td>
+<td><code>jks</code></td>
+<td>String</td>
+<td>Keystore type, also used for the HTTPS keystore.</td>
+</tr>
+<tr>
+<td><code>ranger.keystore.alias</code></td>
+<td><code>keyStoreAlias</code></td>
+<td>String</td>
+<td>Credential-store alias of the client keystore password.</td>
+</tr>
+<tr>
+<td><code>ranger.keystore.password</code></td>
+<td>(none)</td>
+<td>Password</td>
+<td>Client keystore password when not in the credential store.</td>
+</tr>
+<tr>
+<td><code>ranger.truststore.file</code></td>
+<td>(none)</td>
+<td>Path</td>
+<td>Truststore for outbound TLS and client-certificate validation; exported as <code>javax.net.ssl.trustStore</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.truststore.file.type</code></td>
+<td><code>jks</code></td>
+<td>String</td>
+<td>Truststore type.</td>
+</tr>
+<tr>
+<td><code>ranger.truststore.alias</code></td>
+<td><code>trustStoreAlias</code></td>
+<td>String</td>
+<td>Credential-store alias of the truststore password.</td>
+</tr>
+<tr>
+<td><code>ranger.truststore.password</code></td>
+<td>(none)</td>
+<td>Password</td>
+<td>Truststore password when not in the credential store.</td>
+</tr>
+<tr>
+<td><code>ranger.db.ssl.enabled</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Encrypt the JDBC connection (MySQL and PostgreSQL). See <a href="../database/#tls-to-the-database">Database</a>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h3>
+<p><code>ranger.authentication.method</code> selects where passwords typed into the login form or sent with HTTP Basic
+are checked. The properties of each method, and of header-based and JWT authentication, are documented in
+<a href="../authentication/">Authentication</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.authentication.method</code></td>
+<td><code>NONE</code></td>
+<td>Enum</td>
+<td><code>NONE</code> (Ranger database only), <code>LDAP</code>, <code>ACTIVE_DIRECTORY</code> or <code>PAM</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.ldap.default.role</code></td>
+<td><code>ROLE_USER</code></td>
+<td>String</td>
+<td>Role given to externally authenticated users that have no role yet.</td>
+</tr>
+<tr>
+<td><code>ranger.admin.super.users</code></td>
+<td>(none)</td>
+<td>List</td>
+<td>Users granted full administrative rights at login.</td>
+</tr>
+<tr>
+<td><code>ranger.admin.super.groups</code></td>
+<td>(none)</td>
+<td>List</td>
+<td>Groups whose members are granted full administrative rights at login.</td>
+</tr>
+<tr>
+<td><code>ranger.admin.cookie.name</code></td>
+<td><code>RANGERADMINSESSIONID</code></td>
+<td>String</td>
+<td>Session cookie name.</td>
+</tr>
+<tr>
+<td><code>ranger.admin.healthcheck.username</code></td>
+<td><code>healthcheck</code></td>
+<td>String</td>
+<td>User allowed to call the readiness endpoint.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="kerberos">Kerberos<a class="headerlink" href="#kerberos" title="Permanent link">&para;</a></h3>
+<p>Kerberos is active when <code>core-site.xml</code> in the configuration directory sets
+<code>hadoop.security.authentication=kerberos</code>. Admin then accepts SPNEGO on the REST API, logs in with its own
+principal for outbound calls, and uses the lookup principal for <em>Test Connection</em> and resource lookup.
+See <a href="../authentication/#kerberos-spnego">Authentication</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.spnego.kerberos.principal</code></td>
+<td><code>HTTP/_HOST@REALM</code></td>
+<td>String</td>
+<td>SPNEGO service principal.</td>
+</tr>
+<tr>
+<td><code>ranger.spnego.kerberos.keytab</code></td>
+<td>(none)</td>
+<td>Path</td>
+<td>Keytab of the SPNEGO principal.</td>
+</tr>
+<tr>
+<td><code>ranger.admin.kerberos.principal</code></td>
+<td><code>rangeradmin/_HOST@REALM</code></td>
+<td>String</td>
+<td>Principal Admin logs in with for outbound calls.</td>
+</tr>
+<tr>
+<td><code>ranger.admin.kerberos.keytab</code></td>
+<td>(none)</td>
+<td>Path</td>
+<td>Keytab of the Admin principal.</td>
+</tr>
+<tr>
+<td><code>ranger.lookup.kerberos.principal</code></td>
+<td><code>rangerlookup/_HOST@REALM</code></td>
+<td>String</td>
+<td>Principal used for resource lookup.</td>
+</tr>
+<tr>
+<td><code>ranger.lookup.kerberos.keytab</code></td>
+<td>(none)</td>
+<td>Path</td>
+<td>Keytab of the lookup principal.</td>
+</tr>
+<tr>
+<td><code>ranger.admin.kerberos.token.valid.seconds</code></td>
+<td><code>30</code></td>
+<td>Integer</td>
+<td>Validity of the <code>hadoop.auth</code> cookie, in seconds.</td>
+</tr>
+<tr>
+<td><code>ranger.admin.kerberos.cookie.domain</code></td>
+<td>(none)</td>
+<td>String</td>
+<td>Domain of that cookie.</td>
+</tr>
+<tr>
+<td><code>ranger.admin.kerberos.cookie.path</code></td>
+<td><code>/</code></td>
+<td>String</td>
+<td>Path of that cookie.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sso">SSO<a class="headerlink" href="#sso" title="Permanent link">&para;</a></h3>
+<p>Browser single sign-on through Apache Knox. See <a href="../authentication/#knox-sso">Authentication</a> for the
+remaining <code>ranger.sso.*</code> keys and for JWT bearer tokens.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.sso.enabled</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Redirect unauthenticated browsers to the SSO provider.</td>
+</tr>
+<tr>
+<td><code>ranger.sso.providerurl</code></td>
+<td><code>https://127.0.0.1:8443/gateway/knoxsso/api/v1/websso</code></td>
+<td>URL</td>
+<td>Knox SSO endpoint.</td>
+</tr>
+<tr>
+<td><code>ranger.sso.publicKey</code></td>
+<td>(none)</td>
+<td>String</td>
+<td>Signing certificate of the SSO provider in PEM (Base64) form, without the <code>BEGIN CERTIFICATE</code>/<code>END CERTIFICATE</code> lines.</td>
+</tr>
+<tr>
+<td><code>ranger.sso.cookiename</code></td>
+<td><code>hadoop-jwt</code></td>
+<td>String</td>
+<td>Cookie that carries the token.</td>
+</tr>
+<tr>
+<td><code>ranger.sso.browser.useragent</code></td>
+<td><code>Mozilla,chrome</code></td>
+<td>List</td>
+<td>User-agent prefixes that are redirected.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">&para;</a></h3>
+<p>Application logging is configured in <code>logback.xml</code>, not in the site file. The keys below control the
+Tomcat access log, which is written to the log directory.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.accesslog.enabled</code></td>
+<td><code>true</code></td>
+<td>Boolean</td>
+<td>Write the access log.</td>
+</tr>
+<tr>
+<td><code>ranger.accesslog.prefix</code></td>
+<td><code>access-&lt;hostname&gt;</code></td>
+<td>String</td>
+<td>File name prefix.</td>
+</tr>
+<tr>
+<td><code>ranger.accesslog.dateformat</code></td>
+<td><code>-yyyy-MM-dd</code></td>
+<td>String</td>
+<td>Date suffix of the file name; also the rotation granularity.</td>
+</tr>
+<tr>
+<td><code>ranger.accesslog.pattern</code></td>
+<td><code>%h %l %u %t "%r" %s %b %D "%{Referer}i" "%{User-Agent}i"</code></td>
+<td>String</td>
+<td>Tomcat access log pattern.</td>
+</tr>
+<tr>
+<td><code>ranger.accesslog.rotate.enabled</code></td>
+<td><code>true</code></td>
+<td>Boolean</td>
+<td>Rotate the access log.</td>
+</tr>
+<tr>
+<td><code>ranger.accesslog.rotate.max_days</code></td>
+<td><code>15</code></td>
+<td>Integer</td>
+<td>Days to keep rotated files.</td>
+</tr>
+<tr>
+<td><code>ranger.accesslog.rotate.rename_on_rotate</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Add the date suffix only when the file is rotated.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="advanced">Advanced<a class="headerlink" href="#advanced" title="Permanent link">&para;</a></h3>
+<p>Keys that rarely need to change.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.supportedcomponents</code></td>
+<td>(none)</td>
+<td>List</td>
+<td>Service types whose definitions are created, for example <code>hive,hdfs,trino</code>. Empty means all.</td>
+</tr>
+<tr>
+<td><code>ranger.db.maxrows.default</code></td>
+<td><code>200</code></td>
+<td>Integer</td>
+<td>Default page size of list APIs.</td>
+</tr>
+<tr>
+<td><code>ranger.jpa.jdbc.batch-clear.enable</code></td>
+<td><code>true</code></td>
+<td>Boolean</td>
+<td>Flush and clear the persistence context during bulk policy operations.</td>
+</tr>
+<tr>
+<td><code>ranger.jpa.jdbc.batch-clear.size</code></td>
+<td><code>10</code></td>
+<td>Integer</td>
+<td>Policies per flush when batch-clear is enabled.</td>
+</tr>
+<tr>
+<td><code>ranger.jpa.jdbc.batch-persist.size</code></td>
+<td><code>500</code></td>
+<td>Integer</td>
+<td>Objects per flush during bulk persistence.</td>
+</tr>
+<tr>
+<td><code>ranger.timed.executor.max.threadpool.size</code></td>
+<td><code>10</code></td>
+<td>Integer</td>
+<td>Threads for <em>Test Connection</em> and resource lookup.</td>
+</tr>
+<tr>
+<td><code>ranger.timed.executor.queue.size</code></td>
+<td><code>100</code></td>
+<td>Integer</td>
+<td>Queue length of that executor.</td>
+</tr>
+<tr>
+<td><code>ranger.resource.lookup.timeout.value.in.ms</code></td>
+<td><code>1000</code></td>
+<td>Duration (ms)</td>
+<td>Timeout of a resource lookup.</td>
+</tr>
+<tr>
+<td><code>ranger.validate.config.timeout.value.in.ms</code></td>
+<td><code>10000</code></td>
+<td>Duration (ms)</td>
+<td>Timeout of <em>Test Connection</em>.</td>
+</tr>
+<tr>
+<td><code>ranger.downloadpolicy.session.log.enabled</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Record a login session for every plugin policy download.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.hive.query.visibility</code></td>
+<td><code>true</code></td>
+<td>Boolean</td>
+<td>Show the Hive query text in access audits.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.metrics.max.supported.days</code></td>
+<td><code>90</code></td>
+<td>Integer</td>
+<td>Maximum look-back of the audit metrics API.</td>
+</tr>
+<tr>
+<td><code>ranger.servicedef.ozone.enableActionMatcherInPoliciesCondition</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Add the action-matcher policy condition to the Ozone service definition.</td>
+</tr>
+<tr>
+<td><code>ranger.valve.errorreportvalve.showserverinfo</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Show the server version on error pages.</td>
+</tr>
+<tr>
+<td><code>ranger.valve.errorreportvalve.showreport</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Show stack traces on error pages.</td>
+</tr>
+</tbody>
+</table>
+<p>Account lockout, password history, CSRF and password-encryption keys are covered in
+<a href="../security-hardening/">Security hardening</a>; start-up purge of login and change history in
+<a href="../database/#purging-history-at-start-up">Database</a>.</p>
+<h2 id="log-files">Log files<a class="headerlink" href="#log-files" title="Permanent link">&para;</a></h2>
+<p>All files are written to the log directory (<code>RANGER_ADMIN_LOG_DIR</code>, default <code>ews/logs</code>).</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger-admin-&lt;hostname&gt;-&lt;user&gt;.log</code></td>
+<td>Application log, rotated daily</td>
+</tr>
+<tr>
+<td><code>ranger_admin_sql.log</code></td>
+<td>JDBC logging (errors only by default)</td>
+</tr>
+<tr>
+<td><code>ranger_admin_perf.log</code></td>
+<td>Performance logger <code>org.apache.ranger.perf</code></td>
+</tr>
+<tr>
+<td><code>ranger_db_patch.log</code></td>
+<td>Output of Java patches (<code>org.apache.ranger.patch</code>)</td>
+</tr>
+<tr>
+<td><code>catalina.out</code></td>
+<td>Stdout and stderr of the server process</td>
+</tr>
+<tr>
+<td><code>access-&lt;hostname&gt;-&lt;date&gt;.log</code></td>
+<td>Tomcat access log</td>
+</tr>
+<tr>
+<td><code>gc-worker.log</code></td>
+<td>JVM garbage-collection log</td>
+</tr>
+</tbody>
+</table>
+<h2 id="upgrade">Upgrade<a class="headerlink" href="#upgrade" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Stop the running instance: <code>ews/ranger-admin-services.sh stop</code>.</li>
+<li>Back up the database and the configuration directory, including the credential store.</li>
+<li>Deploy the new distribution or image with the same <code>ranger-admin-site.xml</code>, credential store,
+   keystores and JDBC driver.</li>
+<li>Let the new version bring the schema up to date. Ranger ships numbered SQL and Java patches and records
+   the applied ones in <code>x_db_version_h</code>, so only the missing patches run. See
+   <a href="../database/#schema-patches-and-upgrades">Database</a> for the mechanism, multi-instance coordination and
+   the transaction-log migration.</li>
+<li>Start the new version and check <code>ews/ranger-admin-services.sh version</code>.</li>
+</ol>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<dl>
+<dt><code>Apache Ranger Admin Service failed to start!</code></dt>
+<dd>Read <code>catalina.out</code>. Typical causes are a port already in use (6080, 6182 or 6085), a missing JDBC
+driver jar, or a wrong database password in the credential store.</dd>
+<dt><code>Apache Ranger Admin Service is already running</code></dt>
+<dd>The PID file points to a live process. Stop it first, or remove a stale PID file from
+<code>RANGER_PID_DIR_PATH</code>.</dd>
+<dt>HTTPS port does not open</dt>
+<dd>Admin logs <code>HTTPS configuration validation failed</code> when the keystore file, key alias or password is
+wrong. Check <code>ranger.service.https.attrib.keystore.*</code> and the credential-store alias.</dd>
+<dt>The UI shows no audits</dt>
+<dd>The store named by <code>ranger.audit.source.type</code> is unreachable, or the collection or index is missing.
+Look for the bootstrap messages in <code>catalina.out</code> and the application log.</dd>
+<dt>Logins work but every page reports a database error</dt>
+<dd>The password in the credential store does not match the database user. Update the alias with
+<code>ranger_credential_helper.py</code> and restart.</dd>
+</dl>
+<h2 id="further-reading">Further reading<a class="headerlink" href="#further-reading" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://github.com/apache/ranger/blob/master/security-admin/src/main/resources/conf.dist/ranger-admin-site.xml"><code>ranger-admin-site.xml</code></a>
+  and <a href="https://github.com/apache/ranger/blob/master/security-admin/src/main/resources/conf.dist/ranger-admin-default-site.xml"><code>ranger-admin-default-site.xml</code></a></li>
+<li><a href="https://github.com/apache/ranger/blob/master/embeddedwebserver/scripts/ranger-admin-services.sh"><code>embeddedwebserver/scripts/ranger-admin-services.sh</code></a></li>
+<li><a href="https://github.com/apache/ranger/blob/master/embeddedwebserver/src/main/java/org/apache/ranger/server/tomcat/EmbeddedServer.java"><code>EmbeddedServer.java</code></a></li>
+<li><a href="https://github.com/apache/ranger/blob/master/dev-support/ranger-docker/README.md"><code>dev-support/ranger-docker/README.md</code></a></li>
+<li><a href="../../../getting-started/docker/">Running Ranger with Docker</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 18, 2026 19:47:56 PDT">September 18, 2026</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2014-2025 The Apache Software Foundation
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://the-asf.slack.com/archives/C4SC5NXAA" target="_blank" rel="noopener" title="the-asf.slack.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M94.1 315.1c0 25.9-21.2 47.1-47.1 47.1S0 341 0 315.1 21.2 268 47.1 268h47.1v47.1zm23.7 0c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1v117.8c0 25.9-21.2 47.1-47.1 47.1s-47.1-21.2-47.1-47.1zm47.1-189c-25.9 0-47.1-21.2-47.1-47.1s21.2-47 47.1-47S212 53.2 212 79.1v47.1h-47.1zm0 23.7c25.9 0 47.1 21.2 47.1 47.1S190.8 244 164.9 244H47.1C21.2 244 0 222.8 0 196.9s21.2-47.1 47.1-47.1zm189 47.1c0-25.9 21.2-47.1 47.1-47.1s47 21.2 47 47.1-21.2 47.1-47.1 47.1h-47.1v-47.1zm-23.7 0c0 25.9-21.2 47.1-47.1 47.1S236 222.8 236 196.9V79.1c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1zm-47.1 189c25.9 0 47.1 21.2 47.1 47.1s-21.2 47-47.1 47-47.1-21.2-47.1-47.1v-47.1h47.1zm0-23.7c-25.9 0-47.1-21.2-47.1-47.1s21.2-47.1 47.1-47.1h117.8c25.9 0 47.1 21.2 47.1 47.1s-21.2 47.1-47.1 47.1z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="mailto:dev@ranger.apache.org" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l208 156a48 48 0 0 0 57.6 0l208-156c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48zM0 196v188c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V196L313.6 344.8c-34.1 25.6-81.1 25.6-115.2 0z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/apache/ranger" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://hub.docker.com/r/apache/ranger" target="_blank" rel="noopener" title="hub.docker.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M349.9 236.3h-66.1v-59.4h66.1zm0-204.3h-66.1v60.7h66.1zm78.2 144.8H362v59.4h66.1zm-156.3-72.1h-66.1v60.1h66.1zm78.1 0h-66.1v60.1h66.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1zm78.1 0h-66.1v59.4h66.1zm-78.1-72.1h-66.1v60.1h66.1z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.top", "navigation.tracking", "navigation.tabs", "navigation.path", "navigation.indexes", "navigation.prune", "content.code.copy", "toc.follow", "announce.dismiss"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../assets/js/typewriter.js"></script>
+      
+        <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+      
+    
+  </body>
+</html>

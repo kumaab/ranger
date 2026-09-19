@@ -1,0 +1,3371 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://apache.github.io/ranger/plugins/hive/">
+      
+      
+        <link rel="prev" href="../hbase/">
+      
+      
+        <link rel="next" href="../hdfs/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/brand/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Hive - Apache Ranger</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/css/custom.css">
+    
+      <link rel="stylesheet" href="../../assets/css/table.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Hive - Apache Ranger" />
+<meta property="og:image" content="https://apache.github.io/ranger/assets/images/social/plugins/hive.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://apache.github.io/ranger/plugins/hive/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="Hive - Apache Ranger" />
+<meta property="twitter:image" content="https://apache.github.io/ranger/assets/images/social/plugins/hive.png" />
+</head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#apache-hive" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="https://ranger.apache.org" title="Apache Ranger" class="md-header__button md-logo" aria-label="Apache Ranger" data-md-component="logo">
+      
+  <img src="../../assets/brand/merged-logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apache Ranger
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Hive
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 2c-1.82 0-3.53.5-5 1.35C8 5.08 10 8.3 10 12s-2 6.92-5 8.65C6.47 21.5 8.18 22 10 22a10 10 0 0 0 10-10A10 10 0 0 0 10 2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/apache/ranger" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    apache/ranger
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/introduction/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Getting started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../arch/architecture/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Plugins
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../services/admin/service/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Services
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../features/policies/resource-policies/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Features
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../dev/build/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Developer guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../project/contributing/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Project
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../release-notes/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Releases
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../blog/blog/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://ranger.apache.org" title="Apache Ranger" class="md-nav__button md-logo" aria-label="Apache Ranger" data-md-component="logo">
+      
+  <img src="../../assets/brand/merged-logo.svg" alt="logo">
+
+    </a>
+    Apache Ranger
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/apache/ranger" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    apache/ranger
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../getting-started/introduction/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../arch/architecture/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugins
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Plugins
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../polaris/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Polaris
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../trino/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trino
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ozone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ozone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nestedstructure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nested structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kudu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kudu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schema-registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Schema Registry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../presto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../elasticsearch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Elasticsearch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kylin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kylin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sqoop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sqoop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nifi-registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NiFi Registry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nifi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NiFi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../atlas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Atlas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../solr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Solr
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ranger KMS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../yarn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YARN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knox
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../storm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hbase/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HBase
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hive
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ranger-hive-securityxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ranger-hive-security.xml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ranger-hive-auditxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ranger-hive-audit.xml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ranger-policymgr-sslxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ranger-policymgr-ssl.xml
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#service-definition-in-ranger-admin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service definition in Ranger Admin
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resources-and-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resources and permissions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Resources and permissions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-masking-and-row-filtering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data masking and row filtering
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#default-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Default policies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#behavior-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavior notes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Behavior notes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hive-statements-to-ranger-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hive statements to Ranger permissions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#url-resources-and-file-system-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        URL resources and file-system permissions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metastore-side-authorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metastore-side authorization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-caveats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other caveats
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#auditing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auditing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#try-it-with-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it with Docker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Further reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hdfs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HDFS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../other-service-definitions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Other service definitions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom-plugin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing a custom plugin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    
+  
+  
+  
+    <a href="../../services/admin/service/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Services
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    
+  
+  
+  
+    <a href="../../features/policies/resource-policies/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../dev/build/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer guide
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../project/contributing/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../release-notes/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Releases
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../blog/blog/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ranger-hive-securityxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ranger-hive-security.xml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ranger-hive-auditxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ranger-hive-audit.xml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ranger-policymgr-sslxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ranger-policymgr-ssl.xml
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#service-definition-in-ranger-admin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service definition in Ranger Admin
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resources-and-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resources and permissions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Resources and permissions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-masking-and-row-filtering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data masking and row filtering
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#default-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Default policies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#behavior-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavior notes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Behavior notes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hive-statements-to-ranger-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hive statements to Ranger permissions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#url-resources-and-file-system-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        URL resources and file-system permissions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metastore-side-authorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metastore-side authorization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-caveats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other caveats
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#auditing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auditing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#try-it-with-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it with Docker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Further reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Plugins
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<!---
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<h1 id="apache-hive">Apache Hive<a class="headerlink" href="#apache-hive" title="Permanent link">&para;</a></h1>
+<p>The Ranger Hive plugin (service type <code>hive</code>, shown as <strong>Hadoop SQL</strong> in the Admin UI) authorizes SQL
+statements executed through HiveServer2. Policies can be as coarse as a whole database or as fine as
+a single column, and the plugin also supports <strong>row-level filtering</strong> and <strong>column masking</strong>, so
+different users can run the same query and see different data.</p>
+<p>The plugin is a Hive <em>authorizer</em> (<code>RangerHiveAuthorizerFactory</code>) that HiveServer2 loads through
+<code>hive.security.authorization.manager</code>. Hive calls it for every statement with the list of input and
+output objects (databases, tables, columns, functions, URIs); the plugin evaluates each object against
+the policies cached in the HiveServer2 process and rejects the statement if any object is denied.
+Policies are refreshed from Ranger Admin by polling, so HiveServer2 keeps working when Admin is down.</p>
+<p>Beyond tables and columns the service definition has three special resources: <code>url</code> for file-system
+locations referenced by statements, <code>hiveservice</code> for service-level operations such as killing a
+query, and <code>global</code> for temporary UDF administration.</p>
+<h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h2>
+<ul>
+<li>A Ranger Admin instance that every HiveServer2 can reach over HTTP or HTTPS, with a service of type
+  <code>hive</code> (<strong>Hadoop SQL</strong>) defined in it.</li>
+<li>An audit destination reachable from HiveServer2, if auditing is enabled.</li>
+<li>Apache Hive. Ranger master builds the plugin against Hive <strong>4.0.1</strong> (<code>hive.version</code> in the root
+  <code>pom.xml</code>); the Docker environment runs Hive 4.0.1 on Hadoop 3.4.2 with Tez 0.10.4.</li>
+<li>The plugin jars. The Ranger build produces <code>ranger-&lt;version&gt;-hive-plugin.tar.gz</code> (see
+  <a href="../../dev/build/">Build from source</a>); its <code>lib/</code> directory holds the plugin shim jars and the
+  <code>ranger-hive-plugin-impl</code> directory with the implementation and its dependencies.</li>
+</ul>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>Activating the plugin on a HiveServer2 takes three things: the plugin jars on the HiveServer2
+classpath, the authorizer switched on in <code>hiveserver2-site.xml</code>, and the Ranger configuration files in
+the Hive configuration directory. Repeat this on every HiveServer2 instance, then restart them.</p>
+<p>Copy the content of the archive's <code>lib/</code> directory, including the <code>ranger-hive-plugin-impl</code>
+sub-directory, to <code>$HIVE_HOME/lib</code>. Then set the following in <code>hiveserver2-site.xml</code>:</p>
+<div class="highlight"><span class="filename">hiveserver2-site.xml</span><pre><span></span><code><span class="nt">&lt;property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;name&gt;</span>hive.security.authorization.enabled<span class="nt">&lt;/name&gt;</span>
+<span class="w">  </span><span class="nt">&lt;value&gt;</span>true<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;name&gt;</span>hive.security.authorization.manager<span class="nt">&lt;/name&gt;</span>
+<span class="w">  </span><span class="nt">&lt;value&gt;</span>org.apache.ranger.authorization.hive.authorizer.RangerHiveAuthorizerFactory<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;name&gt;</span>hive.security.authenticator.manager<span class="nt">&lt;/name&gt;</span>
+<span class="w">  </span><span class="nt">&lt;value&gt;</span>org.apache.hadoop.hive.ql.security.SessionStateUserAuthenticator<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+</code></pre></div>
+<p>Also append the three property names to <code>hive.conf.restricted.list</code>, so that a session cannot
+override them with <code>SET</code>:</p>
+<div class="highlight"><pre><span></span><code>hive.security.authorization.enabled,hive.security.authorization.manager,hive.security.authenticator.manager
+</code></pre></div>
+<p>The plugin reads <code>ranger-hive-security.xml</code>, <code>ranger-hive-audit.xml</code> and <code>ranger-policymgr-ssl.xml</code>
+from the classpath. Place them in the Hive configuration directory (<code>$HIVE_CONF_DIR</code>, usually
+<code>$HIVE_HOME/conf</code>), readable by the user that runs HiveServer2.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These settings apply to HiveServer2 only. Clients that talk to the metastore directly (Spark,
+Impala, ...) are not authorized by this configuration; see
+<a href="#metastore-side-authorization">Metastore-side authorization</a>.</p>
+</div>
+<h3 id="ranger-hive-securityxml">ranger-hive-security.xml<a class="headerlink" href="#ranger-hive-securityxml" title="Permanent link">&para;</a></h3>
+<p>This file tells the plugin which Ranger service it enforces, how to reach Ranger Admin and where to cache
+policies. Place it in <code>$HIVE_CONF_DIR</code>. <code>ranger.plugin.hive.service.name</code> and
+<code>ranger.plugin.hive.policy.rest.url</code> are mandatory; the policy cache directory lets this HiveServer2 start
+and keep enforcing policies when Ranger Admin is unreachable. The last group controls how the plugin treats
+SQL <code>GRANT</code>/<code>REVOKE</code>, locations in statements, and tables that are only partly visible to a user.</p>
+<div class="highlight"><span class="filename">ranger-hive-security.xml</span><pre><span></span><code><span class="nt">&lt;configuration&gt;</span>
+<span class="w">  </span><span class="cm">&lt;!-- Connection to Ranger Admin --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.hive.service.name<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>dev_hive<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>MANDATORY:<span class="w"> </span>Name<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>Ranger<span class="w"> </span>service<span class="w"> </span>whose<span class="w"> </span>policies<span class="w"> </span>this<span class="w"> </span>HiveServer2
+<span class="w">      </span>enforces.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.hive.policy.rest.url<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>http://ranger-admin:6080<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>MANDATORY:<span class="w"> </span>URL<span class="w"> </span>of<span class="w"> </span>Ranger<span class="w"> </span>Admin.<span class="w"> </span>Separate<span class="w"> </span>several<span class="w"> </span>URLs<span class="w"> </span>with<span class="w"> </span>commas<span class="w"> </span>for<span class="w"> </span>Ranger<span class="w"> </span>Admin
+<span class="w">      </span>high<span class="w"> </span>availability.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.hive.policy.rest.ssl.config.file<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>/etc/hive/conf/ranger-policymgr-ssl.xml<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Path<span class="w"> </span>of<span class="w"> </span>ranger-policymgr-ssl.xml.<span class="w"> </span>Read<span class="w"> </span>when<span class="w"> </span>the<span class="w"> </span>Ranger<span class="w"> </span>Admin<span class="w"> </span>URL<span class="w"> </span>uses<span class="w"> </span>https.
+<span class="w">      </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.hive.policy.rest.client.username<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>User<span class="w"> </span>name<span class="w"> </span>sent<span class="w"> </span>with<span class="w"> </span>HTTP<span class="w"> </span>basic<span class="w"> </span>authentication<span class="w"> </span>when<span class="w"> </span>the<span class="w"> </span>plugin<span class="w"> </span>downloads<span class="w"> </span>policies.
+<span class="w">      </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.hive.policy.rest.client.password<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Password<span class="w"> </span>for<span class="w"> </span>policy.rest.client.username.<span class="w"> </span>Basic<span class="w"> </span>authentication<span class="w"> </span>is<span class="w"> </span>used<span class="w"> </span>only<span class="w"> </span>when
+<span class="w">      </span>both<span class="w"> </span>are<span class="w"> </span>set.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.hive.policy.rest.client.connection.timeoutMs<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>120000<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Connection<span class="w"> </span>timeout<span class="w"> </span>for<span class="w"> </span>calls<span class="w"> </span>to<span class="w"> </span>Ranger<span class="w"> </span>Admin.<span class="w"> </span>Unit:<span class="w"> </span>milliseconds.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.hive.policy.rest.client.read.timeoutMs<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>30000<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Read<span class="w"> </span>timeout<span class="w"> </span>for<span class="w"> </span>calls<span class="w"> </span>to<span class="w"> </span>Ranger<span class="w"> </span>Admin.<span class="w"> </span>Unit:<span class="w"> </span>milliseconds.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.hive.policy.rest.client.max.retry.attempts<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>3<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Number<span class="w"> </span>of<span class="w"> </span>retries<span class="w"> </span>for<span class="w"> </span>a<span class="w"> </span>failed<span class="w"> </span>call<span class="w"> </span>to<span class="w"> </span>Ranger<span class="w"> </span>Admin.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.hive.policy.rest.client.retry.interval.ms<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>1000<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Wait<span class="w"> </span>time<span class="w"> </span>between<span class="w"> </span>retries.<span class="w"> </span>Unit:<span class="w"> </span>milliseconds.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- Policy refresh and cache --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.hive.policy.cache.dir<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>/etc/ranger/dev_hive/policycache<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Directory<span class="w"> </span>for<span class="w"> </span>the<span class="w"> </span>policy<span class="w"> </span>cache<span class="w"> </span>file.<span class="w"> </span>It<span class="w"> </span>must<span class="w"> </span>be<span class="w"> </span>writable<span class="w"> </span>by<span class="w"> </span>the<span class="w"> </span>user<span class="w"> </span>that<span class="w"> </span>runs<span class="w"> </span>the
+<span class="w">      </span>process.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.hive.policy.pollIntervalMs<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>30000<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>How<span class="w"> </span>often<span class="w"> </span>the<span class="w"> </span>plugin<span class="w"> </span>asks<span class="w"> </span>Ranger<span class="w"> </span>Admin<span class="w"> </span>for<span class="w"> </span>policy<span class="w"> </span>changes.<span class="w"> </span>Unit:
+<span class="w">      </span>milliseconds.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.hive.policy.source.impl<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>org.apache.ranger.admin.client.RangerAdminRESTClient<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Class<span class="w"> </span>that<span class="w"> </span>retrieves<span class="w"> </span>policies.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- Authorization behavior --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.hive.update.xapolicies.on.grant.revoke<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>true<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Let<span class="w"> </span>SQL<span class="w"> </span>GRANT<span class="w"> </span>and<span class="w"> </span>REVOKE<span class="w"> </span>create<span class="w"> </span>or<span class="w"> </span>update<span class="w"> </span>Ranger<span class="w"> </span>policies.<span class="w"> </span>When<span class="w"> </span>false<span class="w"> </span>these
+<span class="w">      </span>statements<span class="w"> </span>fail.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.hive.urlauth.filesystem.schemes<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>hdfs:,file:<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Comma-separated<span class="w"> </span>URI<span class="w"> </span>schemes<span class="w"> </span>that<span class="w"> </span>are<span class="w"> </span>authorized<span class="w"> </span>with<span class="w"> </span>file-system<span class="w"> </span>permissions
+<span class="w">      </span>instead<span class="w"> </span>of<span class="w"> </span>Ranger<span class="w"> </span>url<span class="w"> </span>policies.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.hive.uri.permission.coarse.check<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>false<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>When<span class="w"> </span>true,<span class="w"> </span>the<span class="w"> </span>file-system<span class="w"> </span>permission<span class="w"> </span>check<span class="w"> </span>on<span class="w"> </span>a<span class="w"> </span>URI<span class="w"> </span>does<span class="w"> </span>not<span class="w"> </span>descend<span class="w"> </span>into
+<span class="w">      </span>sub-directories.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.hive.block.update.if.rowfilter.columnmask.specified<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>true<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Deny<span class="w"> </span>UPDATE/ALTER<span class="w"> </span>on<span class="w"> </span>a<span class="w"> </span>table<span class="w"> </span>when<span class="w"> </span>a<span class="w"> </span>row<span class="w"> </span>filter<span class="w"> </span>or<span class="w"> </span>column<span class="w"> </span>mask<span class="w"> </span>applies<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>user,
+<span class="w">      </span>to<span class="w"> </span>avoid<span class="w"> </span>writes<span class="w"> </span>based<span class="w"> </span>on<span class="w"> </span>partial<span class="w"> </span>data.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.hive.describetable.showcolumns.authorization.option<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>NONE<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Access<span class="w"> </span>required<span class="w"> </span>for<span class="w"> </span>DESCRIBE/SHOW<span class="w"> </span>COLUMNS.<span class="w"> </span>One<span class="w"> </span>of:<span class="w"> </span>NONE<span class="w"> </span>(select<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>table
+<span class="w">      </span>columns),<span class="w"> </span>show-all<span class="w"> </span>(any<span class="w"> </span>access<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>table),<span class="w"> </span>show-allowed<span class="w"> </span>(currently<span class="w"> </span>behaves<span class="w"> </span>like
+<span class="w">      </span>NONE).<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div>
+<h3 id="ranger-hive-auditxml">ranger-hive-audit.xml<a class="headerlink" href="#ranger-hive-auditxml" title="Permanent link">&para;</a></h3>
+<p>This file selects where the plugin sends audit events; place it next to <code>ranger-hive-security.xml</code>. Each
+destination is switched on with <code>xasecure.audit.destination.&lt;name&gt;=true</code> and configured with properties
+under the same prefix. No property is mandatory: without an enabled destination, no audit events are
+stored. The example sends audits to Solr.</p>
+<div class="highlight"><span class="filename">ranger-hive-audit.xml</span><pre><span></span><code><span class="nt">&lt;configuration&gt;</span>
+<span class="w">  </span><span class="cm">&lt;!-- General --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.is.enabled<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>true<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Master<span class="w"> </span>switch<span class="w"> </span>for<span class="w"> </span>auditing<span class="w"> </span>in<span class="w"> </span>this<span class="w"> </span>plugin.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.provider.summary.enabled<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>false<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Collapse<span class="w"> </span>events<span class="w"> </span>that<span class="w"> </span>differ<span class="w"> </span>only<span class="w"> </span>in<span class="w"> </span>time<span class="w"> </span>into<span class="w"> </span>one<span class="w"> </span>event<span class="w"> </span>with<span class="w"> </span>a<span class="w"> </span>count.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- Audit Server destination --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.auditserver<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>false<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Send<span class="w"> </span>audits<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>Ranger<span class="w"> </span>Audit<span class="w"> </span>Server.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.auditserver.url<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Audit<span class="w"> </span>Server<span class="w"> </span>URL.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- Solr destination --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.solr<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>true<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Send<span class="w"> </span>audits<span class="w"> </span>to<span class="w"> </span>Apache<span class="w"> </span>Solr.<span class="w"> </span>Default:<span class="w"> </span>false.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.solr.urls<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>http://solr:8983/solr/ranger_audits<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Solr<span class="w"> </span>collection<span class="w"> </span>URLs,<span class="w"> </span>separated<span class="w"> </span>by<span class="w"> </span>commas.<span class="w"> </span>Ignored<span class="w"> </span>when
+<span class="w">      </span>xasecure.audit.destination.solr.zookeepers<span class="w"> </span>is<span class="w"> </span>set.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.solr.zookeepers<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>ZooKeeper<span class="w"> </span>connect<span class="w"> </span>string<span class="w"> </span>of<span class="w"> </span>a<span class="w"> </span>SolrCloud<span class="w"> </span>cluster.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.solr.batch.filespool.dir<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>/var/log/hive/audit/solr/spool<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Local<span class="w"> </span>directory<span class="w"> </span>where<span class="w"> </span>events<span class="w"> </span>are<span class="w"> </span>spooled<span class="w"> </span>while<span class="w"> </span>Solr<span class="w"> </span>is<span class="w"> </span>unreachable.<span class="w"> </span>Every<span class="w"> </span>enabled
+<span class="w">      </span>destination<span class="w"> </span>has<span class="w"> </span>the<span class="w"> </span>same<span class="w"> </span>property<span class="w"> </span>under<span class="w"> </span>its<span class="w"> </span>own<span class="w"> </span>prefix.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.solr.collection<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>ranger_audits<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Collection<span class="w"> </span>name<span class="w"> </span>when<span class="w"> </span>ZooKeeper<span class="w"> </span>is<span class="w"> </span>used.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- Elasticsearch destination --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.elasticsearch<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>false<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Send<span class="w"> </span>audits<span class="w"> </span>to<span class="w"> </span>Elasticsearch.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.elasticsearch.urls<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Elasticsearch<span class="w"> </span>host<span class="w"> </span>names,<span class="w"> </span>separated<span class="w"> </span>by<span class="w"> </span>commas.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.elasticsearch.port<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>9200<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>REST<span class="w"> </span>port<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>Elasticsearch<span class="w"> </span>cluster.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.elasticsearch.protocol<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>http<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>One<span class="w"> </span>of:<span class="w"> </span>http,<span class="w"> </span>https.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.elasticsearch.index<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>ranger_audits<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Index<span class="w"> </span>that<span class="w"> </span>receives<span class="w"> </span>the<span class="w"> </span>events.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- HDFS destination --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.hdfs<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>false<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Write<span class="w"> </span>audits<span class="w"> </span>as<span class="w"> </span>files<span class="w"> </span>to<span class="w"> </span>HDFS<span class="w"> </span>or<span class="w"> </span>a<span class="w"> </span>Hadoop-compatible<span class="w"> </span>object<span class="w"> </span>store.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.hdfs.dir<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Base<span class="w"> </span>directory,<span class="w"> </span>for<span class="w"> </span>example<span class="w"> </span>hdfs://namenode:8020/ranger/audit.<span class="w"> </span>Default:<span class="w"> </span>not
+<span class="w">      </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- Log4j destination --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.log4j<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>false<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Write<span class="w"> </span>audits<span class="w"> </span>as<span class="w"> </span>JSON<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>logger<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>host<span class="w"> </span>process.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.log4j.logger<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>ranger.audit.log4j<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Logger<span class="w"> </span>name<span class="w"> </span>used<span class="w"> </span>by<span class="w"> </span>the<span class="w"> </span>log4j<span class="w"> </span>destination.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div>
+<p>Give every enabled destination a spool directory (<code>xasecure.audit.destination.&lt;name&gt;.batch.filespool.dir</code>)
+so that events survive an outage of the audit store. The queue, spool, Kerberos and TLS options of each
+destination, and the <a href="../../services/audit-server/service/">Audit Server</a> client settings, are in the
+<a href="../../services/audit/">Audit framework</a> reference.</p>
+<h3 id="ranger-policymgr-sslxml">ranger-policymgr-ssl.xml<a class="headerlink" href="#ranger-policymgr-sslxml" title="Permanent link">&para;</a></h3>
+<p>This file is needed only when Ranger Admin is reached over <code>https</code>. The plugin loads it from the path set in
+<code>ranger.plugin.hive.policy.rest.ssl.config.file</code>; a file named <code>ranger-hive-policymgr-ssl.xml</code> on the
+classpath is picked up automatically. No property is mandatory: without a truststore the plugin relies on
+the default truststore of the JVM, and the keystore is needed only for two-way TLS. Passwords are not
+stored in the file: they are read from a Hadoop credential store (JCEKS) under fixed aliases.</p>
+<div class="highlight"><span class="filename">ranger-policymgr-ssl.xml</span><pre><span></span><code><span class="nt">&lt;configuration&gt;</span>
+<span class="w">  </span><span class="cm">&lt;!-- Keystore (client certificate, two-way TLS) --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.policymgr.clientssl.keystore<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Keystore<span class="w"> </span>with<span class="w"> </span>the<span class="w"> </span>plugin's<span class="w"> </span>client<span class="w"> </span>certificate.<span class="w"> </span>Needed<span class="w"> </span>only<span class="w"> </span>when<span class="w"> </span>Ranger<span class="w"> </span>Admin
+<span class="w">      </span>requires<span class="w"> </span>client<span class="w"> </span>certificates.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.policymgr.clientssl.keystore.credential.file<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Hadoop<span class="w"> </span>credential<span class="w"> </span>store<span class="w"> </span>(JCEKS)<span class="w"> </span>that<span class="w"> </span>holds<span class="w"> </span>the<span class="w"> </span>keystore<span class="w"> </span>password<span class="w"> </span>under<span class="w"> </span>the<span class="w"> </span>alias
+<span class="w">      </span>sslKeyStore.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.policymgr.clientssl.keystore.type<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>jks<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Keystore<span class="w"> </span>type.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- Truststore --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.policymgr.clientssl.truststore<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>/etc/hive/conf/ranger-plugin-truststore.jks<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Truststore<span class="w"> </span>that<span class="w"> </span>contains<span class="w"> </span>the<span class="w"> </span>Ranger<span class="w"> </span>Admin<span class="w"> </span>certificate<span class="w"> </span>or<span class="w"> </span>its<span class="w"> </span>CA.<span class="w"> </span>When<span class="w"> </span>no<span class="w"> </span>truststore
+<span class="w">      </span>is<span class="w"> </span>configured,<span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>truststore<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>JVM<span class="w"> </span>is<span class="w"> </span>used.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.policymgr.clientssl.truststore.credential.file<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>jceks://file/etc/ranger/dev_hive/cred.jceks<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Hadoop<span class="w"> </span>credential<span class="w"> </span>store<span class="w"> </span>(JCEKS)<span class="w"> </span>that<span class="w"> </span>holds<span class="w"> </span>the<span class="w"> </span>truststore<span class="w"> </span>password<span class="w"> </span>under<span class="w"> </span>the<span class="w"> </span>alias
+<span class="w">      </span>sslTrustStore.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.policymgr.clientssl.truststore.type<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>jks<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Truststore<span class="w"> </span>type.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div>
+<p>When Ranger Admin validates client certificates, set <code>commonNameForCertificate</code> in the service configuration
+to the CN of the plugin's certificate. See <a href="../../services/admin/security-hardening/">Security hardening</a>.</p>
+<h2 id="service-definition-in-ranger-admin">Service definition in Ranger Admin<a class="headerlink" href="#service-definition-in-ranger-admin" title="Permanent link">&para;</a></h2>
+<p>Choose <strong>Hadoop SQL</strong> in Service Manager and create a service. Its name must match
+<code>ranger.plugin.hive.service.name</code> on HiveServer2.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>username</code></td>
+<td>yes</td>
+<td>User that Ranger Admin connects as for Test Connection and resource lookup.</td>
+</tr>
+<tr>
+<td><code>password</code></td>
+<td>yes</td>
+<td>Password of that user.</td>
+</tr>
+<tr>
+<td><code>jdbc.driverClassName</code></td>
+<td>yes</td>
+<td>JDBC driver class. Default: <code>org.apache.hive.jdbc.HiveDriver</code>.</td>
+</tr>
+<tr>
+<td><code>jdbc.url</code></td>
+<td>yes</td>
+<td>HiveServer2 JDBC URL; see the examples below.</td>
+</tr>
+<tr>
+<td><code>commonNameForCertificate</code></td>
+<td>no</td>
+<td>Expected CN of the plugin's client certificate when Ranger Admin runs with two-way TLS.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.audit.filters</code></td>
+<td>no</td>
+<td>Default audit filters, downloaded by the plugin together with the policies. Default: see <a href="#auditing">Auditing</a>.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">jdbc.url examples</span><pre><span></span><code>jdbc:hive2://&lt;host&gt;:10000
+jdbc:hive2://&lt;host&gt;:10000/;transportMode=http;httpPath=&lt;path&gt;
+jdbc:hive2://&lt;host&gt;/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2
+jdbc:hive2://&lt;host&gt;:10000/;principal=hive/_HOST@REALM
+</code></pre></div>
+<p><strong>Test Connection</strong> opens a JDBC connection and lists the databases. <strong>Resource lookup</strong> queries
+databases, tables, columns and functions through the same connection, so the lookup user needs
+<code>select</code> on the objects that should be suggested in the policy editor.</p>
+<h2 id="resources-and-permissions">Resources and permissions<a class="headerlink" href="#resources-and-permissions" title="Permanent link">&para;</a></h2>
+<p>Source:
+<a href="https://github.com/apache/ranger/blob/master/agents-common/src/main/resources/service-defs/ranger-servicedef-hive.json"><code>ranger-servicedef-hive.json</code></a>.</p>
+<h3 id="resources">Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h3>
+<p>A policy uses exactly one of these hierarchies: <code>database</code> → <code>table</code> → <code>column</code>, <code>database</code> → <code>udf</code>,
+<code>url</code>, <code>hiveservice</code> or <code>global</code>. All resources accept wildcards. <code>database</code>, <code>table</code>, <code>column</code> and
+<code>udf</code> are matched case-insensitively and support <em>exclude</em>; the other three are case-sensitive.</p>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Parent</th>
+<th>Lookup</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>database</code></td>
+<td>—</td>
+<td>yes</td>
+<td>Hive database. A policy may stop at this level.</td>
+</tr>
+<tr>
+<td><code>table</code></td>
+<td><code>database</code></td>
+<td>yes</td>
+<td>Table or view. A policy may stop at this level.</td>
+</tr>
+<tr>
+<td><code>column</code></td>
+<td><code>table</code></td>
+<td>yes</td>
+<td>Column of a table.</td>
+</tr>
+<tr>
+<td><code>udf</code></td>
+<td><code>database</code></td>
+<td>yes</td>
+<td>Permanent function registered in a database.</td>
+</tr>
+<tr>
+<td><code>url</code></td>
+<td>—</td>
+<td>no</td>
+<td>File-system URI such as <code>s3a://bucket/path</code>. Supports the <em>recursive</em> flag; matched by <code>RangerURLResourceMatcher</code>.</td>
+</tr>
+<tr>
+<td><code>hiveservice</code></td>
+<td>—</td>
+<td>no</td>
+<td>The HiveServer2 service, for <code>serviceadmin</code> operations.</td>
+</tr>
+<tr>
+<td><code>global</code></td>
+<td>—</td>
+<td>no</td>
+<td>Used for temporary UDF administration (<code>tempudfadmin</code>).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="access-types">Access types<a class="headerlink" href="#access-types" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Access type</th>
+<th>Category</th>
+<th>Typical statements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>select</code></td>
+<td>READ</td>
+<td>SELECT, DESCRIBE, SHOW COLUMNS/PARTITIONS/CREATE TABLE, ANALYZE</td>
+</tr>
+<tr>
+<td><code>update</code></td>
+<td>UPDATE</td>
+<td>INSERT, UPDATE, DELETE, LOAD, TRUNCATE</td>
+</tr>
+<tr>
+<td><code>create</code></td>
+<td>CREATE</td>
+<td>CREATE DATABASE/TABLE/VIEW, IMPORT</td>
+</tr>
+<tr>
+<td><code>drop</code></td>
+<td>DELETE</td>
+<td>DROP DATABASE/TABLE/VIEW</td>
+</tr>
+<tr>
+<td><code>alter</code></td>
+<td>CREATE</td>
+<td>ALTER TABLE/VIEW/DATABASE, MSCK</td>
+</tr>
+<tr>
+<td><code>index</code></td>
+<td>MANAGE</td>
+<td>Index operations</td>
+</tr>
+<tr>
+<td><code>lock</code></td>
+<td>MANAGE</td>
+<td>LOCK/UNLOCK</td>
+</tr>
+<tr>
+<td><code>read</code></td>
+<td>READ</td>
+<td>Read a <code>url</code> location</td>
+</tr>
+<tr>
+<td><code>write</code></td>
+<td>UPDATE</td>
+<td>Write to a <code>url</code> location</td>
+</tr>
+<tr>
+<td><code>repladmin</code></td>
+<td>MANAGE</td>
+<td>REPL DUMP / REPL STATUS / REPL LOAD</td>
+</tr>
+<tr>
+<td><code>serviceadmin</code></td>
+<td>MANAGE</td>
+<td>KILL QUERY and other <code>hiveservice</code> operations</td>
+</tr>
+<tr>
+<td><code>tempudfadmin</code></td>
+<td>MANAGE</td>
+<td>CREATE/DROP TEMPORARY FUNCTION (on the <code>global</code> resource)</td>
+</tr>
+<tr>
+<td><code>refresh</code></td>
+<td>MANAGE</td>
+<td>Refresh operations</td>
+</tr>
+<tr>
+<td><code>all</code></td>
+<td>—</td>
+<td>Implies every access type above except <code>tempudfadmin</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="data-masking-and-row-filtering">Data masking and row filtering<a class="headerlink" href="#data-masking-and-row-filtering" title="Permanent link">&para;</a></h3>
+<p><code>dataMaskDef</code> allows masking policies on <code>database</code> → <code>table</code> → <code>column</code> (single values, no
+wildcards) for the <code>select</code> access type, with these mask types:</p>
+<table>
+<thead>
+<tr>
+<th>Mask type</th>
+<th>Label</th>
+<th>Transformer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MASK</code></td>
+<td>Redact</td>
+<td><code>mask({col})</code>: letters become <code>x</code>/<code>X</code>, digits <code>0</code></td>
+</tr>
+<tr>
+<td><code>MASK_SHOW_LAST_4</code></td>
+<td>Partial mask: show last 4</td>
+<td><code>mask_show_last_n({col}, 4, 'x', 'x', 'x', -1, '1')</code></td>
+</tr>
+<tr>
+<td><code>MASK_SHOW_FIRST_4</code></td>
+<td>Partial mask: show first 4</td>
+<td><code>mask_show_first_n({col}, 4, 'x', 'x', 'x', -1, '1')</code></td>
+</tr>
+<tr>
+<td><code>MASK_HASH</code></td>
+<td>Hash</td>
+<td><code>mask_hash({col})</code></td>
+</tr>
+<tr>
+<td><code>MASK_NULL</code></td>
+<td>Nullify</td>
+<td>replaces the value with NULL</td>
+</tr>
+<tr>
+<td><code>MASK_NONE</code></td>
+<td>Unmasked (retain original value)</td>
+<td>keeps the original value (use to exempt users)</td>
+</tr>
+<tr>
+<td><code>MASK_DATE_SHOW_YEAR</code></td>
+<td>Date: show only year</td>
+<td><code>mask({col}, 'x', 'x', 'x', -1, '1', 1, 0, -1)</code></td>
+</tr>
+<tr>
+<td><code>CUSTOM</code></td>
+<td>Custom</td>
+<td>any Hive expression, <code>{col}</code> is replaced by the column name</td>
+</tr>
+</tbody>
+</table>
+<p><code>rowFilterDef</code> allows row-filter policies on <code>database</code> → <code>table</code> for <code>select</code>; the filter is a Hive
+boolean expression that is appended to the query as a WHERE clause. Hive calls
+<code>applyRowFilterAndColumnMasking()</code> during query compilation, so filters and masks are applied before
+the query runs and cannot be bypassed by views or CTEs. See
+<a href="../../features/policies/row-filter-column-masking/">Row-level filtering and column masking</a>.</p>
+<p>The Hive service definition has no policy conditions or context enrichers of its own; tag-based
+policies and the built-in conditions apply.</p>
+<h2 id="default-policies">Default policies<a class="headerlink" href="#default-policies" title="Permanent link">&para;</a></h2>
+<p>When a Hive service is created, Ranger Admin adds these policies:</p>
+<ul>
+<li><code>all</code> policies on every hierarchy. The lookup user (<code>username</code> of the service configuration) is added
+  to them with <code>select</code>/<code>read</code>, so resource lookup keeps working.</li>
+<li>In the <code>all</code> policies for databases, tables, columns and UDFs, the <code>{OWNER}</code> macro gets <code>all</code>, and the
+  <code>public</code> group gets <code>create</code> on all databases. Users can therefore create their own tables and manage
+  them without extra policies. <code>{OWNER}</code> matches the owner of the database or table being accessed.</li>
+<li><code>default database tables columns</code>: <code>create</code> on the <code>default</code> database for <code>public</code>.</li>
+<li><code>Information_schema database tables columns</code>: <code>select</code> on <code>information_schema</code> for <code>public</code>.</li>
+</ul>
+<p>Edit or disable these policies to tighten the environment.</p>
+<h2 id="behavior-notes">Behavior notes<a class="headerlink" href="#behavior-notes" title="Permanent link">&para;</a></h2>
+<h3 id="hive-statements-to-ranger-permissions">Hive statements to Ranger permissions<a class="headerlink" href="#hive-statements-to-ranger-permissions" title="Permanent link">&para;</a></h3>
+<p>The table summarizes which access type the plugin requires for common statements.</p>
+<table>
+<thead>
+<tr>
+<th>Statement</th>
+<th>Required access</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SELECT</code>, <code>DESCRIBE</code>, <code>SHOW COLUMNS</code>, <code>SHOW PARTITIONS</code>, <code>SHOW CREATE TABLE</code>, <code>ANALYZE TABLE</code></td>
+<td><code>select</code> on the tables and columns read</td>
+</tr>
+<tr>
+<td><code>CREATE DATABASE</code>, <code>CREATE TABLE</code>, <code>CREATE VIEW</code>, <code>IMPORT</code></td>
+<td><code>create</code></td>
+</tr>
+<tr>
+<td><code>CREATE TABLE AS SELECT</code></td>
+<td><code>create</code> on the target, <code>select</code> on the sources</td>
+</tr>
+<tr>
+<td><code>DROP DATABASE</code>, <code>DROP TABLE</code>, <code>DROP VIEW</code></td>
+<td><code>drop</code></td>
+</tr>
+<tr>
+<td><code>ALTER TABLE</code>, <code>ALTER VIEW</code>, <code>ALTER DATABASE</code>, <code>MSCK REPAIR</code></td>
+<td><code>alter</code></td>
+</tr>
+<tr>
+<td><code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>TRUNCATE</code>, <code>LOAD</code></td>
+<td><code>update</code></td>
+</tr>
+<tr>
+<td><code>SHOW DATABASES</code>, <code>SHOW TABLES</code></td>
+<td>any access type; other objects are filtered out of the result</td>
+</tr>
+<tr>
+<td><code>CREATE FUNCTION</code> (permanent)</td>
+<td><code>create</code> on <code>database</code>/<code>udf</code></td>
+</tr>
+<tr>
+<td><code>CREATE TEMPORARY FUNCTION</code>, <code>ADD FILE|JAR|ARCHIVE</code>, <code>COMPILE</code></td>
+<td><code>tempudfadmin</code> on <code>global</code></td>
+</tr>
+<tr>
+<td><code>REPL DUMP</code>, <code>REPL STATUS</code>, <code>REPL LOAD</code></td>
+<td><code>repladmin</code></td>
+</tr>
+<tr>
+<td><code>KILL QUERY</code></td>
+<td><code>serviceadmin</code> on <code>hiveservice</code></td>
+</tr>
+<tr>
+<td><code>GRANT</code>, <code>REVOKE</code></td>
+<td>Ranger admin, or <em>delegated admin</em> on the resource</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Statements that carry a location also check the URI: <code>CREATE EXTERNAL TABLE ... LOCATION</code>,
+  <code>ALTER TABLE ... ADD PARTITION</code>/<code>SET LOCATION</code> and <code>LOAD DATA INPATH</code> (see the next section).</li>
+<li><code>CREATE ROLE</code>, <code>DROP ROLE</code>, <code>GRANT ROLE</code>, <code>REVOKE ROLE</code> and <code>SHOW ROLES</code> are handled by the plugin and
+  mapped to <a href="../../features/roles/">Ranger roles</a>. <code>SHOW GRANT</code> is supported for Hive resources, not for
+  principals.</li>
+<li>The plugin requires no Ranger permission for these statements: <code>SET</code>, <code>RESET</code>, <code>EXPLAIN</code>,
+  <code>SHOW CONF</code>, <code>SHOW FUNCTIONS</code>, <code>DESCRIBE FUNCTION</code>, <code>SHOW LOCKS</code>, <code>SHOW TRANSACTIONS</code>,
+  <code>DELETE FILE|JAR|ARCHIVE</code>, <code>CREATE/DROP MACRO</code>.</li>
+<li><code>DFS</code> commands are always denied by the plugin; the denial is audited with access type and action
+  <code>DFS</code>.</li>
+</ul>
+<h3 id="url-resources-and-file-system-permissions">URL resources and file-system permissions<a class="headerlink" href="#url-resources-and-file-system-permissions" title="Permanent link">&para;</a></h3>
+<p>Statements that reference locations (<code>CREATE EXTERNAL TABLE ... LOCATION</code>, <code>LOAD DATA INPATH</code>,
+<code>ALTER TABLE ... SET LOCATION</code>, <code>INSERT OVERWRITE DIRECTORY</code>, <code>EXPORT</code>/<code>IMPORT</code>) produce URI objects.
+The plugin handles them in two ways:</p>
+<ul>
+<li>If the URI scheme is listed in <code>ranger.plugin.hive.urlauth.filesystem.schemes</code> (default <code>hdfs:</code>
+  and <code>file:</code>), the plugin checks that the HiveServer2 user, impersonating the caller, has the
+  required file-system permission on the path (read for inputs, write for outputs; ownership of the
+  hierarchy also passes). On HDFS this check is itself subject to the
+  <a href="../hdfs/">HDFS plugin</a>, so HDFS policies govern these locations. With
+  <code>xasecure.hive.uri.permission.coarse.check=true</code> the check does not recurse into sub-directories.</li>
+<li>For every other scheme (for example <code>s3a:</code>, <code>abfs:</code>, <code>gs:</code>), the plugin authorizes the URI with the
+  Ranger <code>url</code> resource and the <code>read</code> or <code>write</code> access type. Use a recursive <code>url</code> policy such as
+  <code>s3a://bucket/warehouse/*</code> to grant access.</li>
+</ul>
+<h3 id="metastore-side-authorization">Metastore-side authorization<a class="headerlink" href="#metastore-side-authorization" title="Permanent link">&para;</a></h3>
+<p>HiveServer2 is the enforcement point for the plugin described here. Clients that connect to the Hive
+metastore directly bypass HiveServer2 and therefore this plugin. The historic design for a Ranger
+metastore event listener (<code>RangerHiveMetastorePrivilegeHandle</code>, cwiki "Ranger plugin for Hive
+MetaStore") is <strong>not</strong> part of the master branch; the plugin does not ship any metastore listener.</p>
+<p>Hive itself provides a metastore-side authorizer that instantiates the class configured as
+<code>hive.security.authorization.manager</code> inside the metastore process. Configuring it with
+<code>RangerHiveAuthorizerFactory</code> runs the Ranger Hive plugin inside the metastore for DDL performed by
+direct clients. This is a Hive feature; verify the property names against the documentation of your
+Hive release before relying on it. Ranger policy updates triggered by DDL (rename, drop) are not
+performed by the plugin in either mode.</p>
+<h3 id="other-caveats">Other caveats<a class="headerlink" href="#other-caveats" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>xasecure.hive.update.xapolicies.on.grant.revoke</code> controls whether <code>GRANT</code>/<code>REVOKE</code> reach Ranger;
+  the caller still needs admin rights or delegated admin on the resource, and the statements modify
+  the policy that exactly matches the resource (see the note in the <a href="../hbase/">HBase plugin</a> for the
+  same mechanism).</li>
+<li>Column-level policies apply to <code>select</code> only. <code>create</code>, <code>alter</code> and <code>drop</code> are evaluated at table
+  level.</li>
+<li>Users with a row filter or column mask on a table cannot run <code>UPDATE</code>/<code>ALTER</code> on it while
+  <code>xasecure.hive.block.update.if.rowfilter.columnmask.specified=true</code>.</li>
+</ul>
+<h2 id="auditing">Auditing<a class="headerlink" href="#auditing" title="Permanent link">&para;</a></h2>
+<p>One audit event is written per accessed object (a query on three tables produces three events unless
+they are aggregated). Notable fields:</p>
+<ul>
+<li><code>resource</code>: <code>database/table/column</code>, or the <code>url</code>, <code>hiveservice</code> or <code>global</code> value.</li>
+<li><code>accessType</code>: the Ranger access type (<code>select</code>, <code>update</code>, ...).</li>
+<li><code>action</code>: the Hive operation type (<code>QUERY</code>, <code>CREATETABLE</code>, <code>METADATA OPERATION</code>, <code>DFS</code>, ...).</li>
+<li><code>requestData</code>: the SQL text of the query, truncated to the configured size; see <em>Show Hive query in
+  audit</em> in the <a href="../../services/admin/ui-guide/">UI guide</a>.</li>
+<li><code>policyId</code> and <code>policyVersion</code>: the policy that decided the request.</li>
+</ul>
+<p>The default audit filter in the service configuration audits all denials, skips <code>METADATA OPERATION</code>
+events, and skips <code>SHOW_ROLES</code> performed by the <code>hive</code> and <code>hue</code> users.</p>
+<h2 id="try-it-with-docker">Try it with Docker<a class="headerlink" href="#try-it-with-docker" title="Permanent link">&para;</a></h2>
+<p><code>dev-support/ranger-docker/docker-compose.ranger-hive.yml</code> starts a <code>ranger-hive</code> container with
+HiveServer2 (port 10000) and the metastore (port 9083) on top of the <code>ranger-hadoop</code> container.
+HiveServer2 enforces the Ranger service <code>dev_hive</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>dev-support/ranger-docker
+./download-archives.sh<span class="w"> </span>hadoop<span class="w"> </span>hive
+<span class="nb">export</span><span class="w"> </span><span class="nv">RANGER_DB_TYPE</span><span class="o">=</span>postgres
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUDIT_INDEX_STORE</span><span class="o">=</span>opensearch
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUDIT_DESTINATIONS</span><span class="o">=</span>audit-store-<span class="si">${</span><span class="nv">AUDIT_INDEX_STORE</span><span class="si">}</span>
+
+docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span><span class="si">${</span><span class="nv">AUDIT_DESTINATIONS</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-f<span class="w"> </span>docker-compose.ranger.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-f<span class="w"> </span>docker-compose.ranger-audit-service.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-f<span class="w"> </span>docker-compose.ranger-hadoop.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-f<span class="w"> </span>docker-compose.ranger-hive.yml<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+<p>Connect with <code>beeline -u jdbc:hive2://localhost:10000</code> from inside the container. The
+<a href="../../getting-started/first-policy/">first policy tutorial</a> walks through a complete example, and
+<a href="../../getting-started/docker/">Running Ranger with Docker</a> describes the full environment.</p>
+<h2 id="further-reading">Further reading<a class="headerlink" href="#further-reading" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../features/policies/row-filter-column-masking/">Row-level filtering and column masking</a></li>
+<li><a href="../../features/roles/">Roles</a> and <a href="../../services/admin/users-groups-roles/">Users, groups and roles</a></li>
+<li><a href="../../arch/policy-model/">Policy model</a>: deny/allow evaluation, <code>{OWNER}</code> and <code>{USER}</code> macros</li>
+<li><a href="../../features/policies/tag-based-policies/">Tag-based policies</a></li>
+<li>Source: <a href="https://github.com/apache/ranger/tree/master/hive-agent"><code>hive-agent</code></a>,
+  <a href="https://github.com/apache/ranger/tree/master/ranger-hive-plugin-shim"><code>ranger-hive-plugin-shim</code></a></li>
+<li>cwiki: <a href="https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=65871805">Hive commands to Ranger permission mapping</a>,
+  <a href="https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=61337276">Ranger plugin for Hive MetaStore (design)</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 18, 2026 19:47:56 PDT">September 18, 2026</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2014-2025 The Apache Software Foundation
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://the-asf.slack.com/archives/C4SC5NXAA" target="_blank" rel="noopener" title="the-asf.slack.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M94.1 315.1c0 25.9-21.2 47.1-47.1 47.1S0 341 0 315.1 21.2 268 47.1 268h47.1v47.1zm23.7 0c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1v117.8c0 25.9-21.2 47.1-47.1 47.1s-47.1-21.2-47.1-47.1zm47.1-189c-25.9 0-47.1-21.2-47.1-47.1s21.2-47 47.1-47S212 53.2 212 79.1v47.1h-47.1zm0 23.7c25.9 0 47.1 21.2 47.1 47.1S190.8 244 164.9 244H47.1C21.2 244 0 222.8 0 196.9s21.2-47.1 47.1-47.1zm189 47.1c0-25.9 21.2-47.1 47.1-47.1s47 21.2 47 47.1-21.2 47.1-47.1 47.1h-47.1v-47.1zm-23.7 0c0 25.9-21.2 47.1-47.1 47.1S236 222.8 236 196.9V79.1c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1zm-47.1 189c25.9 0 47.1 21.2 47.1 47.1s-21.2 47-47.1 47-47.1-21.2-47.1-47.1v-47.1h47.1zm0-23.7c-25.9 0-47.1-21.2-47.1-47.1s21.2-47.1 47.1-47.1h117.8c25.9 0 47.1 21.2 47.1 47.1s-21.2 47.1-47.1 47.1z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="mailto:dev@ranger.apache.org" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l208 156a48 48 0 0 0 57.6 0l208-156c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48zM0 196v188c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V196L313.6 344.8c-34.1 25.6-81.1 25.6-115.2 0z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/apache/ranger" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://hub.docker.com/r/apache/ranger" target="_blank" rel="noopener" title="hub.docker.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M349.9 236.3h-66.1v-59.4h66.1zm0-204.3h-66.1v60.7h66.1zm78.2 144.8H362v59.4h66.1zm-156.3-72.1h-66.1v60.1h66.1zm78.1 0h-66.1v60.1h66.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1zm78.1 0h-66.1v59.4h66.1zm-78.1-72.1h-66.1v60.1h66.1z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.top", "navigation.tracking", "navigation.tabs", "navigation.path", "navigation.indexes", "navigation.prune", "content.code.copy", "toc.follow", "announce.dismiss"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/js/typewriter.js"></script>
+      
+        <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+      
+    
+  </body>
+</html>

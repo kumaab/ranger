@@ -78,7 +78,8 @@ mvn -T 8 clean verify            # what CI runs; includes checkstyle and spotbug
 
 Build artifacts (`ranger-<version>-admin.tar.gz`, `ranger-<version>-<plugin>-plugin.tar.gz`, ...) land in `target/`.
 To try your change end to end, `./ranger_in_docker up` builds and starts Ranger Admin and its dependencies in
-Docker.
+Docker. See [Building from source](../dev/build.md), [Running with Docker](../getting-started/docker.md) and
+[Testing and tools](../dev/testing-and-tools.md).
 
 ### Find something to work on
 

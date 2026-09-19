@@ -45,7 +45,7 @@ The current stable release is **Apache Ranger 2.9.0** (August 8, 2026); see the
 Binary tarballs follow the naming pattern `ranger-<version>-<component>.tar.gz`, for example
 `services/admin/ranger-2.9.0-admin.tar.gz` and `plugins/hive/ranger-2.9.0-hive-plugin.tar.gz`. Each sits next to
 its `.asc` and `.sha512` files. Binary tarballs have been published for 2.6.0 and later (the `pdp` service and the
-`trino` plugin from 2.9.0); for older releases build them from the source tarball.
+`trino` plugin from 2.9.0); for older releases build them from the source tarball as described in [Building from source](../dev/build.md).
 
 Previous releases are listed on the [Releases](index.md) page. Every release ever made, including the
 incubating ones, stays available at
@@ -159,8 +159,8 @@ docker run -d --name ranger --hostname ranger.example.com --network rangernw \
 ```
 
 Ranger Admin is then available at `http://localhost:6080/` (user `admin`, password `rangerR0cks!`). To run the
-full stack with plugins, or to build images from a source checkout, use the compose files in
-`dev-support/ranger-docker`.
+full stack with plugins, or to build images from a source checkout, use the compose files described in
+[Running Ranger with Docker](../getting-started/docker.md).
 
 ## Maven Central
 
@@ -191,7 +191,8 @@ Artifacts you are most likely to depend on:
 ```
 
 The Python client is published to PyPI as [`apache-ranger`](https://pypi.org/project/apache-ranger/)
-(`pip install apache-ranger`); its source is in `intg/src/main/python` of the repository.
+(`pip install apache-ranger`); its source is in `intg/src/main/python` of the repository. See
+[Python client](../features/client-interface/python.md).
 
 ## Source code and release tags
 
@@ -207,7 +208,7 @@ mvn clean package -DskipTests
 ```
 
 The build writes the same `ranger-<version>-<component>.tar.gz` files that are published in the `services/`,
-`plugins/` and `tools/` directories to `target/`.
+`plugins/` and `tools/` directories to `target/`. See [Building from source](../dev/build.md).
 
 ## Further reading
 

@@ -124,14 +124,14 @@ Ranger commits to backward compatibility across releases in two areas:
 - **Public REST APIs.** The public APIs under `service/public/v2/api/...` for service definitions, services,
   policies and related objects remain backward compatible: clients written against an earlier release keep
   working against a newer Ranger Admin. New fields may be added; existing fields and semantics are not removed
-  or changed.
+  or changed. See [REST API](../dev/rest-api.md).
 - **Policy authoring.** Policies created in an earlier release continue to be valid and to evaluate the same way
   after an upgrade. New policy features (for example row filters, data masking, deny and exception items,
   validity schedules, conditions) are additive; existing policies do not need to be rewritten.
 
 Changes that cannot be made compatibly are discussed on the dev list and called out in the
 [release notes](../release-notes/index.md). Database schema changes are handled by the versioned patches
-applied at upgrade time, so an existing policy store is
+applied at upgrade time (see [Database](../services/admin/database.md)), so an existing policy store is
 migrated in place.
 
 ## Roadmap

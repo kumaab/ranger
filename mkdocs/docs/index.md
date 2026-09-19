@@ -33,3 +33,73 @@ hide:
     - Attribute based access control (ABAC)
     - Tag based access control (TBAC)
 - Centralized auditing of user access and administrative actions (security related) for all services.
+
+# Find your way around
+
+<div class="grid cards" markdown>
+
+-   :material-rocket-launch:{ .lg .middle } __Getting started__
+
+    ---
+
+    What Ranger is, how to run it with Docker, and a first policy walkthrough.
+
+    [:octicons-arrow-right-24: Introduction](getting-started/introduction.md)
+
+-   :material-sitemap:{ .lg .middle } __Architecture__
+
+    ---
+
+    Components, data flows, the policy model and how plugins enforce policies inside each service.
+
+    [:octicons-arrow-right-24: Overview](arch/architecture.md)
+
+-   :material-puzzle:{ .lg .middle } __Plugins__
+
+    ---
+
+    Integration guides for Polaris, Trino, Ozone, Kafka, Hive, HDFS and every other supported service.
+
+    [:octicons-arrow-right-24: Plugin overview](plugins/index.md)
+
+-   :material-server:{ .lg .middle } __Services__
+
+    ---
+
+    Install, configure and operate Ranger Admin, UserSync, TagSync, KMS, PDP and the audit pipeline.
+
+    [:octicons-arrow-right-24: Ranger Admin](services/admin/service.md)
+
+-   :material-shield-check:{ .lg .middle } __Features__
+
+    ---
+
+    Resource and tag policies, masking and row filtering, ABAC, roles, security zones and data sharing.
+
+    [:octicons-arrow-right-24: Policies](features/policies/resource-policies.md)
+
+-   :material-code-braces:{ .lg .middle } __Developer guide__
+
+    ---
+
+    Build from source, call the REST API, embed the authorization API and write custom plugins.
+
+    [:octicons-arrow-right-24: Building from source](dev/build.md)
+
+-   :material-package-variant:{ .lg .middle } __Releases__
+
+    ---
+
+    Release notes for every version, download locations and how to verify signatures.
+
+    [:octicons-arrow-right-24: Releases](release-notes/index.md)
+
+-   :material-account-group:{ .lg .middle } __Project__
+
+    ---
+
+    How to contribute, community channels, security policy and the release process.
+
+    [:octicons-arrow-right-24: Contributing](project/contributing.md)
+
+</div>

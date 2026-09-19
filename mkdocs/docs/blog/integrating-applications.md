@@ -751,7 +751,12 @@ Applications do not need to implement anything special for security-zone support
 
 - [Apache Ranger: Java client libraries](https://cwiki.apache.org/confluence/display/RANGER/Ranger+Client+Libraries)
 - [Apache Ranger: Python client library](https://pypi.org/project/apache-ranger/)
-- Apache Ranger: REST API documentation
+- [Apache Ranger: REST API documentation](../dev/rest-api.md)
 - [Apache Ranger: security zones](https://cwiki.apache.org/confluence/display/RANGER/Introduction+of+Security+Zones+in+Ranger)
 - [Apache Ranger: row-filter and data-masking policies](https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=65868896)
 - [Apache Ranger Policy Model](policy-model.md)
+
+!!! info "Related documentation"
+    See [Authorization API](../dev/authz-api.md), [Ranger PDP](../services/pdp/service.md),
+    [Plugin architecture](../arch/plugin-architecture.md) and
+    [Adding a custom plugin](../plugins/custom-plugin.md) for the reference documentation behind this post.

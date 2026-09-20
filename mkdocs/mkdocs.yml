@@ -85,12 +85,26 @@ nav:
     - Ranger UserSync: services/usersync/service.md
     - Ranger TagSync: services/tagsync/service.md
   - Features:
+      - Policies:
+          - Resource-based policies: features/policies/resource-policies.md
+          - Tag-based policies: features/policies/tag-based-policies.md
+          - Row filtering and column masking: features/policies/row-filter-column-masking.md
+          - Policy conditions: features/policies/policy-conditions.md
+      - Attribute-based access control: features/abac.md
+      - Roles: features/roles.md
+      - Security Zones: features/sec-zone/intro.md
       - Governed Data Sharing: features/gds/gds_intro.md
-      - Security Zones:
-          - Introduction: features/sec-zone/intro.md
-      - Client Libraries:
-          - Introduction: features/client-interface/intro.md
-          - Authz Remote Java Client: https://github.com/apache/ranger/blob/master/authz-remote/README.md
+      - Import and export: features/import-export.md
+      - Client libraries:
+          - Overview: features/client-interface/intro.md
+          - Java client: features/client-interface/java.md
+          - Python client: features/client-interface/python.md
+  - Developer guide:
+      - Building from source: dev/build.md
+      - REST API: dev/rest-api.md
+      - Authorization API and PDP: dev/authz-api.md
+      - Custom conditions and enrichers: dev/custom-conditions-enrichers.md
+      - Testing and tools: dev/testing-and-tools.md
   - Project:
       - Contributing: project/contributing.md
       - Community: project/community.md

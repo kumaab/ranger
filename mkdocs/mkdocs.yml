@@ -80,10 +80,33 @@ nav:
   - Plugins:
     - Trino: plugins/trino.md
   - Services:
-    - Ranger Admin: services/admin/service.md
-    - Ranger KMS: services/kms/service.md
-    - Ranger UserSync: services/usersync/service.md
-    - Ranger TagSync: services/tagsync/service.md
+      - Ranger Admin:
+          - Overview: services/admin/service.md
+          - Deployment and configuration: services/admin/installation.md
+          - Authentication: services/admin/authentication.md
+          - Users, groups and roles: services/admin/users-groups-roles.md
+          - Database: services/admin/database.md
+          - High availability: services/admin/high-availability.md
+          - Security hardening: services/admin/security-hardening.md
+          - Admin UI guide: services/admin/ui-guide.md
+          - Metrics: services/admin/metrics.md
+      - Ranger UserSync:
+          - Overview: services/usersync/service.md
+          - UNIX and file sources: services/usersync/unix-and-file-sources.md
+          - LDAP and Active Directory: services/usersync/ldap-ad.md
+          - Operations: services/usersync/operations.md
+      - Ranger TagSync: services/tagsync/service.md
+      - Ranger KMS:
+          - Overview: services/kms/service.md
+          - High availability: services/kms/high-availability.md
+          - HSM and key stores: services/kms/hsm-and-key-stores.md
+      - Ranger PDP: services/pdp/service.md
+      - Audit:
+          - Audit framework: services/audit/index.md
+          - Audit stores: services/audit/audit-stores.md
+          - Audit filters: services/audit/audit-filters.md
+          - Audit schema: services/audit/audit-schema.md
+          - Audit server: services/audit-server/service.md
   - Features:
       - Governed Data Sharing: features/gds/gds_intro.md
       - Security Zones:

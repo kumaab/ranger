@@ -1,0 +1,2857 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://apache.github.io/ranger/getting-started/docker/">
+      
+      
+        <link rel="prev" href="../install/">
+      
+      
+        <link rel="next" href="../first-policy/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/brand/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Run Ranger with Docker - Apache Ranger</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/css/custom.css">
+    
+      <link rel="stylesheet" href="../../assets/css/table.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Run Ranger with Docker - Apache Ranger" />
+<meta property="og:image" content="https://apache.github.io/ranger/assets/images/social/getting-started/docker.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://apache.github.io/ranger/getting-started/docker/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="Run Ranger with Docker - Apache Ranger" />
+<meta property="twitter:image" content="https://apache.github.io/ranger/assets/images/social/getting-started/docker.png" />
+</head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#run-ranger-with-docker" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="https://ranger.apache.org" title="Apache Ranger" class="md-header__button md-logo" aria-label="Apache Ranger" data-md-component="logo">
+      
+  <img src="../../assets/brand/merged-logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apache Ranger
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Run Ranger with Docker
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 2c-1.82 0-3.53.5-5 1.35C8 5.08 10 8.3 10 12s-2 6.92-5 8.65C6.47 21.5 8.18 22 10 22a10 10 0 0 0 10-10A10 10 0 0 0 10 2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/apache/ranger" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    apache/ranger
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../introduction/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Getting started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../arch/architecture/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../plugins/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Plugins
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../services/admin/service/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Services
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../features/policies/resource-policies/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Features
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../dev/build/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Developer guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../project/contributing/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Project
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../release-notes/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Releases
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../blog/blog/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://ranger.apache.org" title="Apache Ranger" class="md-nav__button md-logo" aria-label="Apache Ranger" data-md-component="logo">
+      
+  <img src="../../assets/brand/merged-logo.svg" alt="logo">
+
+    </a>
+    Apache Ranger
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/apache/ranger" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    apache/ranger
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Run Ranger with Docker
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Run Ranger with Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-a-minimal-setup-contains" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What a minimal setup contains
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-from-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prepare the development setup
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prepare the development setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#download-archives-and-set-the-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Download archives and set the environment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-ranger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build Ranger
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start Ranger Admin with its database and audit store
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#check-that-ranger-admin-is-up-and-view-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check that Ranger Admin is up and view logs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stop-and-clean-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stop and clean up
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        More services in the development setup
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="More services in the development setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-services-ranger-usersync-tagsync-pdp-kms-and-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core services: ranger, usersync, tagsync, pdp, kms and audit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#services-protected-by-ranger-plugins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Services protected by Ranger plugins
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rebuilding-specific-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rebuilding specific images
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#also-send-audits-to-hdfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Also send audits to HDFS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-when-the-ranger-container-starts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What happens when the ranger container starts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuring-ranger-admin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuring Ranger Admin
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choosing-the-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing the database
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choosing-the-audit-store" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing the audit store
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kerberos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kerberos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#users-for-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users for testing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#services-and-ports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Services and ports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upgrading-ranger-in-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrading Ranger in Docker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Further reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../first-policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Your first policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../trino-with-ranger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trino with Ranger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../arch/architecture/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plugins/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugins
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    
+  
+  
+  
+    <a href="../../services/admin/service/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Services
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    
+  
+  
+  
+    <a href="../../features/policies/resource-policies/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../dev/build/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer guide
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../project/contributing/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../release-notes/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Releases
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../blog/blog/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-a-minimal-setup-contains" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What a minimal setup contains
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-from-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prepare the development setup
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prepare the development setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#download-archives-and-set-the-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Download archives and set the environment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-ranger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build Ranger
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start Ranger Admin with its database and audit store
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#check-that-ranger-admin-is-up-and-view-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check that Ranger Admin is up and view logs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stop-and-clean-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stop and clean up
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        More services in the development setup
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="More services in the development setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-services-ranger-usersync-tagsync-pdp-kms-and-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core services: ranger, usersync, tagsync, pdp, kms and audit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#services-protected-by-ranger-plugins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Services protected by Ranger plugins
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rebuilding-specific-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rebuilding specific images
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#also-send-audits-to-hdfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Also send audits to HDFS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-when-the-ranger-container-starts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What happens when the ranger container starts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuring-ranger-admin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuring Ranger Admin
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choosing-the-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing the database
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choosing-the-audit-store" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing the audit store
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kerberos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kerberos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#users-for-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users for testing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#services-and-ports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Services and ports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upgrading-ranger-in-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrading Ranger in Docker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Further reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../introduction/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<!---
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<h1 id="run-ranger-with-docker">Run Ranger with Docker<a class="headerlink" href="#run-ranger-with-docker" title="Permanent link">&para;</a></h1>
+<p>The quickest way to see Ranger working end to end is to run it in Docker. There are two setups, and
+this page covers both:</p>
+<dl>
+<dt>Docker Hub images</dt>
+<dd>Run a <strong>released</strong> version of Ranger Admin with its database and audit store from the images on
+<a href="https://hub.docker.com/r/apache/ranger">Docker Hub</a>. Nothing is built; you need Docker only.</dd>
+<dt>Build from source (<code>dev-support/ranger-docker</code>)</dt>
+<dd>Build the current source and run it with the Docker Compose setup in
+<a href="https://github.com/apache/ranger/tree/master/dev-support/ranger-docker"><code>dev-support/ranger-docker</code></a>.
+Besides Ranger Admin this setup has compose files for the audit server, UserSync, TagSync, KMS, PDP
+and for Hadoop (HDFS and YARN), Hive, HBase, Kafka, Knox, Ozone and Trino containers that are
+already configured for Ranger authorization.</dd>
+</dl>
+<p>Operations that both setups support (starting Ranger Admin, checking it, reading logs, stopping) are
+shown side by side in tabs; everything after <a href="#compose">More services</a> exists in the development
+setup only.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Both setups are intended for development and evaluation. They use well-known default passwords;
+the development setup also uses trusted header authentication for the health check, a
+self-contained KDC and 256 MB JVM heaps. Neither is suitable for production deployments.</p>
+</div>
+<h2 id="what-a-minimal-setup-contains">What a minimal setup contains<a class="headerlink" href="#what-a-minimal-setup-contains" title="Permanent link">&para;</a></h2>
+<p>A working Ranger needs Ranger Admin, a relational database for policies, and an audit store that Ranger
+Admin can query. The two setups differ in how audits get to that store.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Docker Hub images</label><label for="__tabbed_1_2">Build from source (dev-support/ranger-docker)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Three containers: <code>apache/ranger</code> (Ranger Admin), <code>apache/ranger-db</code> (PostgreSQL prepared for
+Ranger) and <code>apache/ranger-solr</code> (Solr with the <code>ranger_audits</code> configuration). The official quick
+start runs Solr standalone and creates the <code>ranger_audits</code> core with <code>solr-precreate</code>, so ZooKeeper
+is not needed. <code>apache/ranger-zk</code> is the ZooKeeper image to use when Solr runs in SolrCloud mode;
+its latest tag is <code>2.8.0</code>.</p>
+<p><code>apache/ranger</code>, <code>apache/ranger-db</code> and <code>apache/ranger-solr</code> are tagged <code>2.4.0</code> to <code>2.9.0</code>. No
+other Ranger service or plugin image is published, so UserSync, TagSync, KMS, PDP, the audit server
+and protected services such as Hive are only available from the development setup.</p>
+</div>
+<div class="tabbed-block">
+<p>On master the minimal setup is Ranger Admin (<code>ranger</code>), its database (<code>ranger-db</code>), Kafka
+(<code>ranger-kafka</code>), OpenSearch (<code>ranger-opensearch</code>, the default audit index), the audit ingestor
+(<code>ranger-audit-ingestor</code>) and an audit dispatcher (<code>ranger-audit-dispatcher-opensearch</code>). Plugins
+send audits to the ingestor, which writes them to Kafka; the dispatcher reads them from Kafka and
+indexes them in OpenSearch, where Ranger Admin reads them. Compose also starts <code>ranger-kdc</code>
+(Kerberos is enabled by default) and <code>ranger-zk</code>, which Kafka depends on. Solr can be selected
+instead of OpenSearch; see <a href="#choosing-the-audit-store">Choosing the audit store</a>.</p>
+<p>The audit server (ingestor and dispatchers) is the default on master but is not yet part of a
+release, so it cannot be pulled from Docker Hub; its images are built from your source build.</p>
+</div>
+</div>
+</div>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Docker Hub images</label><label for="__tabbed_2_2">Build from source (dev-support/ranger-docker)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ul>
+<li>A recent Docker.</li>
+<li>Network access to Docker Hub.</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>A recent Docker with Compose v2 (<code>docker compose</code>); the README was written against Engine
+  v24.0.5 and Compose v2.20.2. Give Docker at least 4 GB of memory for the full stack; every
+  Ranger service defaults to a 256 MB heap (<code>RANGER_*_MAX_HEAP</code> in <code>.env</code>).</li>
+<li><code>git</code> and <code>bash</code>.</li>
+<li>Network access to <code>archive.apache.org</code> and Maven Central: <code>download-archives.sh</code> fetches the
+  Hadoop, Hive, HBase, Kafka, Knox and Ozone archives and the JDBC drivers into
+  <code>dev-support/ranger-docker/downloads</code>.</li>
+<li>A local JDK and Maven are <strong>not</strong> required: Ranger can be built inside a container from the base
+  image <code>apache/ranger-base</code> (Java version suffix <code>-17</code>, see <code>RANGER_BASE_BUILD_VERSION</code> in <code>.env</code>).</li>
+</ul>
+</div>
+</div>
+</div>
+<h2 id="build-from-source">Prepare the development setup<a class="headerlink" href="#build-from-source" title="Permanent link">&para;</a></h2>
+<p>Skip this section when you use the Docker Hub images. All commands for the development setup are run
+from <code>dev-support/ranger-docker</code>.</p>
+<h3 id="download-archives-and-set-the-environment">Download archives and set the environment<a class="headerlink" href="#download-archives-and-set-the-environment" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/apache/ranger.git
+<span class="nb">cd</span><span class="w"> </span>ranger/dev-support/ranger-docker
+
+chmod<span class="w"> </span>+x<span class="w"> </span>download-archives.sh
+<span class="c1"># use a subset of the below to download specific services</span>
+./download-archives.sh<span class="w"> </span>hadoop<span class="w"> </span>hive<span class="w"> </span>hbase<span class="w"> </span>kafka<span class="w"> </span>knox<span class="w"> </span>ozone
+
+<span class="c1"># valid values for RANGER_DB_TYPE: mysql/postgres/oracle</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">RANGER_DB_TYPE</span><span class="o">=</span>postgres
+</code></pre></div>
+<p><code>download-archives.sh</code> always downloads the JDBC drivers that the Ranger Admin image needs. The <code>kafka</code>
+archive is needed by every setup that includes the audit server, because <code>ranger-kafka</code> is part of
+<code>docker-compose.ranger-audit-service.yml</code>.</p>
+<p>Update the variables in <code>.env</code> if necessary. It holds the versions used for every image
+(<code>RANGER_VERSION=3.0.0-SNAPSHOT</code>, <code>HADOOP_VERSION</code>, <code>HIVE_VERSION</code>, <code>HBASE_VERSION</code>, <code>KAFKA_VERSION</code>,
+<code>KNOX_VERSION</code>, <code>OZONE_VERSION</code>, <code>TRINO_VERSION</code>, <code>OPENSEARCH_VERSION</code>, <code>SOLR_VERSION</code>, …), the JVM
+heaps, <code>KERBEROS_ENABLED=true</code>, the <code>JAVA_OPTS</code> needed on JDK 17, the audit defaults
+(<code>AUDIT_INDEX_STORE=opensearch</code>, <code>AUDIT_DESTINATIONS=audit-store-opensearch</code>) and the passwords of the
+Ranger Admin database user and built-in users (<code>RANGER_ADMIN_DB_PASSWORD</code>, <code>RANGER_ADMIN_PASSWORD</code>,
+<code>RANGER_USERSYNC_PASSWORD</code>, <code>RANGER_TAGSYNC_PASSWORD</code>, <code>RANGER_KEYADMIN_PASSWORD</code>).</p>
+<h3 id="build-ranger">Build Ranger<a class="headerlink" href="#build-ranger" title="Permanent link">&para;</a></h3>
+<p>The service images are built from the archives in <code>dist/</code>. Produce them in one of two ways:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">In containers using docker compose</label><label for="__tabbed_3_2">Regular build</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>chmod<span class="w"> </span>+x<span class="w"> </span>scripts/**/*.sh
+
+<span class="c1"># optional step: a fresh build ensures that the correct jdk version is used</span>
+docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-build.yml<span class="w"> </span>build
+
+docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-build.yml<span class="w"> </span>up
+</code></pre></div>
+<p>The build container mounts your checkout (<code>BUILD_HOST_SRC=true</code> in <code>.env</code>; <code>false</code> clones
+<code>GIT_URL</code> at <code>BRANCH</code>), runs Maven and moves the archives to <code>dist/</code>. The build can take up to an
+hour depending on the state of <code>${HOME}/.m2</code>.</p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>./../../
+mvn<span class="w"> </span>clean<span class="w"> </span>package<span class="w"> </span>-DskipTests
+cp<span class="w"> </span>target/ranger-*<span class="w"> </span>dev-support/ranger-docker/dist/
+cp<span class="w"> </span>target/version<span class="w"> </span>dev-support/ranger-docker/dist/
+<span class="nb">cd</span><span class="w"> </span>dev-support/ranger-docker
+</code></pre></div>
+<p>This needs JDK 17 and Maven on your machine; see <a href="../../dev/build/">Building from source</a>.</p>
+</div>
+</div>
+</div>
+<h2 id="start">Start Ranger Admin with its database and audit store<a class="headerlink" href="#start" title="Permanent link">&para;</a></h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Docker Hub images</label><label for="__tabbed_4_2">Build from source (dev-support/ranger-docker)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">RANGER_VERSION</span><span class="o">=</span><span class="m">2</span>.9.0
+
+docker<span class="w"> </span>pull<span class="w"> </span>apache/ranger-solr:<span class="si">${</span><span class="nv">RANGER_VERSION</span><span class="si">}</span>
+docker<span class="w"> </span>pull<span class="w"> </span>apache/ranger-db:<span class="si">${</span><span class="nv">RANGER_VERSION</span><span class="si">}</span>
+docker<span class="w"> </span>pull<span class="w"> </span>apache/ranger:<span class="si">${</span><span class="nv">RANGER_VERSION</span><span class="si">}</span>
+
+docker<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>rangernw
+</code></pre></div>
+<p>Launch Solr:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>ranger-solr<span class="w"> </span>--hostname<span class="w"> </span>ranger-solr.rangernw<span class="w"> </span>--network<span class="w"> </span>rangernw<span class="w"> </span>-p<span class="w"> </span><span class="m">8983</span>:8983<span class="w"> </span>apache/ranger-solr:<span class="si">${</span><span class="nv">RANGER_VERSION</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>solr-precreate<span class="w"> </span>ranger_audits<span class="w"> </span>/opt/solr/server/solr/configsets/ranger_audits/
+</code></pre></div>
+<p>Launch the Ranger database:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>rangerR0cks!<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">RANGER_DB_USER</span><span class="o">=</span>rangeradmin<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">RANGER_DB_PASSWORD</span><span class="o">=</span>rangerR0cks!<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--name<span class="w"> </span>ranger-db<span class="w"> </span>--hostname<span class="w"> </span>ranger-db.rangernw<span class="w"> </span>--network<span class="w"> </span>rangernw<span class="w"> </span>--health-cmd<span class="o">=</span><span class="s1">'su -c "pg_isready -q" postgres'</span><span class="w"> </span>--health-interval<span class="o">=</span>10s<span class="w"> </span>--health-timeout<span class="o">=</span>2s<span class="w"> </span>--health-retries<span class="o">=</span><span class="m">30</span><span class="w"> </span>apache/ranger-db:<span class="si">${</span><span class="nv">RANGER_VERSION</span><span class="si">}</span>
+</code></pre></div>
+<p>Launch Ranger Admin:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>rangerR0cks!<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">RANGER_DB_USER</span><span class="o">=</span>rangeradmin<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">RANGER_DB_PASSWORD</span><span class="o">=</span>rangerR0cks!<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--name<span class="w"> </span>ranger-admin<span class="w"> </span>--hostname<span class="w"> </span>ranger-admin.rangernw<span class="w"> </span>--network<span class="w"> </span>rangernw<span class="w"> </span>-p<span class="w"> </span><span class="m">6080</span>:6080<span class="w"> </span>apache/ranger:<span class="si">${</span><span class="nv">RANGER_VERSION</span><span class="si">}</span>
+</code></pre></div>
+<p>These are the commands of the quick start published with the images on
+<a href="https://hub.docker.com/r/apache/ranger">Docker Hub</a>.</p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="c1"># valid values for RANGER_DB_TYPE: mysql/postgres/oracle</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">RANGER_DB_TYPE</span><span class="o">=</span>postgres
+
+<span class="c1"># valid values for AUDIT_INDEX_STORE: opensearch (default) | solr</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUDIT_INDEX_STORE</span><span class="o">=</span>opensearch
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUDIT_DESTINATIONS</span><span class="o">=</span>audit-store-<span class="si">${</span><span class="nv">AUDIT_INDEX_STORE</span><span class="si">}</span>
+
+docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span><span class="si">${</span><span class="nv">AUDIT_DESTINATIONS</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-f<span class="w"> </span>docker-compose.ranger.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-f<span class="w"> </span>docker-compose.ranger-audit-service.yml<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+<p>The first <code>up</code> builds the images from <code>dist/</code> and <code>downloads/</code>. This starts <code>ranger</code>, <code>ranger-db</code>,
+<code>ranger-kdc</code>, <code>ranger-zk</code>, <code>ranger-kafka</code>, <code>ranger-audit-ingestor</code>, and the audit store with its
+dispatcher for the selected profile. To start UserSync, TagSync, PDP and KMS as well, use the
+<a href="#compose">core services</a> command instead.</p>
+</div>
+</div>
+</div>
+<p>Open <a href="http://localhost:6080/login.jsp">http://localhost:6080/login.jsp</a> and log in as <code>admin</code> / <code>rangerR0cks!</code>.</p>
+<h2 id="check-that-ranger-admin-is-up-and-view-logs">Check that Ranger Admin is up and view logs<a class="headerlink" href="#check-that-ranger-admin-is-up-and-view-logs" title="Permanent link">&para;</a></h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">Docker Hub images</label><label for="__tabbed_5_2">Build from source (dev-support/ranger-docker)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>ps<span class="w"> </span>--filter<span class="w"> </span><span class="nv">network</span><span class="o">=</span>rangernw<span class="w">     </span><span class="c1"># ranger-db reports (healthy) once PostgreSQL accepts connections</span>
+docker<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>ranger-admin
+</code></pre></div>
+<p>Ranger Admin answers on <a href="http://localhost:6080/login.jsp">http://localhost:6080/login.jsp</a> when its startup has finished. Solr is
+at <a href="http://localhost:8983">http://localhost:8983</a>.</p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>ps<span class="w"> </span>--filter<span class="w"> </span><span class="nv">network</span><span class="o">=</span>rangernw<span class="w">     </span><span class="c1"># ranger-postgres, ranger-kafka, ranger-audit-* report (healthy)</span>
+docker<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>ranger
+curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">'X-Forwarded-User: healthcheck'</span><span class="w"> </span>http://localhost:6080/service/actuator/health/readiness
+</code></pre></div>
+<p><code>docker logs ranger</code> consists of the logs of <code>dba.py</code> (with the progress of database and Java
+patches), <code>create-ranger-services.py</code>, <code>catalina.out</code> and the Ranger Admin log, which is also
+written to <code>/var/log/ranger</code> in the container. A log line marks the moment Ranger Admin is up and
+ready. Logs are colored when the container has a TTY; set <code>NO_COLOR</code> to disable colors. The audit
+ingestor answers on <a href="http://localhost:7081/api/audit/health">http://localhost:7081/api/audit/health</a> and the OpenSearch dispatcher on
+<a href="http://localhost:7093/api/health/ping">http://localhost:7093/api/health/ping</a>.</p>
+</div>
+</div>
+</div>
+<h2 id="stop-and-clean-up">Stop and clean up<a class="headerlink" href="#stop-and-clean-up" title="Permanent link">&para;</a></h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">Docker Hub images</label><label for="__tabbed_6_2">Build from source (dev-support/ranger-docker)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>stop<span class="w"> </span>ranger-admin<span class="w"> </span>ranger-db<span class="w"> </span>ranger-solr
+
+<span class="c1"># remove the containers and the network; policies and audits are lost with them</span>
+docker<span class="w"> </span>rm<span class="w"> </span>ranger-admin<span class="w"> </span>ranger-db<span class="w"> </span>ranger-solr
+docker<span class="w"> </span>network<span class="w"> </span>rm<span class="w"> </span>rangernw
+</code></pre></div>
+<p><code>docker start ranger-solr ranger-db ranger-admin</code> brings stopped containers back with their data.</p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="c1"># stop and remove the containers; pass the same --profile and -f list that was used for "up"</span>
+docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span><span class="si">${</span><span class="nv">AUDIT_DESTINATIONS</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-f<span class="w"> </span>docker-compose.ranger.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-f<span class="w"> </span>docker-compose.ranger-audit-service.yml<span class="w"> </span>down
+</code></pre></div>
+<p>Images stay on disk; <code>dist/</code> keeps the built archives and <code>downloads/</code> keeps the component
+archives, so the next start is fast. Use <code>stop</code> and <code>start</code> instead of <code>down</code> and <code>up -d</code> to keep
+the containers and their data, or see <a href="#choosing-the-database">Choosing the database</a> for a
+PostgreSQL data directory that survives <code>down</code>.</p>
+</div>
+</div>
+</div>
+<h2 id="compose">More services in the development setup<a class="headerlink" href="#compose" title="Permanent link">&para;</a></h2>
+<p>The rest of this page applies to <code>dev-support/ranger-docker</code> only. The compose files are combined with
+repeated <code>-f</code> options; <code>docker-compose.ranger.yml</code> is always included, and
+<code>--profile ${AUDIT_DESTINATIONS}</code> selects the audit store.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Starts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>docker-compose.ranger-build.yml</code></td>
+<td><code>ranger-build</code>: builds Ranger from source into <code>dist/</code></td>
+</tr>
+<tr>
+<td><code>docker-compose.ranger.yml</code></td>
+<td><code>ranger</code> (Admin), <code>ranger-kdc</code>, <code>ranger-zk</code>, <code>ranger-db</code></td>
+</tr>
+<tr>
+<td><code>docker-compose.ranger-db.yml</code></td>
+<td>Database definitions, selected by <code>RANGER_DB_TYPE</code> (<code>postgres</code>, <code>mysql</code>, <code>oracle</code>)</td>
+</tr>
+<tr>
+<td><code>docker-compose.ranger-db-mounted.yml</code></td>
+<td>Same as above with the PostgreSQL data directory mounted from <code>./postgres-db-mount</code></td>
+</tr>
+<tr>
+<td><code>docker-compose.ranger-audit-service.yml</code></td>
+<td>Audit server: <code>ranger-kafka</code>, <code>ranger-audit-ingestor</code>, and the store with its dispatcher for each selected profile (<code>audit-store-opensearch</code>, <code>audit-store-solr</code>, <code>audit-store-hdfs</code>)</td>
+</tr>
+<tr>
+<td><code>docker-compose.ranger-audit-destination-hdfs.yml</code></td>
+<td>Adds <code>ranger-hadoop</code> under the profile <code>audit-store-hdfs</code>, which <code>ranger-audit-dispatcher-hdfs</code> depends on</td>
+</tr>
+<tr>
+<td><code>docker-compose.ranger-usersync.yml</code></td>
+<td><code>ranger-usersync</code></td>
+</tr>
+<tr>
+<td><code>docker-compose.ranger-tagsync.yml</code></td>
+<td><code>ranger-tagsync</code></td>
+</tr>
+<tr>
+<td><code>docker-compose.ranger-pdp.yml</code></td>
+<td><code>ranger-pdp</code></td>
+</tr>
+<tr>
+<td><code>docker-compose.ranger-kms.yml</code></td>
+<td><code>ranger-kms</code></td>
+</tr>
+<tr>
+<td><code>docker-compose.ranger-hadoop.yml</code></td>
+<td><code>ranger-hadoop</code>: HDFS and YARN with the HDFS and YARN plugins</td>
+</tr>
+<tr>
+<td><code>docker-compose.ranger-hive.yml</code></td>
+<td><code>ranger-hive</code>: Hive Metastore and HiveServer2 with the Hive plugin (depends on <code>ranger-hadoop</code>)</td>
+</tr>
+<tr>
+<td><code>docker-compose.ranger-hbase.yml</code></td>
+<td><code>ranger-hbase</code> with the HBase plugin (depends on <code>ranger-hadoop</code>)</td>
+</tr>
+<tr>
+<td><code>docker-compose.ranger-kafka.yml</code></td>
+<td><code>ranger-kafka</code> with the Kafka plugin; included by the audit service file</td>
+</tr>
+<tr>
+<td><code>docker-compose.ranger-knox.yml</code></td>
+<td><code>ranger-knox</code> with the Knox plugin</td>
+</tr>
+<tr>
+<td><code>docker-compose.ranger-ozone.yml</code></td>
+<td><code>ozone-om</code>, <code>ozone-scm</code>, <code>ozone-datanode</code> with the Ozone plugin</td>
+</tr>
+<tr>
+<td><code>docker-compose.ranger-trino.yml</code></td>
+<td><code>ranger-trino</code> configured for Ranger access control</td>
+</tr>
+</tbody>
+</table>
+<h3 id="core-services-ranger-usersync-tagsync-pdp-kms-and-audit">Core services: ranger, usersync, tagsync, pdp, kms and audit<a class="headerlink" href="#core-services-ranger-usersync-tagsync-pdp-kms-and-audit" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># To enable file based sync source for usersync do:</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ENABLE_FILE_SYNC_SOURCE</span><span class="o">=</span><span class="nb">true</span>
+
+<span class="c1"># valid values for RANGER_DB_TYPE: mysql/postgres/oracle</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">RANGER_DB_TYPE</span><span class="o">=</span>postgres
+
+<span class="c1"># valid values for AUDIT_INDEX_STORE: opensearch (default) | solr</span>
+<span class="c1"># overrides ranger.audit.source.type of Ranger Admin (via ranger.sh); set matching profile for compose:</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUDIT_INDEX_STORE</span><span class="o">=</span>opensearch
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUDIT_DESTINATIONS</span><span class="o">=</span>audit-store-<span class="si">${</span><span class="nv">AUDIT_INDEX_STORE</span><span class="si">}</span>
+docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span><span class="si">${</span><span class="nv">AUDIT_DESTINATIONS</span><span class="si">}</span><span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-audit-service.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-usersync.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-tagsync.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-pdp.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-kms.yml<span class="w"> </span>up<span class="w"> </span>-d
+
+<span class="c1"># Ranger Admin can be accessed at http://localhost:6080 (admin/rangerR0cks!)</span>
+</code></pre></div>
+<h3 id="services-protected-by-ranger-plugins">Services protected by Ranger plugins<a class="headerlink" href="#services-protected-by-ranger-plugins" title="Permanent link">&para;</a></h3>
+<p>Hive and HBase also need <code>docker-compose.ranger-hadoop.yml</code>.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:5"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><input id="__tabbed_7_3" name="__tabbed_7" type="radio" /><input id="__tabbed_7_4" name="__tabbed_7" type="radio" /><input id="__tabbed_7_5" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="__tabbed_7_1">Hive</label><label for="__tabbed_7_2">HBase</label><label for="__tabbed_7_3">Ozone</label><label for="__tabbed_7_4">Trino</label><label for="__tabbed_7_5">All containers</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span><span class="si">${</span><span class="nv">AUDIT_DESTINATIONS</span><span class="si">}</span><span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-audit-service.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-hadoop.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-hive.yml<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span><span class="si">${</span><span class="nv">AUDIT_DESTINATIONS</span><span class="si">}</span><span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-audit-service.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-hadoop.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-hbase.yml<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>./scripts/ozone/ozone-plugin-docker-setup.sh
+docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span><span class="si">${</span><span class="nv">AUDIT_DESTINATIONS</span><span class="si">}</span><span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-audit-service.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-ozone.yml<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span><span class="si">${</span><span class="nv">AUDIT_DESTINATIONS</span><span class="si">}</span><span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-audit-service.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-trino.yml<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+<p>The image is built from <code>trinodb/trino:${TRINO_VERSION}</code> with the files in <code>scripts/trino</code>. The
+<code>ranger-trino-audit.xml</code> in that directory sends audits directly to Solr at
+<code>ranger-solr.rangernw:8983</code>, so start with <code>AUDIT_INDEX_STORE=solr</code> to see Trino audits in Ranger
+Admin. See <a href="../trino-with-ranger/">Trino with Ranger</a>.</p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>./scripts/ozone/ozone-plugin-docker-setup.sh
+docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span><span class="si">${</span><span class="nv">AUDIT_DESTINATIONS</span><span class="si">}</span><span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-audit-service.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-usersync.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-tagsync.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-pdp.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-kms.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-hadoop.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-hbase.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-hive.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-knox.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-ozone.yml<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>Each container configures its service and the Ranger plugin on first start; the configuration each
+plugin needs is described on its <a href="../../plugins/">plugin page</a>. You can confirm that a plugin is
+talking to Ranger Admin under <strong>Audit → Plugin Status</strong> in the UI.</p>
+<h3 id="rebuilding-specific-images">Rebuilding specific images<a class="headerlink" href="#rebuilding-specific-images" title="Permanent link">&para;</a></h3>
+<p>To rebuild specific images and start containers with the new image:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span><span class="si">${</span><span class="nv">AUDIT_DESTINATIONS</span><span class="si">}</span><span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-audit-service.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-usersync.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-tagsync.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-kms.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-hadoop.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-hbase.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-hive.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-trino.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-knox.yml<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>--no-deps<span class="w"> </span>--force-recreate<span class="w"> </span>--build<span class="w"> </span>&lt;service-1&gt;<span class="w"> </span>&lt;service-2&gt;
+</code></pre></div>
+<p><code>&lt;service-n&gt;</code> is a compose service name such as <code>ranger</code> or <code>ranger-hive</code>.</p>
+<h3 id="also-send-audits-to-hdfs">Also send audits to HDFS<a class="headerlink" href="#also-send-audits-to-hdfs" title="Permanent link">&para;</a></h3>
+<p>Audits fan out to <code>AUDIT_INDEX_STORE</code> <strong>and</strong> HDFS when the <code>audit-store-hdfs</code> profile is enabled:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">AUDIT_DESTINATIONS</span><span class="o">=</span>audit-store-<span class="si">${</span><span class="nv">AUDIT_INDEX_STORE</span><span class="si">}</span>
+docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span><span class="si">${</span><span class="nv">AUDIT_DESTINATIONS</span><span class="si">}</span><span class="w"> </span>--profile<span class="w"> </span>audit-store-hdfs<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-f<span class="w"> </span>docker-compose.ranger.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-f<span class="w"> </span>docker-compose.ranger-audit-service.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-f<span class="w"> </span>docker-compose.ranger-audit-destination-hdfs.yml<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+<p>This starts <code>ranger-audit-dispatcher-hdfs</code> and the <code>ranger-hadoop</code> container it writes to.</p>
+<h3 id="what-happens-when-the-ranger-container-starts">What happens when the <code>ranger</code> container starts<a class="headerlink" href="#what-happens-when-the-ranger-container-starts" title="Permanent link">&para;</a></h3>
+<p>The <code>ranger</code> container runs <code>scripts/admin/ranger.sh</code> on every start:</p>
+<ol>
+<li>It rebuilds the Ranger Admin <code>conf</code> directory from the defaults shipped in the distribution plus the
+   files mounted at <code>/opt/ranger/admin/configs</code> (see <a href="#configuring-ranger-admin">Configuring Ranger Admin</a>).</li>
+<li><code>scripts/admin/dba.py</code> writes <code>ranger-admin-site.xml</code>, stores the database password in the credential
+   store, waits for the database, imports the core schema if the database is empty, applies pending SQL
+   and Java patches, and sets the passwords of the built-in users from the <code>RANGER_*_PASSWORD</code> variables.</li>
+<li>Ranger Admin is started with <code>ranger-admin-services.sh start</code>.</li>
+<li><code>scripts/admin/create-ranger-services.py</code> waits until the readiness endpoint
+   <code>/service/actuator/health/readiness</code> reports <code>UP</code>, then uses the Python client to create the
+   services <code>dev_hdfs</code>, <code>dev_hive</code>, <code>dev_hbase</code>, <code>dev_yarn</code>, <code>dev_kafka</code>, <code>dev_knox</code>, <code>dev_kms</code>,
+   <code>dev_solr</code>, <code>dev_ozone</code> and <code>dev_trino</code>. The plugin in each protected-service container is
+   configured with the matching service name (<code>ranger.plugin.hive.service.name=dev_hive</code>, for example).</li>
+</ol>
+<p><code>docker logs ranger</code> shows each of these steps, including the progress of database patches, followed by
+the Ranger Admin log. Ranger Admin is available at <a href="http://localhost:6080">http://localhost:6080</a> (<code>admin</code> / <code>rangerR0cks!</code>)
+once the log reports that Ranger Admin is up and ready.</p>
+<h3 id="configuring-ranger-admin">Configuring Ranger Admin<a class="headerlink" href="#configuring-ranger-admin" title="Permanent link">&para;</a></h3>
+<p>The Ranger Admin image contains the JDBC drivers of all supported databases and no environment-specific
+configuration; it is configured at runtime from <code>scripts/admin/configs</code>, mounted read-only at
+<code>/opt/ranger/admin/configs</code>:</p>
+<ul>
+<li>
+<p><code>ranger-admin-site-&lt;RANGER_DB_TYPE&gt;.yaml</code> (<code>postgres</code>, <code>mysql</code>, <code>oracle</code>) is the complete Ranger Admin
+  site configuration as a flat map of property name to value. <code>dba.py</code> renders
+  <code>conf/ranger-admin-site.xml</code> from it on every start. To change or add a <code>ranger-admin-site.xml</code>
+  property, edit this file and recreate the container:</p>
+<div class="highlight"><span class="filename">scripts/admin/configs/ranger-admin-site-postgres.yaml</span><pre><span></span><code><span class="nt">ranger.authentication.method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PAM</span>
+<span class="nt">ranger.audit.source.type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">opensearch</span>
+</code></pre></div>
+</li>
+<li>
+<p>A <code>ranger-admin-site.xml</code> placed in this directory is used as it is; no YAML file is rendered and
+  <code>AUDIT_INDEX_STORE</code> is ignored.</p>
+</li>
+<li>Any other file in the directory, for example <code>logback.xml</code>, is copied to <code>conf/</code> and replaces the
+  default from the distribution.</li>
+<li>Passwords are not kept in these files. The database password comes from <code>RANGER_ADMIN_DB_PASSWORD</code>, and
+  the built-in users <code>admin</code>, <code>rangerusersync</code>, <code>rangertagsync</code> and <code>keyadmin</code> get their passwords from
+  <code>RANGER_ADMIN_PASSWORD</code>, <code>RANGER_USERSYNC_PASSWORD</code>, <code>RANGER_TAGSYNC_PASSWORD</code> and
+  <code>RANGER_KEYADMIN_PASSWORD</code>. All default to <code>rangerR0cks!</code> in <code>.env</code>. The built-in user passwords are
+  applied once, while the users still have their initial passwords; later changes to these variables do
+  not alter existing users.</li>
+<li><code>AUDIT_INDEX_STORE</code>, when set, overrides <code>ranger.audit.source.type</code> from the YAML file.</li>
+<li><code>DEBUG_ADMIN=true</code> switches the Ranger Admin root logger to debug level, and
+  <code>RANGER_DB_WAIT_TIMEOUT</code> (default 300 seconds) bounds the wait for the database.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The shipped YAML files enable trusted header authentication
+(<code>ranger.admin.authn.header.enabled=true</code>, header <code>X-Forwarded-User</code>) so that the readiness endpoint
+can be queried as the <code>healthcheck</code> user. Any client that can reach Ranger Admin can set this header;
+outside of this development setup enable it only behind a trusted proxy. See
+<a href="../../services/admin/authentication/">Authentication</a>.</p>
+</div>
+<h3 id="choosing-the-database">Choosing the database<a class="headerlink" href="#choosing-the-database" title="Permanent link">&para;</a></h3>
+<p><code>RANGER_DB_TYPE</code> selects the database service from <code>docker-compose.ranger-db.yml</code> and the matching
+Ranger Admin configuration file <code>scripts/admin/configs/ranger-admin-site-&lt;RANGER_DB_TYPE&gt;.yaml</code>, which holds
+the JDBC URL, driver and connector jar. It is read when the container starts, so one <code>ranger</code> image works
+with every database:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Container</th>
+<th>Image built from</th>
+<th>Port</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>postgres</code> (default)</td>
+<td><code>ranger-postgres</code></td>
+<td><code>Dockerfile.ranger-postgres</code>, <code>POSTGRES_VERSION</code></td>
+<td>5432</td>
+</tr>
+<tr>
+<td><code>mysql</code></td>
+<td><code>ranger-mysql</code></td>
+<td><code>Dockerfile.ranger-mysql</code> (MariaDB, <code>MARIADB_VERSION</code>)</td>
+<td>3306</td>
+</tr>
+<tr>
+<td><code>oracle</code></td>
+<td><code>ranger-oracle</code></td>
+<td><code>Dockerfile.ranger-oracle</code>, <code>ORACLE_VERSION</code></td>
+<td>1521</td>
+</tr>
+</tbody>
+</table>
+<p>Whichever database is selected, the compose service is <code>ranger-db</code> and its hostname on the network is
+<code>ranger-db.rangernw</code>.
+To keep PostgreSQL data across <code>down</code>/<code>up</code>, add <code>-f docker-compose.ranger-db-mounted.yml</code>.</p>
+<h3 id="choosing-the-audit-store">Choosing the audit store<a class="headerlink" href="#choosing-the-audit-store" title="Permanent link">&para;</a></h3>
+<p>Plugins in the development setup send audits to the Ranger audit server (on master; not yet part of a
+release) rather than directly to a store
+(<code>xasecure.audit.destination.auditserver=true</code> and
+<code>xasecure.audit.destination.auditserver.url=http://ranger-audit-ingestor.rangernw:7081</code> in each
+plugin's <code>ranger-&lt;service&gt;-audit.xml</code>). The pipeline is:</p>
+<pre class="mermaid"><code>flowchart LR
+  P[plugins] --&gt; I[ranger-audit-ingestor] --&gt; K[ranger-kafka] --&gt; D[ranger-audit-dispatcher-*] --&gt; S[(Solr / OpenSearch / HDFS)]</code></pre>
+<ul>
+<li><code>AUDIT_INDEX_STORE</code> (<code>opensearch</code> or <code>solr</code>) sets the store that Ranger Admin reads audits from
+  (<code>ranger.audit.source.type</code>), so the Admin UI shows what the dispatchers wrote.</li>
+<li><code>AUDIT_DESTINATIONS</code> selects the compose profile (<code>audit-store-opensearch</code> or <code>audit-store-solr</code>);
+  only that store and its dispatcher start. Pass it as <code>--profile ${AUDIT_DESTINATIONS}</code>.</li>
+<li>Add <code>--profile audit-store-hdfs</code> together with <code>-f docker-compose.ranger-audit-destination-hdfs.yml</code>
+  to also write audits to HDFS. This starts <code>ranger-audit-dispatcher-hdfs</code> and the <code>ranger-hadoop</code>
+  container it writes to.</li>
+</ul>
+<p>See <a href="../../services/audit-server/service/">Audit server</a> and <a href="../../services/audit/audit-stores/">Audit stores</a>.</p>
+<h3 id="kerberos">Kerberos<a class="headerlink" href="#kerberos" title="Permanent link">&para;</a></h3>
+<p><code>KERBEROS_ENABLED=true</code> in <code>.env</code> starts <code>ranger-kdc</code> (realm <code>EXAMPLE.COM</code>) and provisions keytabs
+into <code>dist/keytabs/&lt;container&gt;/</code>, mounted at <code>/etc/keytabs</code> in each container. Ranger Admin uses SPNEGO
+(<code>ranger.spnego.kerberos.principal=HTTP/ranger.rangernw@EXAMPLE.COM</code>), HiveServer2 uses Kerberos authentication, and
+so on. The KDC also creates test principals <code>testuser1</code>, <code>testuser2</code> and <code>testuser3</code> for every
+container, which you can use to run commands as ordinary users; see <a href="../first-policy/">Your first policy</a>.</p>
+<h3 id="users-for-testing">Users for testing<a class="headerlink" href="#users-for-testing" title="Permanent link">&para;</a></h3>
+<p><code>ranger-usersync</code> syncs UNIX users and groups from its own container, starting at id 500
+(<code>ranger.usersync.unix.minUserId</code>, <code>ranger.usersync.unix.minGroupId</code>). Set
+<code>ENABLE_FILE_SYNC_SOURCE=true</code> before starting to have it read
+<code>scripts/usersync/ugsync-file-source.csv</code> instead, which defines <code>testuser_1</code> … <code>testuser_10</code> and their
+groups. You can also create users by hand under <strong>Settings → Users/Groups/Roles</strong>.</p>
+<h2 id="services-and-ports">Services and ports<a class="headerlink" href="#services-and-ports" title="Permanent link">&para;</a></h2>
+<p>Host ports published by the compose files (container name → port):</p>
+<table>
+<thead>
+<tr>
+<th>Container</th>
+<th>Host port(s)</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger</code></td>
+<td>6080</td>
+<td>Ranger Admin UI and REST API</td>
+</tr>
+<tr>
+<td><code>ranger-kdc</code></td>
+<td>88 (tcp/udp), 749</td>
+<td>Kerberos KDC and kadmin</td>
+</tr>
+<tr>
+<td><code>ranger-zk</code></td>
+<td>2181</td>
+<td>ZooKeeper</td>
+</tr>
+<tr>
+<td>Database container</td>
+<td>5432, 3306 or 1521</td>
+<td>Policy database; see <a href="#choosing-the-database">Choosing the database</a></td>
+</tr>
+<tr>
+<td><code>ranger-opensearch</code></td>
+<td>9200, 9300</td>
+<td>Profile <code>audit-store-opensearch</code></td>
+</tr>
+<tr>
+<td><code>ranger-solr</code></td>
+<td>8983</td>
+<td>Profile <code>audit-store-solr</code></td>
+</tr>
+<tr>
+<td><code>ranger-kafka</code></td>
+<td>9092</td>
+<td>Audit transport; also the Kafka plugin container</td>
+</tr>
+<tr>
+<td><code>ranger-audit-ingestor</code></td>
+<td>7081, 7182</td>
+<td>Receives audits from plugins</td>
+</tr>
+<tr>
+<td><code>ranger-audit-dispatcher-solr</code></td>
+<td>7091</td>
+<td>Dispatcher to Solr (container port 7090)</td>
+</tr>
+<tr>
+<td><code>ranger-audit-dispatcher-hdfs</code></td>
+<td>7092</td>
+<td>Dispatcher to HDFS (container port 7090)</td>
+</tr>
+<tr>
+<td><code>ranger-audit-dispatcher-opensearch</code></td>
+<td>7093</td>
+<td>Dispatcher to OpenSearch (container port 7090)</td>
+</tr>
+<tr>
+<td><code>ranger-usersync</code></td>
+<td>8280</td>
+<td>UserSync embedded web server</td>
+</tr>
+<tr>
+<td><code>ranger-tagsync</code></td>
+<td>8180, 8185</td>
+<td>TagSync embedded web server and its shutdown port</td>
+</tr>
+<tr>
+<td><code>ranger-pdp</code></td>
+<td>6500</td>
+<td>Policy decision point REST API</td>
+</tr>
+<tr>
+<td><code>ranger-kms</code></td>
+<td>9292</td>
+<td>Ranger KMS REST API</td>
+</tr>
+<tr>
+<td><code>ranger-hadoop</code></td>
+<td>9000, 8088</td>
+<td>NameNode RPC, ResourceManager UI</td>
+</tr>
+<tr>
+<td><code>ranger-hive</code></td>
+<td>10000, 9083</td>
+<td>HiveServer2, Metastore</td>
+</tr>
+<tr>
+<td><code>ranger-hbase</code></td>
+<td>16000, 16010, 16020, 16030</td>
+<td>Master, Master UI, RegionServer, RegionServer UI</td>
+</tr>
+<tr>
+<td><code>ranger-knox</code></td>
+<td>8443</td>
+<td>Gateway</td>
+</tr>
+<tr>
+<td><code>ranger-trino</code></td>
+<td>8080</td>
+<td>Coordinator</td>
+</tr>
+<tr>
+<td><code>ozone-om</code></td>
+<td>9874, 9862</td>
+<td>Ozone Manager UI and RPC (SCM and datanode ports are in <code>docker-compose.ranger-ozone.yml</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>All containers share the <code>rangernw</code> network. Most are reachable from each other by
+<code>&lt;container&gt;.rangernw</code>, for example <code>http://ranger.rangernw:6080</code>; the exceptions are the database
+(<code>ranger-db.rangernw</code>), Ozone (<code>om.rangernw</code>, <code>scm.rangernw</code>, <code>datanode.rangernw</code>) and Trino (<code>trino</code>).</p>
+<h2 id="upgrading-ranger-in-docker">Upgrading Ranger in Docker<a class="headerlink" href="#upgrading-ranger-in-docker" title="Permanent link">&para;</a></h2>
+<p>An upgrade can be rehearsed in the development setup by installing one release and then building a
+newer one on top of the same database. The base image comes from Docker Hub, so only the build and the
+Ranger image need to be rebuilt. (No upgrade procedure is published for the Docker Hub quick start,
+whose database lives inside the <code>ranger-db</code> container.)</p>
+<ol>
+<li>In <code>.env</code>, set <code>BUILD_HOST_SRC=false</code> and <code>BRANCH=ranger-2.8</code> (the release branch to install first).</li>
+<li>Build Ranger from that branch:
+   <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">RANGER_DB_TYPE</span><span class="o">=</span>postgres
+docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-build.yml<span class="w"> </span>build
+docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-build.yml<span class="w"> </span>up
+</code></pre></div></li>
+<li>In <code>.env</code>, set <code>RANGER_VERSION</code> to the version produced by that branch (check <code>dist/version</code>).</li>
+<li>Build and start Ranger with a persistent database:
+   <div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-db-mounted.yml<span class="w"> </span>build
+docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-db-mounted.yml<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+   Watch <code>docker logs ranger</code>; installation is complete once Ranger Admin reports that it is ready.</li>
+<li>To upgrade, set <code>BRANCH</code> to the newer branch (for example <code>ranger-2.9</code> or <code>master</code>), repeat step 2,
+   update <code>RANGER_VERSION</code>, and repeat step 4. On start, <code>dba.py</code> in the <code>ranger</code> container reads the
+   <code>x_db_version_h</code> table, skips the core schema import and applies only the pending SQL and Java patches,
+   logging each one; the upgrade is complete when Ranger Admin is ready again.</li>
+</ol>
+<p>Use <code>docker-compose.ranger-db-mounted.yml</code> so the database survives the container rebuild.</p>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Ranger Admin does not come up (development setup).</strong> <code>docker logs ranger</code> shows the configuration
+  and database bootstrap (<code>dba.py</code>), the service creation and the Ranger Admin log; a failed patch is
+  reported with its output. The same logs are in <code>/var/log/ranger</code> inside the container (<code>dba.log</code>,
+  <code>create-ranger-services.log</code>, <code>catalina.out</code>). The database container must be healthy first
+  (<code>docker ps</code> shows <code>(healthy)</code>).</li>
+<li><strong>Ranger Admin does not come up (Docker Hub images).</strong> Check <code>docker logs ranger-admin</code>, and that
+  <code>ranger-db</code> is <code>(healthy)</code> and was started with the same <code>RANGER_DB_USER</code> and <code>RANGER_DB_PASSWORD</code>
+  values as <code>ranger-admin</code>.</li>
+<li><strong>The audit ingestor or dispatcher stays in <code>Created</code>.</strong> Both wait for <code>ranger-kafka</code> to be healthy,
+  which in turn requires Ranger Admin to have created the <code>dev_kafka</code> service and the Kafka plugin to
+  have downloaded its policies; this takes a couple of minutes after Ranger Admin is ready.</li>
+<li><strong>An image build fails with a missing file under <code>dist/</code> or <code>downloads/</code>.</strong> Build Ranger and run
+  <code>download-archives.sh</code> for that service first; see
+  <a href="#build-from-source">Prepare the development setup</a>.</li>
+<li><strong>A plugin container starts but no policies are enforced.</strong> Check <strong>Audit → Plugin Status</strong> in the
+  UI, and <code>docker exec -it ranger-hive bash</code> to inspect <code>/etc/ranger/dev_hive/policycache</code> and the
+  component logs.</li>
+<li><strong>Kerberos errors</strong> (<code>Cannot find KDC</code>, missing keytab). Wait for <code>ranger-kdc</code> to become healthy;
+  keytabs appear under <code>dist/keytabs/</code> once provisioning finishes.</li>
+<li><strong>Build fails with a Java version error.</strong> The build image uses the JDK suffix in
+  <code>RANGER_BASE_BUILD_VERSION</code>; Ranger master requires JDK 17.</li>
+</ul>
+<h2 id="further-reading">Further reading<a class="headerlink" href="#further-reading" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://github.com/apache/ranger/blob/master/dev-support/ranger-docker/README.md"><code>dev-support/ranger-docker/README.md</code></a></li>
+<li><a href="https://hub.docker.com/r/apache/ranger">apache/ranger on Docker Hub</a></li>
+<li><a href="../trino-with-ranger/">Trino with Ranger</a></li>
+<li><a href="../first-policy/">Your first policy</a></li>
+<li>Wiki: <a href="https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=235837576">Running Apache Ranger from source in minutes</a>,
+  <a href="https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=340036242">How to upgrade Ranger in Docker</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 15:52:15 PDT">September 20, 2026</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2014-2025 The Apache Software Foundation
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://the-asf.slack.com/archives/C4SC5NXAA" target="_blank" rel="noopener" title="the-asf.slack.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M94.1 315.1c0 25.9-21.2 47.1-47.1 47.1S0 341 0 315.1 21.2 268 47.1 268h47.1v47.1zm23.7 0c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1v117.8c0 25.9-21.2 47.1-47.1 47.1s-47.1-21.2-47.1-47.1zm47.1-189c-25.9 0-47.1-21.2-47.1-47.1s21.2-47 47.1-47S212 53.2 212 79.1v47.1h-47.1zm0 23.7c25.9 0 47.1 21.2 47.1 47.1S190.8 244 164.9 244H47.1C21.2 244 0 222.8 0 196.9s21.2-47.1 47.1-47.1zm189 47.1c0-25.9 21.2-47.1 47.1-47.1s47 21.2 47 47.1-21.2 47.1-47.1 47.1h-47.1v-47.1zm-23.7 0c0 25.9-21.2 47.1-47.1 47.1S236 222.8 236 196.9V79.1c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1zm-47.1 189c25.9 0 47.1 21.2 47.1 47.1s-21.2 47-47.1 47-47.1-21.2-47.1-47.1v-47.1h47.1zm0-23.7c-25.9 0-47.1-21.2-47.1-47.1s21.2-47.1 47.1-47.1h117.8c25.9 0 47.1 21.2 47.1 47.1s-21.2 47.1-47.1 47.1z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="mailto:dev@ranger.apache.org" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l208 156a48 48 0 0 0 57.6 0l208-156c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48zM0 196v188c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V196L313.6 344.8c-34.1 25.6-81.1 25.6-115.2 0z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/apache/ranger" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://hub.docker.com/r/apache/ranger" target="_blank" rel="noopener" title="hub.docker.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M349.9 236.3h-66.1v-59.4h66.1zm0-204.3h-66.1v60.7h66.1zm78.2 144.8H362v59.4h66.1zm-156.3-72.1h-66.1v60.1h66.1zm78.1 0h-66.1v60.1h66.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1zm78.1 0h-66.1v59.4h66.1zm-78.1-72.1h-66.1v60.1h66.1z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.top", "navigation.tracking", "navigation.tabs", "navigation.path", "navigation.indexes", "navigation.prune", "content.code.copy", "toc.follow", "announce.dismiss"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/js/typewriter.js"></script>
+      
+        <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,3214 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://apache.github.io/ranger/plugins/kafka/">
+      
+      
+        <link rel="prev" href="../atlas/">
+      
+      
+        <link rel="next" href="../solr/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/brand/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Kafka - Apache Ranger</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/css/custom.css">
+    
+      <link rel="stylesheet" href="../../assets/css/table.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Kafka - Apache Ranger" />
+<meta property="og:image" content="https://apache.github.io/ranger/assets/images/social/plugins/kafka.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://apache.github.io/ranger/plugins/kafka/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="Kafka - Apache Ranger" />
+<meta property="twitter:image" content="https://apache.github.io/ranger/assets/images/social/plugins/kafka.png" />
+</head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#apache-kafka" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="https://ranger.apache.org" title="Apache Ranger" class="md-header__button md-logo" aria-label="Apache Ranger" data-md-component="logo">
+      
+  <img src="../../assets/brand/merged-logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apache Ranger
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Kafka
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 2c-1.82 0-3.53.5-5 1.35C8 5.08 10 8.3 10 12s-2 6.92-5 8.65C6.47 21.5 8.18 22 10 22a10 10 0 0 0 10-10A10 10 0 0 0 10 2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/apache/ranger" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    apache/ranger
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/introduction/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Getting started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../arch/architecture/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Plugins
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../services/admin/service/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Services
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../features/policies/resource-policies/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Features
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../dev/build/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Developer guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../project/contributing/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Project
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../release-notes/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Releases
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../blog/blog/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://ranger.apache.org" title="Apache Ranger" class="md-nav__button md-logo" aria-label="Apache Ranger" data-md-component="logo">
+      
+  <img src="../../assets/brand/merged-logo.svg" alt="logo">
+
+    </a>
+    Apache Ranger
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/apache/ranger" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    apache/ranger
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../getting-started/introduction/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../arch/architecture/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugins
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Plugins
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../polaris/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Polaris
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../trino/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trino
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ozone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ozone
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nestedstructure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nested structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kudu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kudu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schema-registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Schema Registry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../presto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../elasticsearch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Elasticsearch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kylin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kylin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sqoop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sqoop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nifi-registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NiFi Registry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nifi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NiFi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../atlas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Atlas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ranger-kafka-securityxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ranger-kafka-security.xml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ranger-kafka-auditxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ranger-kafka-audit.xml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ranger-policymgr-sslxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ranger-policymgr-ssl.xml
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#service-definition-in-ranger-admin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service definition in Ranger Admin
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resources-and-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resources and permissions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Resources and permissions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#access-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-operations-map-to-access-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Kafka operations map to access types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#policy-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Policy conditions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#default-and-required-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Default and required policies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#behavior-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavior notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#auditing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auditing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#try-it-with-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it with Docker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Further reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../solr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Solr
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ranger KMS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../yarn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YARN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knox
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../storm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hbase/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HBase
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hdfs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HDFS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../other-service-definitions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Other service definitions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom-plugin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing a custom plugin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    
+  
+  
+  
+    <a href="../../services/admin/service/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Services
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    
+  
+  
+  
+    <a href="../../features/policies/resource-policies/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../dev/build/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer guide
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../project/contributing/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../release-notes/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Releases
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../blog/blog/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ranger-kafka-securityxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ranger-kafka-security.xml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ranger-kafka-auditxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ranger-kafka-audit.xml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ranger-policymgr-sslxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ranger-policymgr-ssl.xml
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#service-definition-in-ranger-admin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service definition in Ranger Admin
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resources-and-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resources and permissions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Resources and permissions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#access-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-operations-map-to-access-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Kafka operations map to access types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#policy-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Policy conditions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#default-and-required-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Default and required policies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#behavior-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavior notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#auditing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auditing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#try-it-with-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it with Docker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Further reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Plugins
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<!---
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<h1 id="apache-kafka">Apache Kafka<a class="headerlink" href="#apache-kafka" title="Permanent link">&para;</a></h1>
+<p>The Ranger Kafka plugin controls who can publish to, consume from, create, delete and configure Kafka
+topics, consumer groups, transactional ids, delegation tokens and the cluster itself. It runs inside every
+Kafka broker as the broker's <code>Authorizer</code> implementation, so there is no extra process to deploy: the
+broker asks the plugin for a decision on each request, and the plugin answers from policies it keeps in
+memory.</p>
+<p>Policies are written centrally in Ranger Admin. Each broker downloads them on a schedule (pull model),
+caches them on local disk, and keeps enforcing the last known policies even if Ranger Admin is unavailable.
+Every decision can be sent to the audit store you configure.</p>
+<pre class="mermaid"><code>flowchart LR
+  C[Producer / Consumer / Admin client] --&gt;|request| B[Kafka broker]
+  B --&gt;|authorize| P[RangerKafkaAuthorizer]
+  P --&gt;|poll policies| A[Ranger Admin]
+  P --&gt;|audit events| S[(Audit store)]</code></pre>
+<h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h2>
+<ul>
+<li>A Ranger Admin instance that every broker can reach over HTTP or HTTPS.</li>
+<li>An audit store (Ranger audit server, Solr, Elasticsearch/OpenSearch, HDFS, ...) if auditing is enabled.</li>
+<li>A Kafka release that offers the <code>org.apache.kafka.server.authorizer.Authorizer</code> interface. Ranger master
+  builds the plugin against Kafka <strong>3.9.1</strong> (<code>kafka.version</code> in the root
+  <a href="https://github.com/apache/ranger/blob/master/pom.xml"><code>pom.xml</code></a>).</li>
+<li>The plugin jars from the <code>ranger-&lt;version&gt;-kafka-plugin</code> archive built by Ranger. Copy the contents of its
+  <code>lib/</code> directory (the shim jars and the <code>ranger-kafka-plugin-impl/</code> directory) into the broker's <code>libs/</code>
+  directory on every broker host.</li>
+<li>Authenticated listeners (SASL or TLS client authentication) if policies are to be written for named
+  users; see <a href="#behavior-notes">Behavior notes</a> for unauthenticated listeners.</li>
+</ul>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>Activate the plugin in each broker's <code>server.properties</code>:</p>
+<div class="highlight"><span class="filename">server.properties</span><pre><span></span><code><span class="c1"># MANDATORY: makes the Ranger plugin the broker's authorizer.</span>
+<span class="na">authorizer.class.name</span><span class="o">=</span><span class="s">org.apache.ranger.authorization.kafka.authorizer.RangerKafkaAuthorizer</span>
+
+<span class="c1"># Principals that bypass authorization, typically the brokers themselves. Every User:&lt;name&gt; entry</span>
+<span class="c1"># (entries are separated by ;) is added to the plugin's super-user list and is allowed without</span>
+<span class="c1"># evaluating policies. Principal types other than User are ignored. Default: not set.</span>
+<span class="na">super.users</span><span class="o">=</span><span class="s">User:kafka</span>
+
+<span class="c1"># Name of the listener whose JAAS context the plugin uses to log in for Kerberized policy download</span>
+<span class="c1"># and auditing. SASL_PLAINTEXT resolves to the sasl_plaintext.KafkaServer JAAS section and falls</span>
+<span class="c1"># back to KafkaServer.</span>
+<span class="na">ranger.jaas.context</span><span class="o">=</span><span class="s">SASL_PLAINTEXT</span>
+</code></pre></div>
+<p>The Ranger configuration files described below must be on the broker classpath. A common arrangement is
+to place them in the broker's <code>config/</code> directory and start the broker with that directory in <code>CLASSPATH</code>.
+Restart every broker after changing any of these files.</p>
+<h3 id="ranger-kafka-securityxml">ranger-kafka-security.xml<a class="headerlink" href="#ranger-kafka-securityxml" title="Permanent link">&para;</a></h3>
+<p>This file names the Ranger service whose policies are enforced, tells the plugin where Ranger Admin is, and
+controls how policies are downloaded and cached. The plugin loads it from the classpath, so place it in
+a directory on the broker classpath, for example the broker's <code>config/</code> directory. <code>ranger.plugin.kafka.service.name</code> and
+<code>ranger.plugin.kafka.policy.rest.url</code> are mandatory; every other property has a working default.</p>
+<div class="highlight"><span class="filename">ranger-kafka-security.xml</span><pre><span></span><code><span class="nt">&lt;configuration&gt;</span>
+<span class="w">  </span><span class="cm">&lt;!-- Connection to Ranger Admin --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.kafka.service.name<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>dev_kafka<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>MANDATORY:<span class="w"> </span>Name<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>service<span class="w"> </span>in<span class="w"> </span>Ranger<span class="w"> </span>Admin<span class="w"> </span>whose<span class="w"> </span>policies<span class="w"> </span>this<span class="w"> </span>plugin
+<span class="w">      </span>enforces.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.kafka.policy.rest.url<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>http://ranger-admin:6080<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>MANDATORY:<span class="w"> </span>URL<span class="w"> </span>of<span class="w"> </span>Ranger<span class="w"> </span>Admin.<span class="w"> </span>Separate<span class="w"> </span>several<span class="w"> </span>URLs<span class="w"> </span>with<span class="w"> </span>commas<span class="w"> </span>for<span class="w"> </span>Ranger<span class="w"> </span>Admin
+<span class="w">      </span>high<span class="w"> </span>availability.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.kafka.policy.rest.ssl.config.file<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>/opt/kafka/config/ranger-policymgr-ssl.xml<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Path<span class="w"> </span>to<span class="w"> </span>ranger-policymgr-ssl.xml.<span class="w"> </span>Needed<span class="w"> </span>only<span class="w"> </span>when<span class="w"> </span>the<span class="w"> </span>Ranger<span class="w"> </span>Admin<span class="w"> </span>URL<span class="w"> </span>uses<span class="w"> </span>https.
+<span class="w">      </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.kafka.policy.rest.client.username<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>User<span class="w"> </span>for<span class="w"> </span>HTTP<span class="w"> </span>Basic<span class="w"> </span>authentication<span class="w"> </span>to<span class="w"> </span>Ranger<span class="w"> </span>Admin<span class="w"> </span>when<span class="w"> </span>Kerberos<span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span>used.
+<span class="w">      </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.kafka.policy.rest.client.password<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Password<span class="w"> </span>for<span class="w"> </span>that<span class="w"> </span>user.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.kafka.policy.rest.client.connection.timeoutMs<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>120000<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Connection<span class="w"> </span>timeout<span class="w"> </span>for<span class="w"> </span>calls<span class="w"> </span>to<span class="w"> </span>Ranger<span class="w"> </span>Admin.<span class="w"> </span>Unit:<span class="w"> </span>milliseconds.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.kafka.policy.rest.client.read.timeoutMs<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>30000<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Read<span class="w"> </span>timeout<span class="w"> </span>for<span class="w"> </span>calls<span class="w"> </span>to<span class="w"> </span>Ranger<span class="w"> </span>Admin.<span class="w"> </span>Unit:<span class="w"> </span>milliseconds.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.kafka.policy.rest.client.max.retry.attempts<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>3<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Number<span class="w"> </span>of<span class="w"> </span>retries<span class="w"> </span>for<span class="w"> </span>a<span class="w"> </span>failed<span class="w"> </span>call<span class="w"> </span>to<span class="w"> </span>Ranger<span class="w"> </span>Admin.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.kafka.policy.rest.client.retry.interval.ms<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>1000<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Wait<span class="w"> </span>between<span class="w"> </span>retries.<span class="w"> </span>Unit:<span class="w"> </span>milliseconds.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- Policy refresh and cache --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.kafka.policy.cache.dir<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>/etc/ranger/dev_kafka/policycache<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Directory<span class="w"> </span>for<span class="w"> </span>the<span class="w"> </span>local<span class="w"> </span>policy<span class="w"> </span>cache<span class="w"> </span>(kafka_<span class="ni">&amp;lt;</span>service<span class="ni">&amp;gt;</span>.json),<span class="w"> </span>writable<span class="w"> </span>by<span class="w"> </span>the
+<span class="w">      </span>process<span class="w"> </span>user.<span class="w"> </span>Lets<span class="w"> </span>the<span class="w"> </span>plugin<span class="w"> </span>start<span class="w"> </span>with<span class="w"> </span>the<span class="w"> </span>last<span class="w"> </span>known<span class="w"> </span>policies<span class="w"> </span>when<span class="w"> </span>Ranger<span class="w"> </span>Admin<span class="w"> </span>is
+<span class="w">      </span>unreachable.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.kafka.policy.pollIntervalMs<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>30000<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>How<span class="w"> </span>often<span class="w"> </span>the<span class="w"> </span>plugin<span class="w"> </span>asks<span class="w"> </span>Ranger<span class="w"> </span>Admin<span class="w"> </span>for<span class="w"> </span>policy<span class="w"> </span>changes.<span class="w"> </span>Unit:
+<span class="w">      </span>milliseconds.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.kafka.policy.source.impl<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>org.apache.ranger.admin.client.RangerAdminRESTClient<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Class<span class="w"> </span>that<span class="w"> </span>retrieves<span class="w"> </span>policies<span class="w"> </span>from<span class="w"> </span>Ranger<span class="w"> </span>Admin.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- Authorization behavior --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.kafka.super.users<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Comma-separated<span class="w"> </span>users<span class="w"> </span>that<span class="w"> </span>are<span class="w"> </span>allowed<span class="w"> </span>without<span class="w"> </span>policy<span class="w"> </span>evaluation.<span class="w"> </span>Default:<span class="w"> </span>not
+<span class="w">      </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.kafka.super.groups<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Comma-separated<span class="w"> </span>groups<span class="w"> </span>whose<span class="w"> </span>members<span class="w"> </span>are<span class="w"> </span>allowed<span class="w"> </span>without<span class="w"> </span>policy<span class="w"> </span>evaluation.
+<span class="w">      </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.kafka.audit.exclude.users<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Comma-separated<span class="w"> </span>users<span class="w"> </span>whose<span class="w"> </span>accesses<span class="w"> </span>are<span class="w"> </span>not<span class="w"> </span>audited.<span class="w"> </span>Default:<span class="w"> </span>not
+<span class="w">      </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.kafka.audit.exclude.groups<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Comma-separated<span class="w"> </span>groups<span class="w"> </span>whose<span class="w"> </span>members'<span class="w"> </span>accesses<span class="w"> </span>are<span class="w"> </span>not<span class="w"> </span>audited.<span class="w"> </span>Default:<span class="w"> </span>not
+<span class="w">      </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.kafka.audit.exclude.roles<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Comma-separated<span class="w"> </span>roles<span class="w"> </span>whose<span class="w"> </span>members'<span class="w"> </span>accesses<span class="w"> </span>are<span class="w"> </span>not<span class="w"> </span>audited.<span class="w"> </span>Default:<span class="w"> </span>not
+<span class="w">      </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- Users, groups and roles --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.kafka.use.rangerGroups<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>false<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Add<span class="w"> </span>the<span class="w"> </span>groups<span class="w"> </span>Ranger<span class="w"> </span>knows<span class="w"> </span>for<span class="w"> </span>the<span class="w"> </span>user<span class="w"> </span>(from<span class="w"> </span>UserSync)<span class="w"> </span>to<span class="w"> </span>each
+<span class="w">      </span>request.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.kafka.use.only.rangerGroups<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>false<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Ignore<span class="w"> </span>the<span class="w"> </span>groups<span class="w"> </span>supplied<span class="w"> </span>by<span class="w"> </span>the<span class="w"> </span>component<span class="w"> </span>and<span class="w"> </span>use<span class="w"> </span>only<span class="w"> </span>the<span class="w"> </span>groups<span class="w"> </span>Ranger<span class="w"> </span>knows
+<span class="w">      </span>for<span class="w"> </span>the<span class="w"> </span>user.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div>
+<h3 id="ranger-kafka-auditxml">ranger-kafka-audit.xml<a class="headerlink" href="#ranger-kafka-auditxml" title="Permanent link">&para;</a></h3>
+<p>This file selects where the plugin sends audit events; place it next to <code>ranger-kafka-security.xml</code>. Each
+destination is switched on with <code>xasecure.audit.destination.&lt;name&gt;=true</code> and configured with properties
+under the same prefix. No property is mandatory: without an enabled destination, no audit events are
+stored. The example sends audits to Solr.</p>
+<div class="highlight"><span class="filename">ranger-kafka-audit.xml</span><pre><span></span><code><span class="nt">&lt;configuration&gt;</span>
+<span class="w">  </span><span class="cm">&lt;!-- General --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.is.enabled<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>true<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Master<span class="w"> </span>switch<span class="w"> </span>for<span class="w"> </span>auditing<span class="w"> </span>in<span class="w"> </span>this<span class="w"> </span>plugin.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.provider.summary.enabled<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>false<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Collapse<span class="w"> </span>events<span class="w"> </span>that<span class="w"> </span>differ<span class="w"> </span>only<span class="w"> </span>in<span class="w"> </span>time<span class="w"> </span>into<span class="w"> </span>one<span class="w"> </span>event<span class="w"> </span>with<span class="w"> </span>a<span class="w"> </span>count.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- Audit Server destination --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.auditserver<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>false<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Send<span class="w"> </span>audits<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>Ranger<span class="w"> </span>Audit<span class="w"> </span>Server.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.auditserver.url<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Audit<span class="w"> </span>Server<span class="w"> </span>URL.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- Solr destination --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.solr<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>true<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Send<span class="w"> </span>audits<span class="w"> </span>to<span class="w"> </span>Apache<span class="w"> </span>Solr.<span class="w"> </span>Default:<span class="w"> </span>false.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.solr.urls<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>http://solr:8983/solr/ranger_audits<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Solr<span class="w"> </span>collection<span class="w"> </span>URLs,<span class="w"> </span>separated<span class="w"> </span>by<span class="w"> </span>commas.<span class="w"> </span>Ignored<span class="w"> </span>when
+<span class="w">      </span>xasecure.audit.destination.solr.zookeepers<span class="w"> </span>is<span class="w"> </span>set.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.solr.zookeepers<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>ZooKeeper<span class="w"> </span>connect<span class="w"> </span>string<span class="w"> </span>of<span class="w"> </span>a<span class="w"> </span>SolrCloud<span class="w"> </span>cluster.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.solr.batch.filespool.dir<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>/var/log/kafka/audit/solr/spool<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Local<span class="w"> </span>directory<span class="w"> </span>where<span class="w"> </span>events<span class="w"> </span>are<span class="w"> </span>spooled<span class="w"> </span>while<span class="w"> </span>Solr<span class="w"> </span>is<span class="w"> </span>unreachable.<span class="w"> </span>Every<span class="w"> </span>enabled
+<span class="w">      </span>destination<span class="w"> </span>has<span class="w"> </span>the<span class="w"> </span>same<span class="w"> </span>property<span class="w"> </span>under<span class="w"> </span>its<span class="w"> </span>own<span class="w"> </span>prefix.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.solr.collection<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>ranger_audits<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Collection<span class="w"> </span>name<span class="w"> </span>when<span class="w"> </span>ZooKeeper<span class="w"> </span>is<span class="w"> </span>used.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- Elasticsearch destination --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.elasticsearch<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>false<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Send<span class="w"> </span>audits<span class="w"> </span>to<span class="w"> </span>Elasticsearch.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.elasticsearch.urls<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Elasticsearch<span class="w"> </span>host<span class="w"> </span>names,<span class="w"> </span>separated<span class="w"> </span>by<span class="w"> </span>commas.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.elasticsearch.port<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>9200<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>REST<span class="w"> </span>port<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>Elasticsearch<span class="w"> </span>cluster.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.elasticsearch.protocol<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>http<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>One<span class="w"> </span>of:<span class="w"> </span>http,<span class="w"> </span>https.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.elasticsearch.index<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>ranger_audits<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Index<span class="w"> </span>that<span class="w"> </span>receives<span class="w"> </span>the<span class="w"> </span>events.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- HDFS destination --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.hdfs<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>false<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Write<span class="w"> </span>audits<span class="w"> </span>as<span class="w"> </span>files<span class="w"> </span>to<span class="w"> </span>HDFS<span class="w"> </span>or<span class="w"> </span>a<span class="w"> </span>Hadoop-compatible<span class="w"> </span>object<span class="w"> </span>store.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.hdfs.dir<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Base<span class="w"> </span>directory,<span class="w"> </span>for<span class="w"> </span>example<span class="w"> </span>hdfs://namenode:8020/ranger/audit.<span class="w"> </span>Default:<span class="w"> </span>not
+<span class="w">      </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- Log4j destination --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.log4j<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>false<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Write<span class="w"> </span>audits<span class="w"> </span>as<span class="w"> </span>JSON<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>logger<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>host<span class="w"> </span>process.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.log4j.logger<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>ranger.audit.log4j<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Logger<span class="w"> </span>name<span class="w"> </span>used<span class="w"> </span>by<span class="w"> </span>the<span class="w"> </span>log4j<span class="w"> </span>destination.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div>
+<p>Give every enabled destination a spool directory (<code>xasecure.audit.destination.&lt;name&gt;.batch.filespool.dir</code>)
+so that events survive an outage of the audit store. The queue, spool, Kerberos and TLS options of each
+destination, and the <a href="../../services/audit-server/service/">Audit Server</a> client settings, are in the
+<a href="../../services/audit/">Audit framework</a> reference.</p>
+<h3 id="ranger-policymgr-sslxml">ranger-policymgr-ssl.xml<a class="headerlink" href="#ranger-policymgr-sslxml" title="Permanent link">&para;</a></h3>
+<p>This file is needed only when Ranger Admin is reached over <code>https</code>. The plugin loads it from the path set in
+<code>ranger.plugin.kafka.policy.rest.ssl.config.file</code>; a file named
+<code>ranger-kafka-policymgr-ssl.xml</code> on the classpath is picked up automatically. No property is mandatory:
+without a truststore the plugin relies on the default truststore of the JVM, and the keystore is needed only
+for two-way TLS. Passwords are not stored in the file: they are read from a Hadoop credential store (JCEKS)
+under fixed aliases.</p>
+<div class="highlight"><span class="filename">ranger-policymgr-ssl.xml</span><pre><span></span><code><span class="nt">&lt;configuration&gt;</span>
+<span class="w">  </span><span class="cm">&lt;!-- Keystore (client certificate, two-way TLS) --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.policymgr.clientssl.keystore<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Keystore<span class="w"> </span>with<span class="w"> </span>the<span class="w"> </span>plugin's<span class="w"> </span>client<span class="w"> </span>certificate.<span class="w"> </span>Needed<span class="w"> </span>only<span class="w"> </span>when<span class="w"> </span>Ranger<span class="w"> </span>Admin
+<span class="w">      </span>requires<span class="w"> </span>client<span class="w"> </span>certificates.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.policymgr.clientssl.keystore.credential.file<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Hadoop<span class="w"> </span>credential<span class="w"> </span>store<span class="w"> </span>(JCEKS)<span class="w"> </span>that<span class="w"> </span>holds<span class="w"> </span>the<span class="w"> </span>keystore<span class="w"> </span>password<span class="w"> </span>under<span class="w"> </span>the<span class="w"> </span>alias
+<span class="w">      </span>sslKeyStore.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.policymgr.clientssl.keystore.type<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>jks<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Keystore<span class="w"> </span>type.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- Truststore --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.policymgr.clientssl.truststore<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>/opt/kafka/config/ranger-plugin-truststore.jks<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Truststore<span class="w"> </span>that<span class="w"> </span>contains<span class="w"> </span>the<span class="w"> </span>Ranger<span class="w"> </span>Admin<span class="w"> </span>certificate<span class="w"> </span>or<span class="w"> </span>its<span class="w"> </span>CA.<span class="w"> </span>When<span class="w"> </span>no<span class="w"> </span>truststore
+<span class="w">      </span>is<span class="w"> </span>configured,<span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>truststore<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>JVM<span class="w"> </span>is<span class="w"> </span>used.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.policymgr.clientssl.truststore.credential.file<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>jceks://file/etc/ranger/dev_kafka/cred.jceks<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Hadoop<span class="w"> </span>credential<span class="w"> </span>store<span class="w"> </span>(JCEKS)<span class="w"> </span>that<span class="w"> </span>holds<span class="w"> </span>the<span class="w"> </span>truststore<span class="w"> </span>password<span class="w"> </span>under<span class="w"> </span>the<span class="w"> </span>alias
+<span class="w">      </span>sslTrustStore.<span class="w"> </span>Default:<span class="w"> </span>not<span class="w"> </span>set.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.policymgr.clientssl.truststore.type<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>jks<span class="nt">&lt;/value&gt;</span>
+<span class="w">    </span><span class="nt">&lt;description&gt;</span>Truststore<span class="w"> </span>type.<span class="nt">&lt;/description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div>
+<p>When Ranger Admin validates client certificates, set <code>commonNameForCertificate</code> in the service configuration
+to the CN of the plugin's certificate. See <a href="../../services/admin/security-hardening/">Security hardening</a>.</p>
+<h2 id="service-definition-in-ranger-admin">Service definition in Ranger Admin<a class="headerlink" href="#service-definition-in-ranger-admin" title="Permanent link">&para;</a></h2>
+<p>Create a service of type <strong>kafka</strong> in Ranger Admin. Its name must equal
+<code>ranger.plugin.kafka.service.name</code> on the brokers. The service configuration is used by Ranger Admin only,
+for <strong>Test Connection</strong> and topic-name lookup while you edit policies.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>username</code></td>
+<td>Yes</td>
+<td>User Ranger Admin connects as for the connection test and lookup.</td>
+</tr>
+<tr>
+<td><code>password</code></td>
+<td>Yes</td>
+<td>Password for that user.</td>
+</tr>
+<tr>
+<td><code>zookeeper.connect</code></td>
+<td>Yes</td>
+<td>Kept for compatibility; the lookup client does not use it. Default: <code>localhost:2181</code>.</td>
+</tr>
+<tr>
+<td><code>commonNameForCertificate</code></td>
+<td>No</td>
+<td>Expected CN of the plugin's client certificate when Ranger Admin verifies plugin certificates.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.audit.filters</code></td>
+<td>No</td>
+<td>Default audit filters delivered to the plugin. The default value comes from the service definition.</td>
+</tr>
+</tbody>
+</table>
+<p>Test Connection and lookup use a Kafka <code>AdminClient</code> (<code>ServiceKafkaClient</code>) to list topics. The client reads
+these additional service configs, which you add under <em>Add New Configurations</em>: <code>bootstrap.servers</code>,
+<code>security.protocol</code>, <code>sasl.mechanism</code>, <code>kafka.keytab</code> and <code>kafka.principal</code> (the last two are used to build a
+Kerberos <code>sasl.jaas.config</code>). All five must be set, otherwise Test Connection and lookup fail with a
+"JAAS configuration missing" error. Only topic names are looked up; values for the other resources are typed in.</p>
+<p>On the authenticated policy download endpoint, Ranger Admin serves the policies of the service only to
+admin users and to the users listed in the service configs <code>policy.download.auth.users</code> or
+<code>policy.grantrevoke.auth.users</code>.</p>
+<h2 id="resources-and-permissions">Resources and permissions<a class="headerlink" href="#resources-and-permissions" title="Permanent link">&para;</a></h2>
+<p>The service definition is
+<a href="https://github.com/apache/ranger/blob/master/agents-common/src/main/resources/service-defs/ranger-servicedef-kafka.json"><code>ranger-servicedef-kafka.json</code></a>.
+It defines five independent, single-level resources; a policy targets exactly one of them. All resources
+accept the wildcards <code>*</code> and <code>?</code>, are matched case-insensitively, and support the <em>exclude</em> flag, so a policy
+can apply to "every topic except these".</p>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Label</th>
+<th>Lookup</th>
+<th>Access types</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>topic</code></td>
+<td>Topic</td>
+<td>Yes</td>
+<td>create, delete, configure, alter, alter_configs, describe, describe_configs, consume, publish</td>
+</tr>
+<tr>
+<td><code>consumergroup</code></td>
+<td>Consumer Group</td>
+<td>No</td>
+<td>consume, describe, delete</td>
+</tr>
+<tr>
+<td><code>transactionalid</code></td>
+<td>Transactional Id</td>
+<td>No</td>
+<td>publish, describe</td>
+</tr>
+<tr>
+<td><code>cluster</code></td>
+<td>Cluster</td>
+<td>No</td>
+<td>create, configure, alter, alter_configs, describe, describe_configs, kafka_admin, idempotent_write, cluster_action</td>
+</tr>
+<tr>
+<td><code>delegationtoken</code></td>
+<td>Delegation Token</td>
+<td>No</td>
+<td>describe</td>
+</tr>
+</tbody>
+</table>
+<h3 id="access-types">Access types<a class="headerlink" href="#access-types" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Access type</th>
+<th>Label</th>
+<th>Implied grants</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>publish</code></td>
+<td>Publish</td>
+<td>describe</td>
+</tr>
+<tr>
+<td><code>consume</code></td>
+<td>Consume</td>
+<td>describe</td>
+</tr>
+<tr>
+<td><code>configure</code></td>
+<td>Configure</td>
+<td>describe</td>
+</tr>
+<tr>
+<td><code>describe</code></td>
+<td>Describe</td>
+<td>(none)</td>
+</tr>
+<tr>
+<td><code>create</code></td>
+<td>Create</td>
+<td>(none)</td>
+</tr>
+<tr>
+<td><code>delete</code></td>
+<td>Delete</td>
+<td>describe</td>
+</tr>
+<tr>
+<td><code>alter</code></td>
+<td>Alter</td>
+<td>(none)</td>
+</tr>
+<tr>
+<td><code>alter_configs</code></td>
+<td>Alter Configs</td>
+<td>describe_configs</td>
+</tr>
+<tr>
+<td><code>describe_configs</code></td>
+<td>Describe Configs</td>
+<td>(none)</td>
+</tr>
+<tr>
+<td><code>idempotent_write</code></td>
+<td>Idempotent Write</td>
+<td>(none)</td>
+</tr>
+<tr>
+<td><code>cluster_action</code></td>
+<td>Cluster Action</td>
+<td>(none)</td>
+</tr>
+<tr>
+<td><code>kafka_admin</code></td>
+<td>Kafka Admin</td>
+<td>every other access type</td>
+</tr>
+</tbody>
+</table>
+<h3 id="how-kafka-operations-map-to-access-types">How Kafka operations map to access types<a class="headerlink" href="#how-kafka-operations-map-to-access-types" title="Permanent link">&para;</a></h3>
+<p>The authorizer translates the <code>AclOperation</code> of each Kafka action into a Ranger access type
+(<code>RangerKafkaAuthorizer.mapToRangerAccessType</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Kafka operation</th>
+<th>Ranger access type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>READ</code></td>
+<td><code>consume</code></td>
+</tr>
+<tr>
+<td><code>WRITE</code></td>
+<td><code>publish</code></td>
+</tr>
+<tr>
+<td><code>CREATE</code></td>
+<td><code>create</code></td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>delete</code></td>
+</tr>
+<tr>
+<td><code>ALTER</code></td>
+<td><code>configure</code></td>
+</tr>
+<tr>
+<td><code>DESCRIBE</code></td>
+<td><code>describe</code></td>
+</tr>
+<tr>
+<td><code>DESCRIBE_CONFIGS</code></td>
+<td><code>describe_configs</code></td>
+</tr>
+<tr>
+<td><code>ALTER_CONFIGS</code></td>
+<td><code>alter_configs</code></td>
+</tr>
+<tr>
+<td><code>CLUSTER_ACTION</code></td>
+<td><code>cluster_action</code></td>
+</tr>
+<tr>
+<td><code>IDEMPOTENT_WRITE</code></td>
+<td><code>idempotent_write</code></td>
+</tr>
+</tbody>
+</table>
+<p>and the Kafka <code>ResourceType</code> into a Ranger resource (<code>mapToResourceType</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Kafka resource type</th>
+<th>Ranger resource</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TOPIC</code></td>
+<td><code>topic</code></td>
+</tr>
+<tr>
+<td><code>GROUP</code></td>
+<td><code>consumergroup</code></td>
+</tr>
+<tr>
+<td><code>CLUSTER</code></td>
+<td><code>cluster</code></td>
+</tr>
+<tr>
+<td><code>TRANSACTIONAL_ID</code></td>
+<td><code>transactionalid</code></td>
+</tr>
+<tr>
+<td><code>DELEGATION_TOKEN</code></td>
+<td><code>delegationtoken</code></td>
+</tr>
+</tbody>
+</table>
+<p>Operations <code>ANY</code>, <code>ALL</code> and <code>UNKNOWN</code>, and resource types <code>ANY</code> and <code>UNKNOWN</code>, are not supported and are
+denied. The <code>authorizeByResourceType</code> call that newer Kafka versions use for a quick "does this principal
+have this operation on any resource" check is not implemented and always returns <code>DENIED</code>. Kafka 3.9
+uses it only as the fallback for an idempotent producer without a transactional id that lacks
+<code>IDEMPOTENT_WRITE</code> on the cluster, so such producers must be granted <code>idempotent_write</code> on <code>cluster</code>.</p>
+<h3 id="policy-conditions">Policy conditions<a class="headerlink" href="#policy-conditions" title="Permanent link">&para;</a></h3>
+<p>The service definition registers one policy condition, <code>ip-range</code> (evaluator <code>RangerIpMatcher</code>, multiple
+values). Add one or more IP addresses or ranges to a policy item so that it only applies to clients
+connecting from those addresses. This is the only way to restrict clients on a non-authenticated
+(<code>PLAINTEXT</code>) listener, where every client is the <code>ANONYMOUS</code> user. See
+<a href="../../features/policies/policy-conditions/">policy conditions</a>.</p>
+<p>No data masking, row filtering or context enrichers apply to Kafka.</p>
+<h2 id="default-and-required-policies">Default and required policies<a class="headerlink" href="#default-and-required-policies" title="Permanent link">&para;</a></h2>
+<p>When the service is created, Ranger Admin generates one "all" policy per resource (<code>all - topic</code>,
+<code>all - consumergroup</code>, ...). <code>RangerServiceKafka</code> adjusts them:</p>
+<ul>
+<li>If <code>hadoop.security.authentication</code> in the Ranger Admin configuration is not <code>kerberos</code>, the <code>public</code> group is added
+  to every item of the "all" policies so that a cluster without authentication keeps working. Review and
+  tighten these policies.</li>
+<li>When Ranger Admin runs with Kerberos and a lookup principal and keytab (<code>ranger.lookup.kerberos.principal</code>,
+  <code>ranger.lookup.kerberos.keytab</code>), the short name of that principal receives <code>describe</code> in each "all" policy
+  so that topic lookup keeps working.</li>
+</ul>
+<p>What the brokers and clients need:</p>
+<ul>
+<li><strong>Brokers.</strong> Inter-broker traffic is authorized like any other client. Grant <code>kafka_admin</code> (or at least
+  <code>cluster_action</code> on <code>cluster</code>) to the broker principal, or list the broker principals in <code>super.users</code>.</li>
+<li><strong>Producers</strong> need <code>publish</code> on the topic. Transactional producers also need <code>publish</code> on the
+  <code>transactionalid</code>; idempotent producers without a transactional id need <code>idempotent_write</code> on <code>cluster</code>.</li>
+<li><strong>Consumers</strong> need <code>consume</code> on the topic <em>and</em> <code>consume</code> on the <code>consumergroup</code>.</li>
+</ul>
+<h2 id="behavior-notes">Behavior notes<a class="headerlink" href="#behavior-notes" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>No fallback.</strong> When the plugin is active there are no native Kafka ACLs to fall back to: a request is
+  allowed only if a Ranger policy allows it (or the principal is in <code>super.users</code>). Kafka's own ACL
+  management calls are routed to the plugin, which does not manage ACLs: <code>createAcls</code> and <code>deleteAcls</code>
+  return a failure for every binding, and <code>acls</code> throws <code>UnsupportedOperationException</code>. Manage
+  everything in Ranger.</li>
+<li><strong>Topic creation</strong> is checked first as <code>create</code> on <code>cluster</code>; if that is denied Kafka retries as
+  <code>create</code> on the specific <code>topic</code>, so you can allow creation of, for example, <code>finance_*</code> topics only.
+  Auto-created topics from producers or consumers need <code>create</code> plus the <code>publish</code>/<code>consume</code> permission on
+  the topic.</li>
+<li><strong>Unauthenticated listeners.</strong> On a <code>PLAINTEXT</code> listener every client is <code>ANONYMOUS</code>. Policies for
+  such clients must grant the <code>public</code> group and should be narrowed with the <code>ip-range</code> condition, since
+  user or group identity cannot be trusted. Do not run producers or consumers you want to restrict on
+  broker hosts whose IPs have been granted broad access.</li>
+<li><strong>Command-line tools.</strong> Tools that use <code>--bootstrap-server</code> go through the broker and are authorized by
+  the plugin. Older tools that talked to ZooKeeper directly bypassed Ranger; Ranger has no ZooKeeper
+  plugin, so protect ZooKeeper with its own ACLs.</li>
+<li><strong>Group lookup.</strong> The plugin resolves the user's groups with the Hadoop group mapping configured on
+  the broker (<code>MiscUtil.getGroupsForRequestUser</code>).</li>
+</ul>
+<h2 id="auditing">Auditing<a class="headerlink" href="#auditing" title="Permanent link">&para;</a></h2>
+<p>Each <code>authorize</code> call produces one audit event per action after the batch is evaluated
+(<code>RangerKafkaAuditHandler</code>). The event carries the user, client IP, resource (<code>topic</code>, <code>consumergroup</code>,
+...), access type, the matching policy id and the result. For topic creation the audit handler skips the
+first (cluster-level) denial so that a single record is written for the final decision.</p>
+<p>The default audit filter shipped with the service definition (<code>ranger.plugin.audit.filters</code>) always records
+denied requests, excludes every access of the <code>kafka</code> user, and excludes the frequent traffic of the
+<code>atlas</code>, <code>rangertagsync</code>, <code>hive</code>, <code>hbase</code>, <code>impala</code>, <code>nifi</code> and <code>cc_metric_reporter</code> users on the <code>ATLAS_*</code>
+and <code>__CruiseControlMetrics</code> topics and of <code>atlas</code> and <code>rangertagsync</code> on consumer groups. See <a href="../../services/audit/audit-filters/">audit filters</a>.</p>
+<h2 id="try-it-with-docker">Try it with Docker<a class="headerlink" href="#try-it-with-docker" title="Permanent link">&para;</a></h2>
+<p>Ranger does not publish a Docker image for this service, so the environment is built from source with the compose
+files in <code>dev-support/ranger-docker</code>, following the
+<a href="https://github.com/apache/ranger/blob/master/dev-support/ranger-docker/README.md">README</a> in that directory.</p>
+<p><a href="https://github.com/apache/ranger/blob/master/dev-support/ranger-docker/docker-compose.ranger-kafka.yml"><code>docker-compose.ranger-kafka.yml</code></a>
+adds a <code>ranger-kafka</code> container (hostname <code>ranger-kafka.rangernw</code>, port <code>9092</code>) to the Ranger environment. It
+depends on the <code>ranger</code> and <code>ranger-zk</code> containers.</p>
+<p>Prerequisites: Docker with Compose v2, and a Ranger build in <code>dev-support/ranger-docker/dist/</code> (see
+<a href="../../getting-started/docker/">Run Ranger with Docker</a>). Then, from <code>dev-support/ranger-docker</code>:</p>
+<div class="highlight"><pre><span></span><code>chmod<span class="w"> </span>+x<span class="w"> </span>download-archives.sh
+./download-archives.sh<span class="w"> </span>kafka
+
+<span class="c1"># valid values for RANGER_DB_TYPE: mysql/postgres/oracle</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">RANGER_DB_TYPE</span><span class="o">=</span>postgres
+
+<span class="c1"># valid values for AUDIT_INDEX_STORE: opensearch (default) | solr</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUDIT_INDEX_STORE</span><span class="o">=</span>opensearch
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUDIT_DESTINATIONS</span><span class="o">=</span>audit-store-<span class="si">${</span><span class="nv">AUDIT_INDEX_STORE</span><span class="si">}</span>
+
+docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span><span class="si">${</span><span class="nv">AUDIT_DESTINATIONS</span><span class="si">}</span><span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-audit-service.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-kafka.yml<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+<p>The README has no separate command for Kafka; the line above adds <code>docker-compose.ranger-kafka.yml</code> to the
+same base files the README uses for every other service.</p>
+<p>When Ranger Admin becomes ready, its bootstrap script <code>scripts/admin/create-ranger-services.py</code> creates the
+Ranger service <code>dev_kafka</code>, which the plugin in the container enforces.</p>
+<p>To verify:</p>
+<ul>
+<li><code>docker logs ranger</code> shows <code>dev_kafka service created</code> (or <code>dev_kafka service already exists</code> on a restart).</li>
+<li>In Ranger Admin at <code>http://localhost:6080</code> (<code>admin</code> / <code>rangerR0cks!</code>), the service appears in the
+  service manager and <strong>Audit → Plugin Status</strong> lists <code>dev_kafka</code> once the plugin has downloaded its policies.</li>
+<li><code>docker logs ranger-kafka</code> shows the broker starting; broker access events appear under <strong>Audit → Access</strong>.</li>
+</ul>
+<p>The <code>dev_kafka</code> service is created with a few starter policies (for example <code>rangertagsync</code> on topic
+<code>ATLAS_ENTITIES</code>), and the broker sends audits to the Ranger audit server. With <code>KERBEROS_ENABLED=true</code> (the
+default in <code>.env</code>) the broker uses a <code>SASL_PLAINTEXT</code> listener with GSSAPI, <code>super.users=User:kafka</code>, and the
+service restricts policy download to the <code>kafka</code> user. With Kerberos disabled the environment leaves
+<code>authorizer.class.name</code> commented out, because every client would be <code>ANONYMOUS</code>.</p>
+<p><a href="../../getting-started/docker/">Run Ranger with Docker</a> describes the full environment: building Ranger, the
+audit services, Kerberos, test users and cleanup.</p>
+<h2 id="further-reading">Further reading<a class="headerlink" href="#further-reading" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../arch/plugin-architecture/">Plugin architecture</a> and <a href="../../arch/policy-model/">policy model</a></li>
+<li><a href="../../features/policies/resource-policies/">Resource-based policies</a></li>
+<li><a href="../../services/audit/">Audit framework</a></li>
+<li><a href="../../getting-started/faq/">FAQ</a>, which includes the Kafka questions from the original wiki</li>
+<li>Kafka plugin FAQ on the Ranger wiki: <a href="https://cwiki.apache.org/confluence/display/RANGER/Kafka+Plugin">https://cwiki.apache.org/confluence/display/RANGER/Kafka+Plugin</a></li>
+<li>Plugin sources: <a href="https://github.com/apache/ranger/tree/master/plugin-kafka"><code>plugin-kafka</code></a>,
+  <a href="https://github.com/apache/ranger/tree/master/ranger-kafka-plugin-shim"><code>ranger-kafka-plugin-shim</code></a></li>
+</ul>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 15:52:15 PDT">September 20, 2026</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2014-2025 The Apache Software Foundation
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://the-asf.slack.com/archives/C4SC5NXAA" target="_blank" rel="noopener" title="the-asf.slack.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M94.1 315.1c0 25.9-21.2 47.1-47.1 47.1S0 341 0 315.1 21.2 268 47.1 268h47.1v47.1zm23.7 0c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1v117.8c0 25.9-21.2 47.1-47.1 47.1s-47.1-21.2-47.1-47.1zm47.1-189c-25.9 0-47.1-21.2-47.1-47.1s21.2-47 47.1-47S212 53.2 212 79.1v47.1h-47.1zm0 23.7c25.9 0 47.1 21.2 47.1 47.1S190.8 244 164.9 244H47.1C21.2 244 0 222.8 0 196.9s21.2-47.1 47.1-47.1zm189 47.1c0-25.9 21.2-47.1 47.1-47.1s47 21.2 47 47.1-21.2 47.1-47.1 47.1h-47.1v-47.1zm-23.7 0c0 25.9-21.2 47.1-47.1 47.1S236 222.8 236 196.9V79.1c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1zm-47.1 189c25.9 0 47.1 21.2 47.1 47.1s-21.2 47-47.1 47-47.1-21.2-47.1-47.1v-47.1h47.1zm0-23.7c-25.9 0-47.1-21.2-47.1-47.1s21.2-47.1 47.1-47.1h117.8c25.9 0 47.1 21.2 47.1 47.1s-21.2 47.1-47.1 47.1z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="mailto:dev@ranger.apache.org" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l208 156a48 48 0 0 0 57.6 0l208-156c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48zM0 196v188c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V196L313.6 344.8c-34.1 25.6-81.1 25.6-115.2 0z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/apache/ranger" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://hub.docker.com/r/apache/ranger" target="_blank" rel="noopener" title="hub.docker.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M349.9 236.3h-66.1v-59.4h66.1zm0-204.3h-66.1v60.7h66.1zm78.2 144.8H362v59.4h66.1zm-156.3-72.1h-66.1v60.1h66.1zm78.1 0h-66.1v60.1h66.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1zm78.1 0h-66.1v59.4h66.1zm-78.1-72.1h-66.1v60.1h66.1z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.top", "navigation.tracking", "navigation.tabs", "navigation.path", "navigation.indexes", "navigation.prune", "content.code.copy", "toc.follow", "announce.dismiss"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/js/typewriter.js"></script>
+      
+        <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+      
+    
+  </body>
+</html>

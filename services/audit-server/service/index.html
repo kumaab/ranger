@@ -1,0 +1,3650 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://apache.github.io/ranger/services/audit-server/service/">
+      
+      
+        <link rel="prev" href="../../audit/audit-schema/">
+      
+      
+        <link rel="next" href="../../../features/policies/resource-policies/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/brand/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Audit server - Apache Ranger</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/css/custom.css">
+    
+      <link rel="stylesheet" href="../../../assets/css/table.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Audit server - Apache Ranger" />
+<meta property="og:image" content="https://apache.github.io/ranger/assets/images/social/services/audit-server/service.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://apache.github.io/ranger/services/audit-server/service/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="Audit server - Apache Ranger" />
+<meta property="twitter:image" content="https://apache.github.io/ranger/assets/images/social/services/audit-server/service.png" />
+</head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ranger-audit-server" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="https://ranger.apache.org" title="Apache Ranger" class="md-header__button md-logo" aria-label="Apache Ranger" data-md-component="logo">
+      
+  <img src="../../../assets/brand/merged-logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apache Ranger
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Audit server
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 2c-1.82 0-3.53.5-5 1.35C8 5.08 10 8.3 10 12s-2 6.92-5 8.65C6.47 21.5 8.18 22 10 22a10 10 0 0 0 10-10A10 10 0 0 0 10 2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/apache/ranger" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    apache/ranger
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../getting-started/introduction/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Getting started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../arch/architecture/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../plugins/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Plugins
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../admin/service/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Services
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../features/policies/resource-policies/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Features
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../dev/build/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Developer guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../project/contributing/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Project
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../release-notes/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Releases
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../blog/blog/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://ranger.apache.org" title="Apache Ranger" class="md-nav__button md-logo" aria-label="Apache Ranger" data-md-component="logo">
+      
+  <img src="../../../assets/brand/merged-logo.svg" alt="logo">
+
+    </a>
+    Apache Ranger
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/apache/ranger" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    apache/ranger
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../getting-started/introduction/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../arch/architecture/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../plugins/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugins
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Services
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Services
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../admin/service/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ranger Admin
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../usersync/service/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ranger UserSync
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tagsync/service/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ranger TagSync
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../kms/service/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ranger KMS
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pdp/service/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ranger PDP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_6" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../audit/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Audit
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_6" id="__nav_5_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Audit
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../audit/audit-stores/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Audit stores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../audit/audit-filters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Audit filters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../audit/audit-schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Audit schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Audit server
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Audit server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it works
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How it works">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ingestor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ingestor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dispatchers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dispatchers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plugin-side-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plugin-side configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-the-audit-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running the Audit Server
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ingestor_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ingestor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ingestor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inbound-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inbound authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authorization-of-callers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authorization of callers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kafka connection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topic-and-partitioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Topic and partitioning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#producer-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producer tuning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recovery-spool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recovery spool
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dispatcher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dispatcher
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dispatcher">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dispatcher-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dispatcher process
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-consumer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kafka consumer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solr-destination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solr destination
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hdfs-destination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HDFS destination
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opensearch-destination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenSearch destination
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Further reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    
+  
+  
+  
+    <a href="../../../features/policies/resource-policies/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../dev/build/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer guide
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../project/contributing/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../release-notes/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Releases
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../blog/blog/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it works
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How it works">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ingestor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ingestor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dispatchers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dispatchers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plugin-side-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plugin-side configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-the-audit-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running the Audit Server
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ingestor_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ingestor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ingestor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inbound-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inbound authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authorization-of-callers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authorization of callers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kafka connection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topic-and-partitioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Topic and partitioning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#producer-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producer tuning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recovery-spool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recovery spool
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dispatcher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dispatcher
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dispatcher">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dispatcher-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dispatcher process
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-consumer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kafka consumer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solr-destination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solr destination
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hdfs-destination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HDFS destination
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opensearch-destination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenSearch destination
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Further reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../admin/service/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Services
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../audit/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Audit
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<!---
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<h1 id="ranger-audit-server">Ranger Audit Server<a class="headerlink" href="#ranger-audit-server" title="Permanent link">&para;</a></h1>
+<p>The Ranger Audit Server is an optional, centralized pipeline for access audit records. Instead of every
+plugin holding its own Solr, OpenSearch or HDFS client and credentials, plugins send their audit batches over
+HTTP to an <strong>audit ingestor</strong>, which publishes them to a Kafka topic. One or more <strong>audit dispatchers</strong>
+consume the topic and write the records to the final stores. Plugins keep their local file spool, so nothing
+is lost if the ingestor is briefly unavailable.</p>
+<p>This gives you one place to manage store credentials, lets you scale writers independently of the
+protected services, and lets audits fan out to several stores (for example OpenSearch for the Admin UI and
+HDFS for long-term retention) without touching plugin configuration.</p>
+<p>The Audit Server lives in the <code>audit-server/</code> module on the master branch (version <code>3.0.0-SNAPSHOT</code>). Plugins
+that write directly to an audit store continue to work exactly as before; see
+<a href="../../audit/">Audit framework</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Not yet part of a release</p>
+<p>The audit server (audit ingestor and audit dispatchers) is not yet part of a release. On master it is the
+default audit path of the <code>dev-support/ranger-docker</code> setup, whose minimal stack is <code>ranger</code>, <code>ranger-db</code>,
+Kafka, OpenSearch (the default audit index), the audit ingestor and an audit dispatcher. The released
+Docker Hub images (<code>apache/ranger</code>, <code>apache/ranger-db</code>, <code>apache/ranger-solr</code>) do not include it; with them,
+plugins write audits directly to Solr.</p>
+</div>
+<h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart LR
+  P[Ranger plugins / PDP&lt;br/&gt;xasecure.audit.destination.auditserver] --&gt;|POST /api/audit/access| I[ranger-audit-ingestor&lt;br/&gt;:7081 / :7182]
+  I --&gt;|produce, key = appId| K[(Kafka topic&lt;br/&gt;ranger_audits)]
+  I -.-&gt;|Kafka down| S[(recovery spool)]
+  K --&gt; D1[audit-dispatcher solr]
+  K --&gt; D2[audit-dispatcher opensearch]
+  K --&gt; D3[audit-dispatcher hdfs]
+  D1 --&gt; Solr[(Solr ranger_audits)]
+  D2 --&gt; OS[(OpenSearch ranger_audits)]
+  D3 --&gt; H[(HDFS / object store)]</code></pre>
+<p>The Audit Server consists of two services, both embedded-Tomcat applications configured with a site XML file:</p>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Module</th>
+<th>Configuration file</th>
+<th>Port</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Audit ingestor</td>
+<td><code>audit-server/audit-ingestor</code></td>
+<td><code>ranger-audit-ingestor-site.xml</code></td>
+<td><code>7081</code> (HTTP), <code>7182</code> (HTTPS)</td>
+</tr>
+<tr>
+<td>Audit dispatcher</td>
+<td><code>audit-server/audit-dispatcher</code></td>
+<td><code>ranger-audit-dispatcher-&lt;type&gt;-site.xml</code></td>
+<td><code>7090</code></td>
+</tr>
+</tbody>
+</table>
+<p>The dispatcher runs once per destination type: <code>solr</code>, <code>opensearch</code> or <code>hdfs</code>.</p>
+<h3 id="ingestor">Ingestor<a class="headerlink" href="#ingestor" title="Permanent link">&para;</a></h3>
+<p>The ingestor (<code>org.apache.ranger.audit.server.AuditServerApplication</code>) exposes:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/audit/access</code></td>
+<td>Accepts a JSON array of audit events.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/audit/health</code></td>
+<td>Liveness; HTTP 503 when the service is down.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/audit/status</code></td>
+<td><code>READY</code> or <code>NOT_READY</code> with a timestamp.</td>
+</tr>
+</tbody>
+</table>
+<p><code>POST /api/audit/access</code> takes the query parameters <code>serviceName</code> (required) and <code>appId</code> (optional); the
+body is a list of <code>AuthzAuditEvent</code> objects, see <a href="../../audit/audit-schema/">Audit schema</a>. A healthy ingestor
+answers <code>/api/audit/health</code> with:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">"status"</span><span class="p">:</span><span class="s2">"UP"</span><span class="p">,</span><span class="nt">"service"</span><span class="p">:</span><span class="s2">"ranger-audit-server"</span><span class="p">}</span>
+</code></pre></div>
+<p>For each batch the ingestor:</p>
+<ol>
+<li>Authenticates the request (Kerberos SPNEGO or JWT) and maps the principal to a short name using
+   <code>ranger.audit.ingestor.auth.to.local</code> rules.</li>
+<li>Checks that the user is allowed to report audits for <code>serviceName</code>
+   (<code>ranger.audit.ingestor.service.&lt;serviceName&gt;.allowed.users</code>). Unknown users get <code>401</code>, unauthorized ones <code>403</code>.</li>
+<li>Produces the events to Kafka with <code>appId</code> as the record key. <code>AuditPartitioner</code> reserves a range of
+   partitions for each plugin type listed in <code>kafka.configured.plugins</code> and sends unknown app ids to the
+   remaining "buffer" partitions, so a noisy plugin cannot starve the others.</li>
+<li>Returns <code>200</code> on success. If Kafka is unavailable, events are written to the local recovery spool and the
+   response is <code>202 Accepted</code>; a recovery thread retries them later.</li>
+</ol>
+<h3 id="dispatchers">Dispatchers<a class="headerlink" href="#dispatchers" title="Permanent link">&para;</a></h3>
+<p>A dispatcher (<code>org.apache.ranger.audit.dispatcher.AuditDispatcherLauncher</code>) is one application started with a
+type argument. The launcher loads <code>lib/dispatchers/&lt;type&gt;/*.jar</code> into an isolated class loader, reads
+<code>ranger-audit-dispatcher-&lt;type&gt;-site.xml</code>, and starts <code>ranger.audit.dispatcher.thread.count</code> Kafka consumer
+workers in the consumer group <code>ranger.audit.dispatcher.kafka.group.id</code>. Each worker subscribes to the topic,
+lets Kafka assign partitions (<code>CooperativeStickyAssignor</code> by default), and hands every polled batch to the
+destination:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Writer (from <code>agents-audit</code>)</th>
+<th>Destination properties</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>solr</code></td>
+<td><code>SolrAuditDestination</code></td>
+<td><code>xasecure.audit.destination.solr.*</code></td>
+</tr>
+<tr>
+<td><code>hdfs</code></td>
+<td><code>HDFSAuditDestination</code>, one writer per <code>appId</code></td>
+<td><code>xasecure.audit.destination.hdfs.*</code></td>
+</tr>
+<tr>
+<td><code>opensearch</code></td>
+<td><code>OpenSearchAuditDestination</code></td>
+<td><code>ranger.audit.dispatcher.*</code></td>
+</tr>
+</tbody>
+</table>
+<p>Offsets are committed manually, either after every batch (<code>offset.commit.strategy=batch</code>, the default) or
+on a timer (<code>manual</code> with <code>offset.commit.interval.ms</code>). Auto-commit is always disabled, so a crashed worker
+replays from the last commit rather than losing records.</p>
+<p>Health endpoints: <code>GET /api/health/ping</code> and <code>GET /api/health/status</code> (503 when the dispatcher of the
+configured type is not active).</p>
+<h2 id="plugin-side-configuration">Plugin-side configuration<a class="headerlink" href="#plugin-side-configuration" title="Permanent link">&para;</a></h2>
+<p>Point a plugin at the ingestor by enabling the <code>auditserver</code> destination in the plugin's audit configuration
+file, <code>ranger-&lt;component&gt;-audit.xml</code>, on the component's classpath.</p>
+<div class="highlight"><span class="filename">ranger-hive-audit.xml</span><pre><span></span><code><span class="nt">&lt;property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.auditserver<span class="nt">&lt;/name&gt;</span>
+<span class="w">  </span><span class="nt">&lt;value&gt;</span>true<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.auditserver.url<span class="nt">&lt;/name&gt;</span>
+<span class="w">  </span><span class="nt">&lt;value&gt;</span>http://ranger-audit-ingestor.example.com:7081<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.auditserver.batch.filespool.dir<span class="nt">&lt;/name&gt;</span>
+<span class="w">  </span><span class="nt">&lt;value&gt;</span>/var/log/hive/audit/http/spool<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+</code></pre></div>
+<p>All keys below carry the prefix <code>xasecure.audit.destination.auditserver.</code>; the destination is enabled with
+<code>xasecure.audit.destination.auditserver=true</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td>(none)</td>
+<td>URL</td>
+<td>Required. Base URL of the ingestor; the client posts to <code>/api/audit/access</code>.</td>
+</tr>
+<tr>
+<td><code>batch.filespool.dir</code></td>
+<td>(none)</td>
+<td>Path</td>
+<td>Local spool used when the ingestor is unreachable.</td>
+</tr>
+<tr>
+<td><code>authn.type</code></td>
+<td>(none)</td>
+<td>Enum</td>
+<td><code>kerberos</code> (SPNEGO with the plugin's login user), <code>basic</code> or <code>jwt</code>.</td>
+</tr>
+<tr>
+<td><code>authn.basic.username</code></td>
+<td>(none)</td>
+<td>String</td>
+<td>User for <code>basic</code>.</td>
+</tr>
+<tr>
+<td><code>authn.basic.password</code></td>
+<td>(none)</td>
+<td>Password</td>
+<td>Password for <code>basic</code>.</td>
+</tr>
+<tr>
+<td><code>authn.jwt.env</code></td>
+<td>(none)</td>
+<td>String</td>
+<td>Environment variable holding the bearer token for <code>jwt</code>.</td>
+</tr>
+<tr>
+<td><code>authn.jwt.file</code></td>
+<td>(none)</td>
+<td>Path</td>
+<td>File holding the bearer token for <code>jwt</code>.</td>
+</tr>
+<tr>
+<td><code>ssl.config.file</code></td>
+<td>(none)</td>
+<td>Path</td>
+<td>XML file with <code>xasecure.policymgr.clientssl.*</code> keystore and truststore settings for HTTPS.</td>
+</tr>
+<tr>
+<td><code>connection.timeout.ms</code></td>
+<td><code>120000</code></td>
+<td>Duration (ms)</td>
+<td>HTTP connect timeout.</td>
+</tr>
+<tr>
+<td><code>read.timeout.ms</code></td>
+<td><code>30000</code></td>
+<td>Duration (ms)</td>
+<td>HTTP read timeout.</td>
+</tr>
+<tr>
+<td><code>max.retry.attempts</code></td>
+<td><code>3</code></td>
+<td>Integer</td>
+<td>Retries per batch before the batch is spooled.</td>
+</tr>
+<tr>
+<td><code>retry.interval.ms</code></td>
+<td><code>1000</code></td>
+<td>Duration (ms)</td>
+<td>Delay between retries.</td>
+</tr>
+</tbody>
+</table>
+<p>Spooling follows the standard batch-queue behavior described in <a href="../../audit/">Audit framework</a>.</p>
+<p>The plugin sends <code>serviceName</code> from the events' <code>repo</code> field and <code>appId</code> from the plugin's application
+type (for example <code>hiveServer2</code>), which the ingestor uses for authorization and partitioning.</p>
+<h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h2>
+<ul>
+<li>A running Apache Kafka cluster reachable from the ingestor and the dispatchers. The ingestor creates the
+  topic at startup if it does not exist.</li>
+<li>The target stores: Solr, OpenSearch and/or HDFS, prepared as described in <a href="../../audit/audit-stores/">Audit stores</a>.</li>
+<li>A JDK on every ingestor and dispatcher host.</li>
+<li>With Kerberos: an <code>HTTP/</code> keytab for the ingestor's SPNEGO endpoint and a service keytab for the Kafka,
+  Solr and HDFS clients.</li>
+<li>The distributions <code>ranger-&lt;version&gt;-audit-ingestor.tar.gz</code> and <code>ranger-&lt;version&gt;-audit-dispatcher.tar.gz</code>
+  produced by the Ranger build, or the images built from them by the compose files in
+  <code>dev-support/ranger-docker</code>. There are no audit server images on Docker Hub.</li>
+</ul>
+<h2 id="running-the-audit-server">Running the Audit Server<a class="headerlink" href="#running-the-audit-server" title="Permanent link">&para;</a></h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Docker (dev-support/ranger-docker)</label><label for="__tabbed_1_2">Service scripts</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>The images are built from the source tree; prepare the directory (<code>./download-archives.sh kafka</code> and a
+Ranger build in <code>dist/</code>) as described under <em>Build from source</em> in
+<a href="../../admin/installation/#run-with-docker">Run with Docker</a>.
+<code>dev-support/ranger-docker/docker-compose.ranger-audit-service.yml</code> brings up the whole pipeline:
+Kafka, the ingestor, the index store selected by the compose profile, and its dispatcher. Ranger Admin
+is configured for the same store through <code>AUDIT_INDEX_STORE</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>dev-support/ranger-docker
+<span class="nb">export</span><span class="w"> </span><span class="nv">RANGER_DB_TYPE</span><span class="o">=</span>postgres<span class="w">               </span><span class="c1"># mysql | postgres | oracle</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUDIT_INDEX_STORE</span><span class="o">=</span>opensearch<span class="w">          </span><span class="c1"># or solr</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUDIT_DESTINATIONS</span><span class="o">=</span>audit-store-<span class="si">${</span><span class="nv">AUDIT_INDEX_STORE</span><span class="si">}</span>
+docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span><span class="si">${</span><span class="nv">AUDIT_DESTINATIONS</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-f<span class="w"> </span>docker-compose.ranger.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-f<span class="w"> </span>docker-compose.ranger-audit-service.yml<span class="w"> </span>up<span class="w"> </span>-d
+
+<span class="c1"># additionally fan out to HDFS (needs the hadoop container)</span>
+docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span><span class="si">${</span><span class="nv">AUDIT_DESTINATIONS</span><span class="si">}</span><span class="w"> </span>--profile<span class="w"> </span>audit-store-hdfs<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-f<span class="w"> </span>docker-compose.ranger.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-f<span class="w"> </span>docker-compose.ranger-audit-service.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-f<span class="w"> </span>docker-compose.ranger-audit-destination-hdfs.yml<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Container</th>
+<th>Dockerfile</th>
+<th>Host port</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger-audit-ingestor</code></td>
+<td><code>Dockerfile.ranger-audit-ingestor</code></td>
+<td><code>7081</code>, <code>7182</code></td>
+</tr>
+<tr>
+<td><code>ranger-audit-dispatcher-solr</code></td>
+<td><code>Dockerfile.ranger-audit-dispatcher</code></td>
+<td><code>7091</code></td>
+</tr>
+<tr>
+<td><code>ranger-audit-dispatcher-opensearch</code></td>
+<td><code>Dockerfile.ranger-audit-dispatcher</code></td>
+<td><code>7093</code></td>
+</tr>
+<tr>
+<td><code>ranger-audit-dispatcher-hdfs</code></td>
+<td><code>Dockerfile.ranger-audit-dispatcher</code></td>
+<td><code>7092</code></td>
+</tr>
+</tbody>
+</table>
+<p>The three dispatcher containers share one image; the container command (<code>solr</code>, <code>opensearch</code> or <code>hdfs</code>)
+selects the type, and each maps its host port to the dispatcher port <code>7090</code>. The store for the selected
+profile runs as <code>ranger-solr</code> (port <code>8983</code>) or <code>ranger-opensearch</code> (port <code>9200</code>).</p>
+<p>Site files are mounted from <code>scripts/audit-dispatcher/</code>; the ingestor uses the site file shipped in its
+distribution. The plugin containers in the docker stack are already configured with
+<code>xasecure.audit.destination.auditserver=true</code>. See <a href="../../../getting-started/docker/">Running Ranger with Docker</a>.</p>
+</div>
+<div class="tabbed-block">
+<p><strong>Ingestor.</strong> The distribution contains <code>bin/</code> (<code>start-audit-ingestor.sh</code>, <code>stop-audit-ingestor.sh</code>),
+<code>conf/</code> (<code>ranger-audit-ingestor-site.xml</code>, <code>logback.xml</code>), <code>webapp/</code> (<code>ranger-audit-ingestor.war</code>,
+extracted on first start), <code>libext/</code> for extra jars, and <code>logs/</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">AUDIT_SERVER_HOME_DIR</span><span class="o">=</span>/opt/ranger/audit-ingestor
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUDIT_SERVER_CONF_DIR</span><span class="o">=</span><span class="nv">$AUDIT_SERVER_HOME_DIR</span>/conf
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUDIT_SERVER_LOG_DIR</span><span class="o">=</span>/var/log/ranger/audit-ingestor
+<span class="nv">$AUDIT_SERVER_HOME_DIR</span>/bin/start-audit-ingestor.sh
+curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:7081/api/audit/health
+</code></pre></div>
+<p><strong>Dispatcher.</strong> The distribution contains <code>scripts/</code> (<code>start-audit-dispatcher.sh</code>,
+<code>stop-audit-dispatcher.sh</code>), <code>conf/</code> (one <code>ranger-audit-dispatcher-&lt;type&gt;-site.xml</code> per type,
+<code>logback.xml</code>, plus <code>core-site.xml</code> and <code>hdfs-site.xml</code> for HDFS), <code>webapp/ranger-audit-dispatcher.war</code>,
+<code>lib/dispatchers/{solr,hdfs,opensearch}/</code>, <code>libext/</code>, and <code>logs/</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">AUDIT_DISPATCHER_HOME_DIR</span><span class="o">=</span>/opt/ranger/audit-dispatcher
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUDIT_DISPATCHER_CONF_DIR</span><span class="o">=</span><span class="nv">$AUDIT_DISPATCHER_HOME_DIR</span>/conf
+<span class="nv">$AUDIT_DISPATCHER_HOME_DIR</span>/scripts/start-audit-dispatcher.sh<span class="w"> </span>solr<span class="w">        </span><span class="c1"># or hdfs | opensearch</span>
+curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:7090/api/health/ping
+</code></pre></div>
+<p>Run one dispatcher process per destination type. To run two types on the same host, give each its own
+<code>AUDIT_DISPATCHER_LOG_DIR</code> and change <code>ranger.audit.dispatcher.http.port</code> in one of the site files.</p>
+<p>Script environment variables (both services): <code>*_HOME_DIR</code>, <code>*_CONF_DIR</code>, <code>*_LOG_DIR</code>, <code>*_HEAP</code>
+(default <code>-Xms512m -Xmx2g</code>; or <code>RANGER_AUDIT_INGESTOR_MAX_HEAP</code> / <code>RANGER_AUDIT_DISPATCHER_MAX_HEAP</code>),
+<code>*_OPTS</code> for extra JVM options, <code>KERBEROS_ENABLED=true</code> to add <code>-Djava.security.krb5.conf=/etc/krb5.conf</code>.
+In the source tree, <code>audit-server/scripts/start-all-services.sh</code> and <code>stop-all-services.sh</code> start and
+stop the ingestor, the Solr dispatcher and the HDFS dispatcher from the Maven <code>target/</code> directories.</p>
+</div>
+</div>
+</div>
+<h2 id="configuration-reference">Configuration reference<a class="headerlink" href="#configuration-reference" title="Permanent link">&para;</a></h2>
+<h3 id="ingestor_1">Ingestor<a class="headerlink" href="#ingestor_1" title="Permanent link">&para;</a></h3>
+<p>The ingestor reads <code>conf/ranger-audit-ingestor-site.xml</code>. The defaults below are the values in the file
+shipped with the distribution; host names and Kafka brokers in that file point at the docker network and must
+be set for your environment.</p>
+<h4 id="server">Server<a class="headerlink" href="#server" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.audit.ingestor.host</code></td>
+<td>(none)</td>
+<td>String</td>
+<td>Host name of this ingestor; used for <code>_HOST</code> substitution in principals.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.http.port</code></td>
+<td><code>7081</code></td>
+<td>Integer</td>
+<td>HTTP listen port.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.contextName</code></td>
+<td><code>/</code></td>
+<td>String</td>
+<td>Servlet context path.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.webapp.dir</code></td>
+<td><code>webapp/audit-ingestor</code></td>
+<td>Path</td>
+<td>Directory the WAR is extracted to.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="tls">TLS<a class="headerlink" href="#tls" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.audit.ingestor.https.attrib.ssl.enabled</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Serve HTTPS.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.https.port</code></td>
+<td><code>7182</code></td>
+<td>Integer</td>
+<td>HTTPS listen port.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.https.attrib.keystore.file</code></td>
+<td><code>/etc/ranger/ranger-audit-ingestor/keys/server.jks</code></td>
+<td>Path</td>
+<td>Server keystore.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.https.attrib.keystore.keyalias</code></td>
+<td><code>myKey</code></td>
+<td>String</td>
+<td>Alias of the server key.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.https.attrib.keystore.pass</code></td>
+<td>(none)</td>
+<td>Password</td>
+<td>Keystore password.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.https.attrib.keystore.credential.alias</code></td>
+<td><code>keyStoreCredentialAlias</code></td>
+<td>String</td>
+<td>Alias of the keystore password in a credential store.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.tomcat.ciphers</code></td>
+<td>(none)</td>
+<td>List</td>
+<td>Restrict the TLS cipher suites.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="inbound-authentication">Inbound authentication<a class="headerlink" href="#inbound-authentication" title="Permanent link">&para;</a></h4>
+<p>Plugins authenticate with Kerberos (SPNEGO) or a JWT bearer token.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.audit.ingestor.kerberos.type</code></td>
+<td><code>kerberos</code></td>
+<td>Enum</td>
+<td>Inbound HTTP authentication handler: <code>kerberos</code> (SPNEGO) or <code>simple</code>.</td>
+</tr>
+<tr>
+<td><code>hadoop.security.authentication</code></td>
+<td><code>kerberos</code></td>
+<td>Enum</td>
+<td><code>kerberos</code> or <code>simple</code>. With <code>kerberos</code> the ingestor logs in at startup with <code>ranger.audit.ingestor.service.kerberos.principal</code> and its keytab.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kerberos.principal</code></td>
+<td><code>HTTP/_HOST@EXAMPLE.COM</code></td>
+<td>String</td>
+<td>SPNEGO service principal.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kerberos.keytab</code></td>
+<td><code>/etc/keytabs/HTTP.keytab</code></td>
+<td>Path</td>
+<td>Keytab of the SPNEGO principal.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kerberos.name.rules</code></td>
+<td><code>DEFAULT</code></td>
+<td>String</td>
+<td>Principal to short-name rules.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.bind.address</code></td>
+<td>(none)</td>
+<td>String</td>
+<td>Host name substituted for <code>_HOST</code> in the SPNEGO principal.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.jwt.auth.enabled</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Accept JWT bearer tokens.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.jwt.auth.provider-url</code></td>
+<td><code>http://localhost:9180/rest/jwks</code></td>
+<td>URL</td>
+<td>JWKS endpoint used to fetch signing keys.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.jwt.auth.public-key</code></td>
+<td>(none)</td>
+<td>String</td>
+<td>PEM-encoded public key for signature verification.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.jwt.auth.cookie.name</code></td>
+<td><code>hadoop-jwt</code></td>
+<td>String</td>
+<td>Cookie that may carry the token.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.jwt.auth.audiences</code></td>
+<td>(none)</td>
+<td>List</td>
+<td>Accepted <code>aud</code> values.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="authorization-of-callers">Authorization of callers<a class="headerlink" href="#authorization-of-callers" title="Permanent link">&para;</a></h4>
+<p>After authentication the caller's principal is mapped to a short name and checked against the users allowed
+to report audits for the requested service.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.audit.ingestor.service.&lt;serviceName&gt;.allowed.users</code></td>
+<td>(none)</td>
+<td>List</td>
+<td>Users allowed to post audits for <code>&lt;serviceName&gt;</code>; one property per Ranger service.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.auth.to.local</code></td>
+<td>(none)</td>
+<td>String</td>
+<td><code>auth_to_local</code> rules applied to the caller principal before the allowed-users check.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">ranger-audit-ingestor-site.xml</span><pre><span></span><code><span class="nt">&lt;property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;name&gt;</span>ranger.audit.ingestor.service.dev_hive.allowed.users<span class="nt">&lt;/name&gt;</span>
+<span class="w">  </span><span class="nt">&lt;value&gt;</span>hive<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+</code></pre></div>
+<h4 id="kafka-connection">Kafka connection<a class="headerlink" href="#kafka-connection" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>xasecure.audit.destination.kafka</code></td>
+<td><code>true</code></td>
+<td>Boolean</td>
+<td>Must be <code>true</code>; otherwise the producer is not created.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.bootstrap.servers</code></td>
+<td>(none)</td>
+<td>List</td>
+<td>Required. Kafka brokers.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.security.protocol</code></td>
+<td><code>SASL_PLAINTEXT</code></td>
+<td>Enum</td>
+<td>Kafka security protocol; <code>PLAINTEXT</code> when the property is absent.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.sasl.mechanism</code></td>
+<td><code>GSSAPI</code></td>
+<td>String</td>
+<td>SASL mechanism for <code>SASL_*</code> protocols; <code>PLAIN</code> when the property is absent.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.service.kerberos.principal</code></td>
+<td><code>rangerauditserver/_HOST@EXAMPLE.COM</code></td>
+<td>String</td>
+<td>Identity of the ingestor's Kafka client; the JAAS configuration is built in memory.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.service.kerberos.keytab</code></td>
+<td><code>/etc/keytabs/rangerauditserver.keytab</code></td>
+<td>Path</td>
+<td>Keytab of that principal.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.request.timeout.ms</code></td>
+<td><code>60000</code></td>
+<td>Duration (ms)</td>
+<td>Producer request timeout.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.connections.max.idle.ms</code></td>
+<td><code>90000</code></td>
+<td>Duration (ms)</td>
+<td>Idle connection timeout.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="topic-and-partitioning">Topic and partitioning<a class="headerlink" href="#topic-and-partitioning" title="Permanent link">&para;</a></h4>
+<p>Replication and the topic-level settings apply only when the ingestor creates the topic. If the topic already
+exists with fewer partitions than calculated, the ingestor increases its partition count.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.topic.name</code></td>
+<td><code>ranger_audits</code></td>
+<td>String</td>
+<td>Topic; created at startup if missing.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.topic.partitions</code></td>
+<td><code>10</code></td>
+<td>Integer</td>
+<td>Partition count when <code>kafka.configured.plugins</code> is empty. Otherwise: per-plugin partitions plus buffer partitions (48 with the defaults).</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.replication.factor</code></td>
+<td><code>1</code></td>
+<td>Integer</td>
+<td>Replication factor for a new topic; <code>3</code> when the property is absent.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.topic.retention.ms</code></td>
+<td>(none)</td>
+<td>Duration (ms)</td>
+<td>Topic <code>retention.ms</code>, for example <code>604800000</code> (7 days). Applied only when set; otherwise the broker default is used.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.topic.compression.type</code></td>
+<td>(none)</td>
+<td>String</td>
+<td>Topic <code>compression.type</code>, for example <code>lz4</code>. Applied only when set.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.topic.min.insync.replicas</code></td>
+<td>(none)</td>
+<td>Integer</td>
+<td>Topic <code>min.insync.replicas</code>. Applied only when set; must not exceed the replication factor.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.partitioner.class</code></td>
+<td><code>org.apache.ranger.audit.producer.kafka.AuditPartitioner</code></td>
+<td>Class</td>
+<td>Producer partitioner.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.configured.plugins</code></td>
+<td>see below</td>
+<td>List</td>
+<td>App ids that get dedicated partition ranges.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.topic.partitions.per.configured.plugin</code></td>
+<td><code>3</code></td>
+<td>Integer</td>
+<td>Partitions per listed plugin.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.plugin.partition.overrides.&lt;appId&gt;</code></td>
+<td>(none)</td>
+<td>Integer</td>
+<td>Per-plugin partition count, for example <code>...overrides.kafka=5</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.topic.partitions.buffer</code></td>
+<td><code>9</code></td>
+<td>Integer</td>
+<td>Partitions for app ids not in the list.</td>
+</tr>
+</tbody>
+</table>
+<p>The default value of <code>kafka.configured.plugins</code> is:</p>
+<div class="highlight"><pre><span></span><code>hdfs,yarn,knox,hiveServer2,hiveMetastore,kafka,hbaseRegional,hbaseMaster,solr,trino,ozone,kudu,nifi
+</code></pre></div>
+<h4 id="producer-tuning">Producer tuning<a class="headerlink" href="#producer-tuning" title="Permanent link">&para;</a></h4>
+<p>Each key maps to the Kafka producer setting of the same name.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.producer.batch.size</code></td>
+<td><code>131072</code></td>
+<td>Integer</td>
+<td>Producer <code>batch.size</code>, in bytes.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.producer.linger.ms</code></td>
+<td><code>20</code></td>
+<td>Duration (ms)</td>
+<td>Producer <code>linger.ms</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.producer.buffer.memory</code></td>
+<td><code>134217728</code></td>
+<td>Long</td>
+<td>Producer <code>buffer.memory</code>, in bytes.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.producer.compression.type</code></td>
+<td><code>lz4</code></td>
+<td>String</td>
+<td>Producer compression.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.producer.delivery.timeout.ms</code></td>
+<td><code>120000</code></td>
+<td>Duration (ms)</td>
+<td>Producer <code>delivery.timeout.ms</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.producer.max.request.size</code></td>
+<td><code>1048576</code></td>
+<td>Integer</td>
+<td>Producer <code>max.request.size</code>, in bytes.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.producer.max.block.ms</code></td>
+<td><code>60000</code></td>
+<td>Duration (ms)</td>
+<td>Producer <code>max.block.ms</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.kafka.producer.batch.send.timeout.ms</code></td>
+<td><code>30000</code></td>
+<td>Duration (ms)</td>
+<td>Wait for acknowledgements of a batch.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="recovery-spool">Recovery spool<a class="headerlink" href="#recovery-spool" title="Permanent link">&para;</a></h4>
+<p>When Kafka is unavailable the ingestor writes batches to disk and retries them.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.audit.ingestor.recovery.enabled</code></td>
+<td><code>true</code></td>
+<td>Boolean</td>
+<td>Spool to disk when Kafka is unavailable.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.recovery.spool.dir</code></td>
+<td><code>/var/log/ranger/ranger-audit-ingestor/audit/spool</code></td>
+<td>Path</td>
+<td>Spool directory.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.recovery.archive.dir</code></td>
+<td><code>/var/log/ranger/ranger-audit-ingestor/audit/archive</code></td>
+<td>Path</td>
+<td>Archive of replayed spool files.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.recovery.file.rotation.interval.sec</code></td>
+<td><code>300</code></td>
+<td>Integer</td>
+<td>Spool file rotation interval, in seconds.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.recovery.max.messages.per.file</code></td>
+<td><code>10000</code></td>
+<td>Integer</td>
+<td>Messages per spool file.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.recovery.retry.interval.sec</code></td>
+<td><code>60</code></td>
+<td>Integer</td>
+<td>Retry interval, in seconds.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.recovery.retry.max.attempts</code></td>
+<td><code>3</code></td>
+<td>Integer</td>
+<td>Retries per spooled file.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.ingestor.recovery.archive.max.processed.files</code></td>
+<td><code>100</code></td>
+<td>Integer</td>
+<td>Archived files to keep.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dispatcher">Dispatcher<a class="headerlink" href="#dispatcher" title="Permanent link">&para;</a></h3>
+<p>Each dispatcher type reads <code>conf/ranger-audit-dispatcher-&lt;type&gt;-site.xml</code>. The defaults below are the values
+in the shipped files.</p>
+<h4 id="dispatcher-process">Dispatcher process<a class="headerlink" href="#dispatcher-process" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.audit.dispatcher.type</code></td>
+<td>per file</td>
+<td>Enum</td>
+<td><code>solr</code>, <code>hdfs</code> or <code>opensearch</code>; the start script also passes it as a system property.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.class</code></td>
+<td>per file</td>
+<td>Class</td>
+<td>Kafka dispatcher class for the type, see below.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.host</code></td>
+<td>(none)</td>
+<td>String</td>
+<td>Host name for <code>_HOST</code> substitution.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.http.port</code></td>
+<td><code>7090</code></td>
+<td>Integer</td>
+<td>Health endpoint port.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.thread.count</code></td>
+<td><code>5</code></td>
+<td>Integer</td>
+<td>Consumer workers per process; <code>3</code> in the HDFS file, <code>1</code> when the property is absent.</td>
+</tr>
+</tbody>
+</table>
+<p>The dispatcher classes are <code>AuditSolrDispatcher</code>, <code>AuditHDFSDispatcher</code> and <code>AuditOpenSearchDispatcher</code> in the
+package <code>org.apache.ranger.audit.dispatcher.kafka</code>. The files also set <code>ranger.audit.dispatcher.war.file</code>,
+<code>.launcher.class</code> and <code>.main.class</code>, which wire the startup and should be left unchanged.</p>
+<h4 id="kafka-consumer">Kafka consumer<a class="headerlink" href="#kafka-consumer" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.audit.dispatcher.kafka.bootstrap.servers</code></td>
+<td>(none)</td>
+<td>List</td>
+<td>Required. Kafka brokers.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.kafka.topic.name</code></td>
+<td><code>ranger_audits</code></td>
+<td>String</td>
+<td>Topic to consume.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.kafka.group.id</code></td>
+<td><code>ranger_audit_&lt;type&gt;_dispatcher_group</code></td>
+<td>String</td>
+<td>Consumer group; all instances of one type share it.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.kafka.security.protocol</code></td>
+<td><code>SASL_PLAINTEXT</code></td>
+<td>Enum</td>
+<td>Kafka security protocol; <code>PLAINTEXT</code> when the property is absent.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.kafka.sasl.mechanism</code></td>
+<td><code>GSSAPI</code></td>
+<td>String</td>
+<td>SASL mechanism; <code>PLAIN</code> when the property is absent.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.service.kerberos.principal</code></td>
+<td><code>rangerauditserver/_HOST@EXAMPLE.COM</code></td>
+<td>String</td>
+<td>Identity for the Kafka, Solr and HDFS clients.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.service.kerberos.keytab</code></td>
+<td><code>/etc/keytabs/rangerauditserver.keytab</code></td>
+<td>Path</td>
+<td>Keytab of that principal.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.offset.commit.strategy</code></td>
+<td><code>batch</code></td>
+<td>Enum</td>
+<td><code>batch</code> (commit after every batch) or <code>manual</code> (commit on a timer).</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.offset.commit.interval.ms</code></td>
+<td><code>30000</code></td>
+<td>Duration (ms)</td>
+<td>Commit interval for <code>manual</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.max.poll.records</code></td>
+<td><code>500</code></td>
+<td>Integer</td>
+<td>Records per poll.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.session.timeout.ms</code></td>
+<td><code>60000</code></td>
+<td>Duration (ms)</td>
+<td>Consumer session timeout.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.heartbeat.interval.ms</code></td>
+<td><code>10000</code></td>
+<td>Duration (ms)</td>
+<td>Consumer heartbeat interval.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.max.poll.interval.ms</code></td>
+<td><code>300000</code></td>
+<td>Duration (ms)</td>
+<td>Maximum time to process one poll.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.partition.assignment.strategy</code></td>
+<td><code>org.apache.kafka.clients.consumer.CooperativeStickyAssignor</code></td>
+<td>Class</td>
+<td>Rebalance strategy.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="solr-destination">Solr destination<a class="headerlink" href="#solr-destination" title="Permanent link">&para;</a></h4>
+<p>The Solr dispatcher uses the standard destination properties, with the same semantics as in
+<a href="../../audit/#solr">Audit framework</a>: <code>xasecure.audit.destination.solr.urls</code> or <code>.zookeepers</code>,
+<code>.collection</code>, <code>.batch.filespool.dir</code>, and for a Kerberized Solr <code>.force.use.inmemory.jaas.config</code> together
+with <code>xasecure.audit.jaas.Client.*</code>.</p>
+<h4 id="hdfs-destination">HDFS destination<a class="headerlink" href="#hdfs-destination" title="Permanent link">&para;</a></h4>
+<p>The HDFS dispatcher uses <code>xasecure.audit.destination.hdfs.dir</code>, <code>.subdir</code>, <code>.filename.format</code>,
+<code>.batch.filespool.dir</code>, <code>.batch.filequeue.filetype</code> (<code>json</code> or <code>orc</code>), <code>.file.rollover.sec</code> and the
+<code>xasecure.audit.destination.hdfs.config.&lt;hadoop-property&gt;</code> pass-through described in
+<a href="../../audit/#hdfs-and-object-stores">Audit framework</a>, plus <code>core-site.xml</code> and <code>hdfs-site.xml</code> in <code>conf/</code>.
+The dispatcher keeps one writer per <code>appId</code>. By default files land in:</p>
+<div class="highlight"><pre><span></span><code>&lt;dir&gt;/&lt;serviceType&gt;/&lt;appId&gt;/&lt;yyyyMMdd&gt;/&lt;appId&gt;_ranger_audit_&lt;agentHost&gt;_&lt;instance&gt;.log
+</code></pre></div>
+<p>The file name carries the host name of the originating plugin.</p>
+<h4 id="opensearch-destination">OpenSearch destination<a class="headerlink" href="#opensearch-destination" title="Permanent link">&para;</a></h4>
+<p>The OpenSearch dispatcher requires <code>xasecure.audit.destination.opensearch=true</code> and
+<code>ranger.audit.dispatcher.opensearch.class=org.apache.ranger.audit.dispatcher.OpenSearchDispatcherManager</code>
+(both set in the shipped file).</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.audit.dispatcher.urls</code></td>
+<td><code>localhost</code></td>
+<td>List</td>
+<td>OpenSearch host names (<code>ranger-opensearch</code> in the shipped file).</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.port</code></td>
+<td><code>9200</code></td>
+<td>Integer</td>
+<td>Port.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.protocol</code></td>
+<td><code>http</code></td>
+<td>Enum</td>
+<td><code>http</code> or <code>https</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.index</code></td>
+<td><code>ranger_audits</code></td>
+<td>String</td>
+<td>Index name.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.authentication.type</code></td>
+<td>(none)</td>
+<td>Enum</td>
+<td><code>basic</code> or <code>kerberos</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.user</code></td>
+<td>(none)</td>
+<td>String</td>
+<td>User for <code>basic</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.password</code></td>
+<td>(none)</td>
+<td>Password</td>
+<td>Password for <code>basic</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.kerberos.principal</code></td>
+<td>(none)</td>
+<td>String</td>
+<td>Principal for <code>kerberos</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.audit.dispatcher.kerberos.keytab</code></td>
+<td>(none)</td>
+<td>Path</td>
+<td>Keytab for <code>kerberos</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="operations">Operations<a class="headerlink" href="#operations" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Scaling:</strong> start more dispatcher processes of the same type with the same <code>kafka.group.id</code>; Kafka
+  rebalances partitions across them. Throughput is bounded by the topic's partition count, so size
+  <code>kafka.topic.partitions</code> for the plugins you run. Run several ingestors behind a load balancer; they are
+  stateless apart from their recovery spool.</li>
+<li><strong>Logs:</strong> <code>logs/ranger-audit-ingestor.log</code>, <code>logs/ranger-audit-dispatcher.log</code> and <code>logs/catalina.out</code>
+  in the respective log directory (<code>/var/log/ranger/audit-ingestor</code> and <code>/var/log/ranger/audit-dispatcher/&lt;type&gt;</code>
+  in docker). Raise the level in <code>conf/logback.xml</code> (<code>org.apache.ranger.audit</code> to <code>DEBUG</code>) and restart.</li>
+<li><strong>Kerberos:</strong> the ingestor needs an <code>HTTP/</code> keytab for SPNEGO and a service keytab for Kafka; the
+  dispatchers need the service keytab for Kafka and HDFS. Set <code>KERBEROS_ENABLED=true</code> so the scripts pass
+  <code>java.security.krb5.conf</code>.</li>
+<li><strong>Ranger Admin:</strong> configure the Admin UI to read from the same store the dispatchers write to
+  (<code>ranger.audit.source.type</code> = <code>solr</code> or <code>opensearch</code>), see <a href="../../audit/audit-stores/">Audit stores</a>.</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<dl>
+<dt>Plugin logs <code>Failed to send audit batch</code></dt>
+<dd>The ingestor is unreachable or returning errors. Check the plugin spool directory and
+<code>curl /api/audit/health</code>.</dd>
+<dt>Ingestor returns <code>403</code></dt>
+<dd>The authenticated short name is not in <code>ranger.audit.ingestor.service.&lt;serviceName&gt;.allowed.users</code>, or the
+<code>auth.to.local</code> rules do not produce the expected name.</dd>
+<dt>Ingestor returns <code>401</code></dt>
+<dd>SPNEGO or JWT is not configured on the plugin side (<code>authn.type</code>), or the ingestor's keytab is wrong.</dd>
+<dt>Ingestor returns <code>202</code></dt>
+<dd>Kafka is down; events are in <code>recovery.spool.dir</code> and will be retried.</dd>
+<dt>Dispatcher <code>/api/health/status</code> is <code>DOWN</code></dt>
+<dd>The <code>ranger.audit.dispatcher.class</code> failed to initialize; check the store connection settings in the
+site file.</dd>
+<dt>Records reach Kafka but not the store</dt>
+<dd>Look for spool files in the dispatcher's <code>batch.filespool.dir</code>; the destination is down and records are
+queued.</dd>
+<dt>Port already in use</dt>
+<dd>Another dispatcher type is running with the default <code>7090</code>; change <code>ranger.audit.dispatcher.http.port</code>.</dd>
+</dl>
+<h2 id="further-reading">Further reading<a class="headerlink" href="#further-reading" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../audit/">Audit framework</a>, <a href="../../audit/audit-stores/">Audit stores</a>, <a href="../../audit/audit-schema/">Audit schema</a>.</li>
+<li>Source: <a href="https://github.com/apache/ranger/blob/master/audit-server/scripts/README.md"><code>audit-server/scripts/README.md</code></a>,
+  <a href="https://github.com/apache/ranger/blob/master/audit-server/audit-ingestor"><code>audit-server/audit-ingestor</code></a>,
+  <a href="https://github.com/apache/ranger/blob/master/audit-server/audit-dispatcher"><code>audit-server/audit-dispatcher</code></a>,
+  <a href="https://github.com/apache/ranger/blob/master/dev-support/ranger-docker/docker-compose.ranger-audit-service.yml"><code>dev-support/ranger-docker/docker-compose.ranger-audit-service.yml</code></a>.</li>
+</ul>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 15:52:15 PDT">September 20, 2026</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2014-2025 The Apache Software Foundation
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://the-asf.slack.com/archives/C4SC5NXAA" target="_blank" rel="noopener" title="the-asf.slack.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M94.1 315.1c0 25.9-21.2 47.1-47.1 47.1S0 341 0 315.1 21.2 268 47.1 268h47.1v47.1zm23.7 0c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1v117.8c0 25.9-21.2 47.1-47.1 47.1s-47.1-21.2-47.1-47.1zm47.1-189c-25.9 0-47.1-21.2-47.1-47.1s21.2-47 47.1-47S212 53.2 212 79.1v47.1h-47.1zm0 23.7c25.9 0 47.1 21.2 47.1 47.1S190.8 244 164.9 244H47.1C21.2 244 0 222.8 0 196.9s21.2-47.1 47.1-47.1zm189 47.1c0-25.9 21.2-47.1 47.1-47.1s47 21.2 47 47.1-21.2 47.1-47.1 47.1h-47.1v-47.1zm-23.7 0c0 25.9-21.2 47.1-47.1 47.1S236 222.8 236 196.9V79.1c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1zm-47.1 189c25.9 0 47.1 21.2 47.1 47.1s-21.2 47-47.1 47-47.1-21.2-47.1-47.1v-47.1h47.1zm0-23.7c-25.9 0-47.1-21.2-47.1-47.1s21.2-47.1 47.1-47.1h117.8c25.9 0 47.1 21.2 47.1 47.1s-21.2 47.1-47.1 47.1z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="mailto:dev@ranger.apache.org" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l208 156a48 48 0 0 0 57.6 0l208-156c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48zM0 196v188c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V196L313.6 344.8c-34.1 25.6-81.1 25.6-115.2 0z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/apache/ranger" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://hub.docker.com/r/apache/ranger" target="_blank" rel="noopener" title="hub.docker.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M349.9 236.3h-66.1v-59.4h66.1zm0-204.3h-66.1v60.7h66.1zm78.2 144.8H362v59.4h66.1zm-156.3-72.1h-66.1v60.1h66.1zm78.1 0h-66.1v60.1h66.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1zm78.1 0h-66.1v59.4h66.1zm-78.1-72.1h-66.1v60.1h66.1z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.top", "navigation.tracking", "navigation.tabs", "navigation.path", "navigation.indexes", "navigation.prune", "content.code.copy", "toc.follow", "announce.dismiss"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../assets/js/typewriter.js"></script>
+      
+        <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+      
+    
+  </body>
+</html>

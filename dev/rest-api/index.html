@@ -1,0 +1,3737 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://apache.github.io/ranger/dev/rest-api/">
+      
+      
+        <link rel="prev" href="../build/">
+      
+      
+        <link rel="next" href="../authz-api/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/brand/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>REST API - Apache Ranger</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/css/custom.css">
+    
+      <link rel="stylesheet" href="../../assets/css/table.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="REST API - Apache Ranger" />
+<meta property="og:image" content="https://apache.github.io/ranger/assets/images/social/dev/rest-api.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://apache.github.io/ranger/dev/rest-api/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="REST API - Apache Ranger" />
+<meta property="twitter:image" content="https://apache.github.io/ranger/assets/images/social/dev/rest-api.png" />
+</head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#rest-api" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="https://ranger.apache.org" title="Apache Ranger" class="md-header__button md-logo" aria-label="Apache Ranger" data-md-component="logo">
+      
+  <img src="../../assets/brand/merged-logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apache Ranger
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              REST API
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 2c-1.82 0-3.53.5-5 1.35C8 5.08 10 8.3 10 12s-2 6.92-5 8.65C6.47 21.5 8.18 22 10 22a10 10 0 0 0 10-10A10 10 0 0 0 10 2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/apache/ranger" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    apache/ranger
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/introduction/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Getting started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../arch/architecture/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../plugins/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Plugins
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../services/admin/service/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Services
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../features/policies/resource-policies/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Features
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../build/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Developer guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../project/contributing/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Project
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../release-notes/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Releases
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../blog/blog/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://ranger.apache.org" title="Apache Ranger" class="md-nav__button md-logo" aria-label="Apache Ranger" data-md-component="logo">
+      
+  <img src="../../assets/brand/merged-logo.svg" alt="logo">
+
+    </a>
+    Apache Ranger
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/apache/ranger" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    apache/ranger
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../getting-started/introduction/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../arch/architecture/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plugins/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugins
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    
+  
+  
+  
+    <a href="../../services/admin/service/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Services
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    
+  
+  
+  
+    <a href="../../features/policies/resource-policies/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer guide
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Developer guide
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building from source
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REST API
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REST API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Basics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#status-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status codes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-first-call" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A first call
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-api-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public API v2
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public API v2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#service-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service definitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Policies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security zones
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#housekeeping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Housekeeping
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-api-areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other API areas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Other API areas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plugin-downloads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plugin downloads
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#services-and-policies-plugins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Services and policies (/plugins)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roles-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roles (/roles)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-zones-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security zones (/zones)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tags-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tags (/tags)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#users-xusers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users (/xusers)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#groups-and-membership-xusers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Groups and membership (/xusers)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lookups-permissions-and-sessions-xusers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lookups, permissions and sessions (/xusers)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usersync-uploads-xusersugsync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UserSync uploads (/xusers/ugsync)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#governed-data-sharing-gds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Governed Data Sharing (/gds)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Audit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metrics-health-and-administration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metrics, health and administration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kms-keys-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KMS keys (/keys)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generated-api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generated API reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#working-with-the-api-from-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Working with the API from code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Further reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authz-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authorization API and PDP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom-conditions-enrichers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom conditions and enrichers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing-and-tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing and tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../project/contributing/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../release-notes/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Releases
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../blog/blog/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Basics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#status-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status codes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-first-call" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A first call
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-api-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public API v2
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public API v2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#service-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service definitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Policies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security zones
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#housekeeping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Housekeeping
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-api-areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other API areas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Other API areas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plugin-downloads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plugin downloads
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#services-and-policies-plugins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Services and policies (/plugins)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roles-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roles (/roles)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-zones-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security zones (/zones)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tags-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tags (/tags)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#users-xusers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users (/xusers)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#groups-and-membership-xusers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Groups and membership (/xusers)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lookups-permissions-and-sessions-xusers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lookups, permissions and sessions (/xusers)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usersync-uploads-xusersugsync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UserSync uploads (/xusers/ugsync)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#governed-data-sharing-gds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Governed Data Sharing (/gds)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Audit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metrics-health-and-administration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metrics, health and administration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kms-keys-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KMS keys (/keys)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generated-api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generated API reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#working-with-the-api-from-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Working with the API from code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Further reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../build/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Developer guide
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<!---
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<h1 id="rest-api">REST API<a class="headerlink" href="#rest-api" title="Permanent link">&para;</a></h1>
+<p>Everything you can do in the Ranger Admin web UI you can also do over HTTP. The Admin server exposes a JSON
+REST API that the UI, the plugins, UserSync, TagSync and the client libraries all use. The stable, documented
+part is the <em>public v2 API</em> under <code>/service/public/v2/api/</code>: service definitions, services, policies, roles,
+security zones, tags and housekeeping. Other areas (users and groups, Governed Data Sharing, audit queries,
+metrics) have their own prefixes and are listed below as well.</p>
+<p>This page explains how to reach the API and how to authenticate, then gives an endpoint reference per area,
+one endpoint per row. Every path was taken from the <code>@Path</code> annotations in
+<code>security-admin/src/main/java/org/apache/ranger/rest/</code>. For request and response bodies field by field, use
+the <a href="#generated-api-reference">generated API reference</a> that the build produces.</p>
+<h2 id="basics">Basics<a class="headerlink" href="#basics" title="Permanent link">&para;</a></h2>
+<dl>
+<dt>Base URL</dt>
+<dd><code>http://&lt;admin-host&gt;:6080/service/</code> (HTTPS: port <code>6182</code>). The <code>/service/*</code> mapping comes from
+<code>security-admin/src/main/webapp/WEB-INF/web.xml</code>.</dd>
+<dt>Format</dt>
+<dd>JSON in and out. Send <code>Content-Type: application/json</code> on <code>POST</code>/<code>PUT</code> and <code>Accept: application/json</code>.</dd>
+<dt>Paging</dt>
+<dd>List endpoints accept <code>pageSize</code>, <code>startIndex</code>, <code>sortBy</code> and <code>sortType</code>. Public v2 endpoints return a bare
+array; internal APIs return an envelope with <code>startIndex</code>, <code>pageSize</code>, <code>totalCount</code>, <code>resultSize</code> and the
+list itself.</dd>
+</dl>
+<h3 id="status-codes">Status codes<a class="headerlink" href="#status-codes" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>200 OK</code></td>
+<td>Success with a body (<code>GET</code>, <code>POST</code>, <code>PUT</code>).</td>
+</tr>
+<tr>
+<td><code>204 No Content</code></td>
+<td>Success without a body (<code>DELETE</code>).</td>
+</tr>
+<tr>
+<td><code>400 Bad Request</code></td>
+<td>Validation error; the body is a <code>VXResponse</code> with the reason in <code>msgDesc</code>.</td>
+</tr>
+<tr>
+<td><code>401 Unauthorized</code></td>
+<td>The request is not authenticated.</td>
+</tr>
+<tr>
+<td><code>403 Forbidden</code></td>
+<td>The authenticated user is not allowed to perform the operation.</td>
+</tr>
+<tr>
+<td><code>404 Not Found</code></td>
+<td>The object does not exist.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h3>
+<p>All mechanisms below are active at the same time; use whichever your deployment enables
+(see <a href="../../services/admin/authentication/">Admin authentication</a>).</p>
+<dl>
+<dt>HTTP Basic</dt>
+<dd><code>curl -u admin:rangerR0cks! ...</code>. Works for Ranger-internal users and for external users whose password
+Admin verifies against LDAP, Active Directory or PAM.</dd>
+<dt>Kerberos / SPNEGO</dt>
+<dd><code>curl --negotiate -u : ...</code> with a valid ticket, when Admin runs with <code>ranger.admin.kerberos.*</code> configured.</dd>
+<dt>Session cookie</dt>
+<dd>The UI logs in via <code>/login</code> and receives the <code>RANGERADMINSESSIONID</code> cookie; scripts can reuse it.</dd>
+<dt>JWT, SSO and trusted header</dt>
+<dd>Knox SSO, JWT bearer tokens and header-based pre-authentication are handled by filters declared in
+<code>security-applicationContext.xml</code>.</dd>
+</dl>
+<p>Authorization is per endpoint: most methods carry <code>@PreAuthorize</code> checks that map to the user's role
+(Admin, KeyAdmin, Auditor, User) and to delegated-admin policies. A <code>User</code> can, for example, read policies
+it is allowed to see but cannot create a service.</p>
+<div class="admonition note">
+<p class="admonition-title">CSRF header</p>
+<p><code>ranger.rest-csrf.enabled=true</code> by default, but the check is applied only to requests whose <code>User-Agent</code>
+matches <code>ranger.rest-csrf.browser-useragents-regex</code> (<code>Mozilla,Opera,Chrome</code>). <code>curl</code> and the client
+libraries are not challenged; a browser-based tool must send the <code>X-XSRF-HEADER</code> header
+(<code>ranger.rest-csrf.custom-header</code>). Read the current value from <code>GET /service/plugins/csrfconf</code>.</p>
+</div>
+<h3 id="a-first-call">A first call<a class="headerlink" href="#a-first-call" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-u<span class="w"> </span>admin:rangerR0cks!<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Accept: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>http://localhost:6080/service/public/v2/api/service<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>json.tool
+</code></pre></div>
+<h2 id="public-api-v2">Public API v2<a class="headerlink" href="#public-api-v2" title="Permanent link">&para;</a></h2>
+<p>Class <code>PublicAPIsv2</code> (<code>@Path("public/v2")</code>). All paths in this section are relative to
+<code>http://&lt;admin-host&gt;:6080/service/public/v2</code>. Trailing slashes are optional.</p>
+<h3 id="service-definitions">Service definitions<a class="headerlink" href="#service-definitions" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/servicedef</code></td>
+<td>Search service definitions. Filters: <code>serviceType</code>, <code>isEnabled</code>, paging.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/servicedef/{id}</code></td>
+<td>Get a service definition by id.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/servicedef/name/{name}</code></td>
+<td>Get a service definition by name.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/servicedef</code></td>
+<td>Create a service definition (register a new service type).</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/servicedef/{id}</code></td>
+<td>Update by id.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/servicedef/name/{name}</code></td>
+<td>Update by name.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/servicedef/{id}</code></td>
+<td>Delete by id.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/servicedef/name/{name}</code></td>
+<td>Delete by name.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-u<span class="w"> </span>admin:rangerR0cks!<span class="w"> </span>http://localhost:6080/service/public/v2/api/servicedef/name/hive
+</code></pre></div>
+<h3 id="services">Services<a class="headerlink" href="#services" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/service</code></td>
+<td>Search services. Filters: <code>serviceName</code>, <code>serviceNamePartial</code>, <code>serviceType</code>, <code>isEnabled</code>, paging.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/service/{id}</code></td>
+<td>Get a service by id.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/service/name/{name}</code></td>
+<td>Get a service by name.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/service-headers</code></td>
+<td>List service headers (id, name, type) without the full service objects.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/service</code></td>
+<td>Create a service.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/service/{id}</code></td>
+<td>Update by id.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/service/name/{name}</code></td>
+<td>Update by name.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/service/{id}</code></td>
+<td>Delete a service and its policies, by id.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/service/name/{name}</code></td>
+<td>Delete a service and its policies, by name.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/service/{serviceName}/tags</code></td>
+<td>Read the tags of a service (<code>RangerServiceTags</code>).</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/service/{serviceName}/tags</code></td>
+<td>Import the tags of a service (<code>RangerServiceTags</code>).</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Create a Hive service</span><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-u<span class="w"> </span>admin:rangerR0cks!<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>http://localhost:6080/service/public/v2/api/service<span class="w"> </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">  "name": "dev_hive",</span>
+<span class="s1">  "type": "hive",</span>
+<span class="s1">  "description": "Hive in the dev cluster",</span>
+<span class="s1">  "isEnabled": true,</span>
+<span class="s1">  "configs": {</span>
+<span class="s1">    "username": "hive",</span>
+<span class="s1">    "password": "hive",</span>
+<span class="s1">    "jdbc.driverClassName": "org.apache.hive.jdbc.HiveDriver",</span>
+<span class="s1">    "jdbc.url": "jdbc:hive2://ranger-hadoop:10000"</span>
+<span class="s1">  }</span>
+<span class="s1">}'</span>
+</code></pre></div>
+<p>The keys accepted in <code>configs</code> are the <code>configs[].name</code> entries of the service definition; <code>service.admin.users</code>
+and <code>service.admin.groups</code> designate policy administrators for the service.</p>
+<h3 id="policies">Policies<a class="headerlink" href="#policies" title="Permanent link">&para;</a></h3>
+<p>Search endpoints accept <code>serviceName</code>, <code>serviceType</code>, <code>policyName</code>, <code>policyNamePartial</code>, <code>policyType</code>,
+<code>zoneName</code> and <code>resource:&lt;name&gt;</code> filters plus the paging parameters.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/policy</code></td>
+<td>Search policies across all services.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/policy/{id}</code></td>
+<td>Get a policy by id.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/policy/guid/{guid}</code></td>
+<td>Get a policy by GUID. Query: <code>serviceName</code>, <code>ZoneName</code> (capital <code>Z</code> on this endpoint).</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/service/{servicename}/policy</code></td>
+<td>Search the policies of one service.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/service/{servicename}/policy/{policyname}</code></td>
+<td>Get a policy by service and policy name. Query: <code>zoneName</code> for a zone policy.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/policies/{serviceDefName}/for-resource</code></td>
+<td>Policies that apply to a resource. Query: <code>serviceName</code> and one <code>resource:&lt;name&gt;=&lt;value&gt;</code> per resource level.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/policy</code></td>
+<td>Create a policy.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/policy/apply</code></td>
+<td>Create a policy, or merge into the existing policy for the same resource.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/policy/{id}</code></td>
+<td>Update by id.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/service/{servicename}/policy/{policyname}</code></td>
+<td>Update by service and policy name.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/policy/{id}</code></td>
+<td>Delete by id.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/policy</code></td>
+<td>Delete by name. Query: <code>servicename</code>, <code>policyname</code>, optional <code>zoneName</code>.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/policy/guid/{guid}</code></td>
+<td>Delete by GUID. Query: <code>serviceName</code>, <code>zoneName</code>.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/policies/bulk</code></td>
+<td>Delete the policies of a service that match the search filters; returns the deleted ids. Query: <code>serviceName</code> (required).</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Create an access policy</span><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-u<span class="w"> </span>admin:rangerR0cks!<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>http://localhost:6080/service/public/v2/api/policy<span class="w"> </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">  "service": "dev_hive",</span>
+<span class="s1">  "name": "sales-readers",</span>
+<span class="s1">  "policyType": 0,</span>
+<span class="s1">  "isEnabled": true,</span>
+<span class="s1">  "isAuditEnabled": true,</span>
+<span class="s1">  "resources": {</span>
+<span class="s1">    "database": { "values": [ "sales" ],  "isExcludes": false, "isRecursive": false },</span>
+<span class="s1">    "table":    { "values": [ "orders" ], "isExcludes": false, "isRecursive": false },</span>
+<span class="s1">    "column":   { "values": [ "*" ],      "isExcludes": false, "isRecursive": false }</span>
+<span class="s1">  },</span>
+<span class="s1">  "policyItems": [</span>
+<span class="s1">    { "accesses": [ { "type": "select", "isAllowed": true } ],</span>
+<span class="s1">      "users": [ "alice" ], "groups": [ "analysts" ], "roles": [], "conditions": [], "delegateAdmin": false }</span>
+<span class="s1">  ],</span>
+<span class="s1">  "denyPolicyItems": [], "allowExceptions": [], "denyExceptions": []</span>
+<span class="s1">}'</span>
+</code></pre></div>
+<p><code>policyType</code> is <code>0</code> for access, <code>1</code> for data masking (<code>dataMaskPolicyItems</code>) and <code>2</code> for row filtering
+(<code>rowFilterPolicyItems</code>). Policy semantics are described in <a href="../../features/policies/resource-policies/">Resource policies</a>.</p>
+<div class="highlight"><span class="filename">Find, then delete, the policy</span><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-u<span class="w"> </span>admin:rangerR0cks!<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span><span class="s2">"http://localhost:6080/service/public/v2/api/service/dev_hive/policy?policyName=sales-readers"</span>
+curl<span class="w"> </span>-s<span class="w"> </span>-u<span class="w"> </span>admin:rangerR0cks!<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span><span class="s2">"http://localhost:6080/service/public/v2/api/policy?servicename=dev_hive&amp;policyname=sales-readers"</span>
+</code></pre></div>
+<h3 id="roles">Roles<a class="headerlink" href="#roles" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/roles</code></td>
+<td>List roles.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/roles/{id}</code></td>
+<td>Get a role by id.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/roles/name/{name}</code></td>
+<td>Get a role by name. Query: <code>serviceName</code>, <code>execUser</code>.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/roles/names</code></td>
+<td>List role names. Query: <code>serviceName</code>, <code>execUser</code>.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/roles/user/{user}</code></td>
+<td>Roles a user belongs to.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/roles</code></td>
+<td>Create a role. Query: <code>serviceName</code>; <code>createNonExistUserGroup=true</code> creates missing members.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/roles/{id}</code></td>
+<td>Update a role.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/roles/{id}/addUsersAndGroups</code></td>
+<td>Add members. Query: <code>users</code>, <code>groups</code>, <code>isAdmin</code>.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/roles/{id}/removeUsersAndGroups</code></td>
+<td>Remove members. Query: <code>users</code>, <code>groups</code>.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/roles/{id}/removeAdminFromUsersAndGroups</code></td>
+<td>Revoke the role-admin flag from members. Query: <code>users</code>, <code>groups</code>.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/roles/grant/{serviceName}</code></td>
+<td><code>GRANT ROLE</code> as issued by plugins (<code>GrantRevokeRoleRequest</code>).</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/roles/revoke/{serviceName}</code></td>
+<td><code>REVOKE ROLE</code> as issued by plugins (<code>GrantRevokeRoleRequest</code>).</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/roles/{id}</code></td>
+<td>Delete by id.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/roles/name/{name}</code></td>
+<td>Delete by name. Query: <code>serviceName</code>, <code>execUser</code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-u<span class="w"> </span>admin:rangerR0cks!<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span><span class="s2">"http://localhost:6080/service/public/v2/api/roles?serviceName=dev_hive"</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">  "name": "sales_readers", "description": "read sales data",</span>
+<span class="s1">  "users":  [ { "name": "alice", "isAdmin": false } ],</span>
+<span class="s1">  "groups": [ { "name": "analysts", "isAdmin": false } ],</span>
+<span class="s1">  "roles":  []</span>
+<span class="s1">}'</span>
+</code></pre></div>
+<h3 id="security-zones">Security zones<a class="headerlink" href="#security-zones" title="Permanent link">&para;</a></h3>
+<p>Zones are available in two models. The original model returns the complete <code>RangerSecurityZone</code>, including
+every resource. The v2 model (<code>/api/zones-v2</code>) returns <code>RangerSecurityZoneV2</code>, pages through zone resources
+and supports partial updates. See <a href="../../features/sec-zone/intro/">Security zones</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/zones</code></td>
+<td>List zones.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/zones/{id}</code></td>
+<td>Get a zone by id.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/zones/name/{name}</code></td>
+<td>Get a zone by name.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/zones</code></td>
+<td>Create a zone.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/zones/{id}</code></td>
+<td>Update a zone.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/zones/{id}</code></td>
+<td>Delete by id.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/zones/name/{name}</code></td>
+<td>Delete by name.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/zone-headers</code></td>
+<td>List zone headers (id and name).</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/zones/{zoneId}/service-headers</code></td>
+<td>Headers of the services that belong to a zone.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/zones/zone-headers/for-service/{serviceId}</code></td>
+<td>Headers of the zones a service belongs to.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/zone-names/{serviceName}/resource</code></td>
+<td>Names of the zones that contain a resource.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/zones-v2</code></td>
+<td>List zones (paged).</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/zones-v2/{id}</code></td>
+<td>Get a zone by id.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/zones-v2/name/{name}</code></td>
+<td>Get a zone by name.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/zones-v2/{id}/resources/{serviceName}</code></td>
+<td>Page through the resources of one service in a zone, by zone id.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/zones-v2/name/{name}/resources/{serviceName}</code></td>
+<td>The same, by zone name.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/zones-v2</code></td>
+<td>Create a zone.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/zones-v2/{id}</code></td>
+<td>Replace a zone.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/api/zones-v2/{id}/partial</code></td>
+<td>Apply a <code>RangerSecurityZoneChangeRequest</code> (add or remove resources, admins, auditors).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="housekeeping">Housekeeping<a class="headerlink" href="#housekeeping" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/plugins/info</code></td>
+<td>Plugin status: which host downloaded which policy, tag and role version, and when.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/server/policydeltas</code></td>
+<td>Purge policy deltas older than <code>days</code> (default <code>7</code>).</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/server/tagdeltas</code></td>
+<td>Purge tag deltas older than <code>days</code> (default <code>7</code>).</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/server/purgepolicies/{serviceName}</code></td>
+<td>Delete the empty policies of a service.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/server/purge/records</code></td>
+<td>Purge login sessions, transaction logs or policy export audits. Query: <code>type</code>, <code>retentionDays</code> (default <code>180</code>).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="other-api-areas">Other API areas<a class="headerlink" href="#other-api-areas" title="Permanent link">&para;</a></h2>
+<p>The public v2 API delegates to the classes below; they expose additional, mostly UI-oriented, operations.
+Paths in this section are relative to <code>http://&lt;admin-host&gt;:6080/service</code>.</p>
+<h3 id="plugin-downloads">Plugin downloads<a class="headerlink" href="#plugin-downloads" title="Permanent link">&para;</a></h3>
+<p>Plugins poll these endpoints through <code>RangerAdminRESTClient</code>. Every download takes the last version the plugin
+already has, plus <code>pluginId</code> and (except for tags) <code>clusterName</code>, and answers <code>304 Not Modified</code> when nothing changed.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/plugins/policies/download/{serviceName}</code></td>
+<td>Policies. Query: <code>lastKnownVersion</code>, <code>lastActivationTime</code>, <code>zoneName</code>, <code>supportsPolicyDeltas</code>, <code>pluginCapabilities</code>.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/tags/download/{serviceName}</code></td>
+<td>Tags. Query: <code>lastKnownVersion</code>, <code>lastActivationTime</code>, <code>supportsTagDeltas</code>.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/roles/download/{serviceName}</code></td>
+<td>Roles. Query: <code>lastKnownRoleVersion</code>, <code>lastActivationTime</code>.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xusers/download/{serviceName}</code></td>
+<td>User store (users, groups and their attributes). Query: <code>lastKnownUserStoreVersion</code>, <code>lastActivationTime</code>.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/gds/download/{serviceName}</code></td>
+<td>Governed Data Sharing information. Query: <code>lastKnownGdsVersion</code>, <code>lastActivationTime</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Each path has a <code>secure</code> variant (<code>/tags/secure/download/{serviceName}</code>, <code>/roles/secure/download/{serviceName}</code>,
+<code>/xusers/secure/download/{serviceName}</code>, <code>/gds/secure/download/{serviceName}</code> and, for policies,
+<code>/plugins/secure/policies/download/{serviceName}</code>) that requires authentication and is used in Kerberized
+deployments. The plain download paths are declared <code>security="none"</code> in <code>security-applicationContext.xml</code>.</p>
+<h3 id="services-and-policies-plugins">Services and policies (<code>/plugins</code>)<a class="headerlink" href="#services-and-policies-plugins" title="Permanent link">&para;</a></h3>
+<p><code>ServiceREST</code>. It mirrors the service definition, service and policy CRUD of the public API under
+<code>/plugins/definitions</code>, <code>/plugins/services</code> and <code>/plugins/policies</code>, and adds:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><code>/plugins/services/validateConfig</code></td>
+<td>Test the connection of a service configuration.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/plugins/services/lookupResource/{serviceName}</code></td>
+<td>Resource lookup (auto-complete in the policy form).</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/plugins/services/grant/{serviceName}</code></td>
+<td><code>GRANT</code> forwarded by a plugin. <code>/plugins/secure/services/grant/{serviceName}</code> when secured.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/plugins/services/revoke/{serviceName}</code></td>
+<td><code>REVOKE</code> forwarded by a plugin. <code>/plugins/secure/services/revoke/{serviceName}</code> when secured.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/plugins/policies/exportJson</code></td>
+<td>Export policies as JSON (served as <code>text/json</code>). Query: <code>serviceName</code>.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/plugins/policies/csv</code></td>
+<td>Export policies as CSV.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/plugins/policies/downloadExcel</code></td>
+<td>Export policies as an Excel workbook.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/plugins/policies/importPoliciesFromFile</code></td>
+<td>Multipart policy import; see <a href="../../features/import-export/">Import and export</a>.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/plugins/policies/cache/reset</code></td>
+<td>Rebuild the policy cache of one service. Query: <code>serviceName</code>.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/plugins/policies/cache/reset-all</code></td>
+<td>Rebuild the policy cache of all services.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/plugins/policy/{policyId}/versionList</code></td>
+<td>Version numbers of a policy.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/plugins/policy/{policyId}/version/{versionNo}</code></td>
+<td>A policy as it was at a given version.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/plugins/policyLabels</code></td>
+<td>Known policy labels.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/plugins/plugins/info</code></td>
+<td>Plugin status records.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/plugins/plugins/info/{id}</code></td>
+<td>Delete a plugin status record.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/plugins/checksso</code></td>
+<td>Whether SSO is enabled.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/plugins/csrfconf</code></td>
+<td>CSRF header configuration.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/plugins/metrics/type/{type}</code></td>
+<td>Admin metrics of one type (users, services, policies, ...).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="roles-roles">Roles (<code>/roles</code>)<a class="headerlink" href="#roles-roles" title="Permanent link">&para;</a></h3>
+<p><code>RoleREST</code> offers the same role operations as the public API under <code>/roles/roles</code>, plus:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/roles/roles/exportJson</code></td>
+<td>Export roles as JSON.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/roles/roles/importRolesFromFile</code></td>
+<td>Multipart role import. Query: <code>updateIfExists</code>, <code>createNonExistUserGroupRole</code>.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/roles/lookup/roles</code></td>
+<td>Roles visible to the calling user.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/roles/lookup/roles/names</code></td>
+<td>Role names for auto-complete.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="security-zones-zones">Security zones (<code>/zones</code>)<a class="headerlink" href="#security-zones-zones" title="Permanent link">&para;</a></h3>
+<p><code>SecurityZoneREST</code> offers the original zone model under <code>/zones/zones</code>, plus:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/zones/zone-names/{serviceName}/resource</code></td>
+<td>Names of the zones that contain a resource.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/zones/zones/zone-headers/for-service/{serviceId}</code></td>
+<td>Headers of the zones a service belongs to.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/zones/summary</code></td>
+<td>Zone summaries for the UI.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tags-tags">Tags (<code>/tags</code>)<a class="headerlink" href="#tags-tags" title="Permanent link">&para;</a></h3>
+<p><code>TagREST</code> stores what TagSync uploads: tag definitions, tag instances, service resources and the maps between
+tags and resources. The object types follow a common pattern, shown here for tag definitions.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/tags/tagdefs</code></td>
+<td>List tag definitions (<code>/tags/tagdefs/paginated</code> for a paged envelope).</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/tags/tagdefs</code></td>
+<td>Create a tag definition.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/tags/tagdef/{id}</code></td>
+<td>Get by id.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/tags/tagdef/guid/{guid}</code></td>
+<td>Get by GUID.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/tags/tagdef/name/{name}</code></td>
+<td>Get by name.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/tags/tagdef/{id}</code></td>
+<td>Update.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/tags/tagdef/{id}</code></td>
+<td>Delete by id.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/tags/tagdef/guid/{guid}</code></td>
+<td>Delete by GUID.</td>
+</tr>
+</tbody>
+</table>
+<p>The other object types use these collection and item paths:</p>
+<table>
+<thead>
+<tr>
+<th>Object</th>
+<th>Collection path</th>
+<th>Item path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tag</td>
+<td><code>/tags/tags</code></td>
+<td><code>/tags/tag/{id}</code>, <code>/tags/tag/guid/{guid}</code></td>
+</tr>
+<tr>
+<td>Service resource</td>
+<td><code>/tags/resources</code></td>
+<td><code>/tags/resource/{id}</code>, <code>/tags/resource/guid/{guid}</code></td>
+</tr>
+<tr>
+<td>Tag-resource map</td>
+<td><code>/tags/tagresourcemaps</code></td>
+<td><code>/tags/tagresourcemap/{id}</code>, <code>/tags/tagresourcemap/guid/{guid}</code></td>
+</tr>
+</tbody>
+</table>
+<p>Tag-resource maps can be created and deleted but not updated. Further tag endpoints:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/tags/types</code></td>
+<td>Names of all tag types.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/tags/tags/type/{type}</code></td>
+<td>Tags of one type.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/tags/resources/service/{serviceName}</code></td>
+<td>Service resources of one service.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/tags/importservicetags</code></td>
+<td>Bulk import of a <code>ServiceTags</code> document; used by TagSync.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/tags/tags/cache/reset</code></td>
+<td>Rebuild the tag cache of one service. Query: <code>serviceName</code>.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/tags/tags/cache/reset-all</code></td>
+<td>Rebuild the tag cache of all services.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/tags/server/tagdeltas</code></td>
+<td>Purge tag deltas older than <code>days</code> (default <code>3</code>).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="users-xusers">Users (<code>/xusers</code>)<a class="headerlink" href="#users-xusers" title="Permanent link">&para;</a></h3>
+<p><code>XUserREST</code>. The <code>secure</code> variants enforce role checks appropriate for API clients; prefer them.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xusers/users</code></td>
+<td>Search users. Filters: <code>name</code>, <code>userSource</code>, <code>userRole</code>, <code>syncSource</code>, paging.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xusers/secure/users/{id}</code></td>
+<td>Get a user by id.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xusers/users/userName/{userName}</code></td>
+<td>Get a user by name.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/xusers/secure/users</code></td>
+<td>Create a user (<code>name</code>, <code>password</code>, <code>firstName</code>, <code>userRoleList</code>, ...).</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/xusers/secure/users/{id}</code></td>
+<td>Update a user.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/xusers/secure/users/activestatus</code></td>
+<td>Enable or disable users.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/xusers/secure/users/visibility</code></td>
+<td>Show or hide users in the UI.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xusers/secure/users/roles/userName/{userName}</code></td>
+<td>Get a user's roles.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/xusers/secure/users/roles/userName/{userName}</code></td>
+<td>Set a user's roles.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/xusers/secure/users/{userName}</code></td>
+<td>Delete a user by name. <code>forceDelete=true</code> also removes policy references.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/xusers/secure/users/id/{userId}</code></td>
+<td>Delete a user by id.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/xusers/secure/users/delete</code></td>
+<td>Delete several users; the body lists the names.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-u<span class="w"> </span>admin:rangerR0cks!<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>http://localhost:6080/service/xusers/secure/users<span class="w"> </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">  "name": "alice", "password": "Alice123!", "firstName": "Alice",</span>
+<span class="s1">  "userRoleList": [ "ROLE_USER" ], "userSource": 0</span>
+<span class="s1">}'</span>
+</code></pre></div>
+<p><code>/service/users</code> (<code>UserREST</code>) manages <em>portal</em> user profiles (<code>/users/profile</code>, <code>/users/{userId}/passwordchange</code>,
+<code>/users/{userId}/roles</code>).</p>
+<h3 id="groups-and-membership-xusers">Groups and membership (<code>/xusers</code>)<a class="headerlink" href="#groups-and-membership-xusers" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xusers/groups</code></td>
+<td>Search groups.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xusers/secure/groups/{id}</code></td>
+<td>Get a group by id.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xusers/groups/groupName/{groupName}</code></td>
+<td>Get a group by name.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/xusers/secure/groups</code></td>
+<td>Create a group.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/xusers/secure/groups/{id}</code></td>
+<td>Update a group.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/xusers/secure/groups/visibility</code></td>
+<td>Show or hide groups in the UI.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/xusers/secure/groups/{groupName}</code></td>
+<td>Delete a group by name. <code>forceDelete=true</code> also removes policy references.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/xusers/secure/groups/id/{groupId}</code></td>
+<td>Delete a group by id.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xusers/groupusers</code></td>
+<td>Search group memberships.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xusers/groupusers/groupName/{groupName}</code></td>
+<td>Members of a group, by group name.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/xusers/groupusers</code></td>
+<td>Add a user to a group.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/xusers/group/{groupName}/user/{userName}</code></td>
+<td>Remove a user from a group.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xusers/{userId}/groups</code></td>
+<td>Groups of a user.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xusers/{groupId}/users</code></td>
+<td>Users of a group.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="lookups-permissions-and-sessions-xusers">Lookups, permissions and sessions (<code>/xusers</code>)<a class="headerlink" href="#lookups-permissions-and-sessions-xusers" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xusers/lookup/users</code></td>
+<td>User names for auto-complete.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xusers/lookup/groups</code></td>
+<td>Group names for auto-complete.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xusers/lookup/principals</code></td>
+<td>Users, groups and roles in one lookup.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xusers/permission</code></td>
+<td>Search module permissions (which UI modules users and groups may use).</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xusers/permission/{id}</code></td>
+<td>Get a module permission.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/xusers/permission/{id}</code></td>
+<td>Update a module permission.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xusers/authSessions</code></td>
+<td>Search login sessions.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xusers/authSessions/info</code></td>
+<td>Details of one login session.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="usersync-uploads-xusersugsync">UserSync uploads (<code>/xusers/ugsync</code>)<a class="headerlink" href="#usersync-uploads-xusersugsync" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><code>/xusers/ugsync/users</code></td>
+<td>Add or update a batch of users.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/xusers/ugsync/groups</code></td>
+<td>Add or update a batch of groups.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/xusers/ugsync/groupusers</code></td>
+<td>Add or update group memberships.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xusers/ugsync/groupusers</code></td>
+<td>Read all group memberships.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/xusers/ugsync/users/visibility</code></td>
+<td>Mark users that were deleted at the source.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/xusers/ugsync/groups/visibility</code></td>
+<td>Mark groups that were deleted at the source.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/xusers/ugsync/auditinfo</code></td>
+<td>Record a sync audit event.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="governed-data-sharing-gds">Governed Data Sharing (<code>/gds</code>)<a class="headerlink" href="#governed-data-sharing-gds" title="Permanent link">&para;</a></h3>
+<p><code>GdsREST</code>. Datasets, projects, data shares and shared resources all follow the same CRUD pattern:
+<code>POST /gds/&lt;object&gt;</code>, <code>GET /gds/&lt;object&gt;</code> (search), and <code>GET</code>, <code>PUT</code>, <code>DELETE</code> on <code>/gds/&lt;object&gt;/{id}</code>, where
+<code>&lt;object&gt;</code> is <code>dataset</code>, <code>project</code>, <code>datashare</code> or <code>resource</code>. See
+<a href="../../features/gds/gds_intro/">Governed Data Sharing</a> for the model.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/gds/dataset/summary</code></td>
+<td>Dataset summaries for list views.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/gds/dataset/names</code></td>
+<td>Dataset names.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/gds/dataset/{id}/policy</code></td>
+<td>Policies of a dataset.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/gds/dataset/{id}/policy</code></td>
+<td>Add a policy to a dataset.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/gds/dataset/{id}/policy/{policyId}</code></td>
+<td>Update a dataset policy.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/gds/dataset/{id}/policy/{policyId}</code></td>
+<td>Delete a dataset policy.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/gds/dataset/{id}/grants</code></td>
+<td>Grants of a dataset.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/gds/dataset/{id}/grant</code></td>
+<td>Update the grants of a dataset.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/gds/project/{id}/policy</code></td>
+<td>Policies of a project.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/gds/project/{id}/policy</code></td>
+<td>Add a policy to a project.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/gds/datashare/summary</code></td>
+<td>Data share summaries.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/gds/resources</code></td>
+<td>Add several shared resources in one call.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/gds/datashare/dataset</code></td>
+<td>Request that a data share be added to a dataset.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/gds/datashare/dataset/{id}</code></td>
+<td>Update the request (approve, activate, deny).</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/gds/datashare/dataset/{id}</code></td>
+<td>Remove a data share from a dataset.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/gds/dataset/project</code></td>
+<td>Request that a dataset be added to a project.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/gds/dataset/project/{id}</code></td>
+<td>Update the request.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/gds/dataset/project/{id}</code></td>
+<td>Remove a dataset from a project.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="audit">Audit<a class="headerlink" href="#audit" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/assets/accessAudit</code></td>
+<td>Search access audits (the Audit → Access tab). Filters: <code>startDate</code>, <code>endDate</code>, <code>requestUser</code>, <code>repoName</code>, <code>accessResult</code>, <code>resourcePath</code>, paging.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/assets/report</code></td>
+<td>Search admin (transaction) audits. <code>/assets/v2/report</code> returns the newer format.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/assets/report/{transactionId}</code></td>
+<td>All changes of one transaction.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/assets/ugsyncAudits</code></td>
+<td>UserSync audits.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/assets/exportAudit</code></td>
+<td>Policy export (plugin download) audits.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xaudit/access_audit</code></td>
+<td>Access audits through the older API.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/xaudit/trx_log</code></td>
+<td>Transaction audits through the older API.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/audit/metrics</code></td>
+<td>Latest audit volume metrics.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/audit/dailymetrics</code></td>
+<td>Audit volume per day.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/audit/daysmetrics</code></td>
+<td>Audit volume over a number of days.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="metrics-health-and-administration">Metrics, health and administration<a class="headerlink" href="#metrics-health-and-administration" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/metrics/status</code></td>
+<td>Admin status. <code>/metrics/**</code> requires no authentication; see <a href="../../services/admin/metrics/">Metrics</a>.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/metrics/json</code></td>
+<td>Admin metrics as JSON.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/metrics/prometheus</code></td>
+<td>Admin metrics in Prometheus format.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/actuator/health</code></td>
+<td>Overall health.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/actuator/health/liveness</code></td>
+<td>Liveness probe.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/actuator/health/readiness</code></td>
+<td>Readiness probe; requires authentication.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/admin/set-logger-level</code></td>
+<td>Change a logger level at runtime. Body fields: <code>loggerName</code>, <code>logLevel</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="kms-keys-keys">KMS keys (<code>/keys</code>)<a class="headerlink" href="#kms-keys-keys" title="Permanent link">&para;</a></h3>
+<p><code>XKeyREST</code> proxies key management to Ranger KMS. Every call takes the KMS service name in the <code>provider</code>
+query parameter.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/keys/keys</code></td>
+<td>List keys.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/keys/key/{alias}</code></td>
+<td>Get a key.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/keys/key</code></td>
+<td>Create a key.</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/keys/key</code></td>
+<td>Roll over a key.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/keys/key/{alias}</code></td>
+<td>Delete a key.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="generated-api-reference">Generated API reference<a class="headerlink" href="#generated-api-reference" title="Permanent link">&para;</a></h2>
+<p>The Ranger build generates a browsable API reference, including a Swagger UI, from the JAX-RS annotations in
+the source. The <code>enunciate-maven-plugin</code> runs its <code>docs</code> goal in the <code>package</code> phase of the <code>security-admin</code>
+module, configured by
+<a href="https://github.com/apache/ranger/blob/master/enunciate.xml"><code>enunciate.xml</code></a> in the repository root
+(Swagger and Jackson modules enabled). After <code>mvn clean package</code> you find the output under <code>docs/target/</code>.
+See <a href="../build/">Building from source</a>.</p>
+<h2 id="working-with-the-api-from-code">Working with the API from code<a class="headerlink" href="#working-with-the-api-from-code" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../features/client-interface/java/">Java client</a> — <code>RangerClient</code> wraps the public v2 endpoints.</li>
+<li><a href="../../features/client-interface/python/">Python client</a> — <code>RangerClient</code>, <code>RangerUserMgmtClient</code>,
+  <code>RangerGdsClient</code>, <code>RangerKMSClient</code>, <code>RangerPDPClient</code>.</li>
+<li>Plugins never call the public API for policies; they use the <code>download</code> endpoints above through
+  <code>RangerAdminRESTClient</code> (paths in <code>agents-common</code> <code>RangerRESTUtils</code>).</li>
+<li>The authorization REST API of the PDP server (<code>/authz/v1/authorize</code>) is a separate service, described in
+  <a href="../authz-api/">Authorization API and PDP</a>.</li>
+</ul>
+<h2 id="further-reading">Further reading<a class="headerlink" href="#further-reading" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Source: <a href="https://github.com/apache/ranger/tree/master/security-admin/src/main/java/org/apache/ranger/rest"><code>security-admin/src/main/java/org/apache/ranger/rest</code></a></li>
+<li>cwiki: <a href="https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=61334321">REST APIs for Service Definition, Service and Policy Management</a>
+  (older examples; paths are unchanged)</li>
+</ul>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 15:52:15 PDT">September 20, 2026</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2014-2025 The Apache Software Foundation
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://the-asf.slack.com/archives/C4SC5NXAA" target="_blank" rel="noopener" title="the-asf.slack.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M94.1 315.1c0 25.9-21.2 47.1-47.1 47.1S0 341 0 315.1 21.2 268 47.1 268h47.1v47.1zm23.7 0c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1v117.8c0 25.9-21.2 47.1-47.1 47.1s-47.1-21.2-47.1-47.1zm47.1-189c-25.9 0-47.1-21.2-47.1-47.1s21.2-47 47.1-47S212 53.2 212 79.1v47.1h-47.1zm0 23.7c25.9 0 47.1 21.2 47.1 47.1S190.8 244 164.9 244H47.1C21.2 244 0 222.8 0 196.9s21.2-47.1 47.1-47.1zm189 47.1c0-25.9 21.2-47.1 47.1-47.1s47 21.2 47 47.1-21.2 47.1-47.1 47.1h-47.1v-47.1zm-23.7 0c0 25.9-21.2 47.1-47.1 47.1S236 222.8 236 196.9V79.1c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1zm-47.1 189c25.9 0 47.1 21.2 47.1 47.1s-21.2 47-47.1 47-47.1-21.2-47.1-47.1v-47.1h47.1zm0-23.7c-25.9 0-47.1-21.2-47.1-47.1s21.2-47.1 47.1-47.1h117.8c25.9 0 47.1 21.2 47.1 47.1s-21.2 47.1-47.1 47.1z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="mailto:dev@ranger.apache.org" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l208 156a48 48 0 0 0 57.6 0l208-156c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48zM0 196v188c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V196L313.6 344.8c-34.1 25.6-81.1 25.6-115.2 0z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/apache/ranger" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://hub.docker.com/r/apache/ranger" target="_blank" rel="noopener" title="hub.docker.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M349.9 236.3h-66.1v-59.4h66.1zm0-204.3h-66.1v60.7h66.1zm78.2 144.8H362v59.4h66.1zm-156.3-72.1h-66.1v60.1h66.1zm78.1 0h-66.1v60.1h66.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1zm78.1 0h-66.1v59.4h66.1zm-78.1-72.1h-66.1v60.1h66.1z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.top", "navigation.tracking", "navigation.tabs", "navigation.path", "navigation.indexes", "navigation.prune", "content.code.copy", "toc.follow", "announce.dismiss"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/js/typewriter.js"></script>
+      
+        <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+      
+    
+  </body>
+</html>

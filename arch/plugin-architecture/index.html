@@ -1,0 +1,2886 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://apache.github.io/ranger/arch/plugin-architecture/">
+      
+      
+        <link rel="prev" href="../policy-model/">
+      
+      
+        <link rel="next" href="../../plugins/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/brand/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Plugin architecture - Apache Ranger</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/css/custom.css">
+    
+      <link rel="stylesheet" href="../../assets/css/table.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Plugin architecture - Apache Ranger" />
+<meta property="og:image" content="https://apache.github.io/ranger/assets/images/social/arch/plugin-architecture.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://apache.github.io/ranger/arch/plugin-architecture/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="Plugin architecture - Apache Ranger" />
+<meta property="twitter:image" content="https://apache.github.io/ranger/assets/images/social/arch/plugin-architecture.png" />
+</head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#plugin-architecture" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="https://ranger.apache.org" title="Apache Ranger" class="md-header__button md-logo" aria-label="Apache Ranger" data-md-component="logo">
+      
+  <img src="../../assets/brand/merged-logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apache Ranger
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Plugin architecture
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 2c-1.82 0-3.53.5-5 1.35C8 5.08 10 8.3 10 12s-2 6.92-5 8.65C6.47 21.5 8.18 22 10 22a10 10 0 0 0 10-10A10 10 0 0 0 10 2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/apache/ranger" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    apache/ranger
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/introduction/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Getting started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../architecture/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../plugins/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Plugins
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../services/admin/service/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Services
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../features/policies/resource-policies/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Features
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../dev/build/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Developer guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../project/contributing/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Project
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../release-notes/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Releases
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../blog/blog/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://ranger.apache.org" title="Apache Ranger" class="md-nav__button md-logo" aria-label="Apache Ranger" data-md-component="logo">
+      
+  <img src="../../assets/brand/merged-logo.svg" alt="logo">
+
+    </a>
+    Apache Ranger
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/apache/ranger" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    apache/ranger
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../getting-started/introduction/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../policy-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Policy model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugin architecture
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugin architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rangerbaseplugin-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RangerBasePlugin API
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Connection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authentication-to-ranger-admin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authentication to Ranger Admin
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#policy-refresh-and-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Policy refresh and cache
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Request context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#users-and-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users and groups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enrichers-fallback-and-chaining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enrichers, fallback and chaining
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#policy-engine-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Policy engine options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#audit-ranger-type-auditxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Audit (ranger-&lt;type&gt;-audit.xml)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#policy-refresher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Policy refresher
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#request-and-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Request and result
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#context-enrichers-and-condition-evaluators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context enrichers and condition evaluators
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#service-definition-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service definition model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shim-and-class-loader-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shim and class loader isolation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit-handler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Audit handler
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chained-plugins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chained plugins
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Further reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plugins/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugins
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    
+  
+  
+  
+    <a href="../../services/admin/service/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Services
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    
+  
+  
+  
+    <a href="../../features/policies/resource-policies/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../dev/build/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer guide
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../project/contributing/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../release-notes/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Releases
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../blog/blog/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rangerbaseplugin-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RangerBasePlugin API
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Connection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authentication-to-ranger-admin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authentication to Ranger Admin
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#policy-refresh-and-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Policy refresh and cache
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Request context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#users-and-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users and groups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enrichers-fallback-and-chaining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enrichers, fallback and chaining
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#policy-engine-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Policy engine options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#audit-ranger-type-auditxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Audit (ranger-&lt;type&gt;-audit.xml)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#policy-refresher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Policy refresher
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#request-and-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Request and result
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#context-enrichers-and-condition-evaluators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context enrichers and condition evaluators
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#service-definition-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service definition model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shim-and-class-loader-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shim and class loader isolation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit-handler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Audit handler
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chained-plugins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chained plugins
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Further reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../architecture/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<!---
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<h1 id="plugin-architecture">Plugin Architecture<a class="headerlink" href="#plugin-architecture" title="Permanent link">&para;</a></h1>
+<p>A Ranger plugin is the piece of Ranger that lives inside the service being protected. When you
+configure the Hive plugin, for example, you add a set of jars and configuration files to HiveServer2
+so that, on every query, Hive asks Ranger's embedded policy engine whether the user may run it. The plugin
+downloads policies from Ranger Admin in the background, keeps them in memory and on local disk, and
+sends audit records for each decision. Nothing on the query path calls out to Ranger Admin.</p>
+<p>All plugins share the same core, <code>RangerBasePlugin</code> from the <code>agents-common</code> module, and a
+service-specific adapter that translates the host's authorization callback (Hive's
+<code>HiveAuthorizer</code>, HDFS's <code>INodeAttributeProvider</code>, a Kafka <code>Authorizer</code>, an HBase coprocessor, and
+so on) into Ranger's request model. This page describes that shared core: lifecycle, configuration,
+policy refresh, the request and result objects, context enrichers and condition evaluators, the
+service-definition model, class-loader isolation, and auditing. If you want to write a plugin for
+your own application, read this page first and then <a href="../../plugins/custom-plugin/">Custom plugins</a>.</p>
+<h2 id="lifecycle">Lifecycle<a class="headerlink" href="#lifecycle" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>sequenceDiagram
+  participant H as Host service (e.g. HiveServer2)
+  participant S as Shim (RangerHiveAuthorizerFactory)
+  participant P as RangerBasePlugin
+  participant R as PolicyRefresher thread
+  participant A as Ranger Admin
+  participant AU as Audit framework
+
+  H-&gt;&gt;S: load authorizer class
+  S-&gt;&gt;P: new RangerBasePlugin("hive", appId) and init()
+  P-&gt;&gt;AU: AuditProviderFactory.init(ranger-hive-audit.xml)
+  P-&gt;&gt;R: start (daemon thread)
+  R-&gt;&gt;A: download roles + policies
+  A--&gt;&gt;R: ServicePolicies
+  R-&gt;&gt;P: setPolicies() -&gt; new RangerPolicyEngineImpl
+  loop every policy.pollIntervalMs
+    R-&gt;&gt;A: getServicePoliciesIfUpdated(lastKnownVersion)
+  end
+  H-&gt;&gt;P: isAccessAllowed(RangerAccessRequest)
+  P-&gt;&gt;P: enrich request, evaluate policies
+  P-&gt;&gt;AU: RangerDefaultAuditHandler.processResult()
+  P--&gt;&gt;H: RangerAccessResult</code></pre>
+<ol>
+<li>The host service instantiates the plugin's entry class (through the shim; see
+   <a href="#shim-and-class-loader-isolation">Shim and class loader</a>).</li>
+<li>The entry class creates a <code>RangerBasePlugin(serviceType, appId)</code> and calls <code>init()</code>. The
+   constructor loads <code>ranger-&lt;type&gt;-security.xml</code>, <code>ranger-&lt;type&gt;-audit.xml</code>, and
+   <code>ranger-&lt;type&gt;-policymgr-ssl.xml</code> from the classpath into a <code>RangerPluginConfig</code>.</li>
+<li><code>init()</code> initializes the audit framework, then starts a <code>PolicyRefresher</code> thread that performs
+   an initial synchronous download of roles and policies (falling back to the local cache) and
+   schedules periodic refreshes.</li>
+<li>Each downloaded policy set becomes a new <code>RangerPolicyEngineImpl</code>, which is swapped in
+   atomically; in-flight requests finish on the old engine.</li>
+<li>The host calls <code>isAccessAllowed()</code> (and <code>evalDataMaskPolicies()</code> / <code>evalRowFilterPolicies()</code>
+   for services that support them) for each operation. The configured
+   <code>RangerAccessResultProcessor</code>, normally <code>RangerDefaultAuditHandler</code>, turns each result into an
+   audit event.</li>
+<li><code>cleanup()</code> stops the refresher and releases the engine when the host shuts down.</li>
+</ol>
+<h2 id="rangerbaseplugin-api">RangerBasePlugin API<a class="headerlink" href="#rangerbaseplugin-api" title="Permanent link">&para;</a></h2>
+<p>The methods a host adapter uses most, from
+<a href="https://github.com/apache/ranger/blob/master/agents-common/src/main/java/org/apache/ranger/plugin/service/RangerBasePlugin.java"><code>RangerBasePlugin</code></a>:</p>
+<dl>
+<dt><code>RangerBasePlugin(String serviceType, String appId)</code></dt>
+<dd>Create a plugin for a service type (<code>hive</code>, <code>hdfs</code>, your custom type). <code>appId</code> distinguishes
+several hosts of the same type (for example <code>hiveServer2</code> and <code>hiveMetastore</code>) in audit and
+cache file names.</dd>
+<dt><code>init()</code></dt>
+<dd>Load audit configuration, start policy refresh, initialize chained plugins.</dd>
+<dt><code>setResultProcessor(RangerAccessResultProcessor)</code></dt>
+<dd>Install the audit handler.</dd>
+<dt><code>isAccessAllowed(RangerAccessRequest)</code>, <code>isAccessAllowed(Collection&lt;RangerAccessRequest&gt;)</code></dt>
+<dd>Evaluate access policies (policy type 0). Overloads take an explicit result processor.</dd>
+<dt><code>evalDataMaskPolicies(request, resultProcessor)</code></dt>
+<dd>Evaluate data-mask policies; the result carries the mask type and expression.</dd>
+<dt><code>evalRowFilterPolicies(request, resultProcessor)</code></dt>
+<dd>Evaluate row-filter policies; the result carries the filter expression.</dd>
+<dt><code>getResourceACLs(request)</code></dt>
+<dd>Return the effective allow/deny per user, group, and role for a resource (used by Hive
+<code>SHOW GRANT</code>, the HBase coprocessor's <code>getUserPermissions</code>, and similar).</dd>
+<dt><code>grantAccess(GrantRevokeRequest, ...)</code>, <code>revokeAccess(...)</code></dt>
+<dd>Forward SQL <code>GRANT</code>/<code>REVOKE</code> statements to Ranger Admin so they become policies.</dd>
+<dt><code>refreshPoliciesAndTags()</code></dt>
+<dd>Force an immediate refresh.</dd>
+<dt><code>getServiceDef()</code>, <code>getPolicyVersion()</code>, <code>getConfig()</code></dt>
+<dd>Introspection.</dd>
+<dt><code>cleanup()</code></dt>
+<dd>Stop background threads.</dd>
+</dl>
+<p>The minimal host adapter looks like the sample in
+<a href="https://github.com/apache/ranger/blob/master/ranger-examples/plugin-sampleapp/src/main/java/org/apache/ranger/examples/sampleapp/RangerAuthorizer.java"><code>ranger-examples/plugin-sampleapp</code></a>:</p>
+<div class="highlight"><span class="filename">RangerAuthorizer.java (excerpt)</span><pre><span></span><code><span class="n">plugin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RangerBasePlugin</span><span class="p">(</span><span class="s">"sampleapp"</span><span class="p">,</span><span class="w"> </span><span class="s">"sampleapp"</span><span class="p">);</span>
+<span class="n">plugin</span><span class="p">.</span><span class="na">setResultProcessor</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">RangerDefaultAuditHandler</span><span class="p">(</span><span class="n">plugin</span><span class="p">.</span><span class="na">getConfig</span><span class="p">()));</span>
+<span class="n">plugin</span><span class="p">.</span><span class="na">init</span><span class="p">();</span>
+
+<span class="n">RangerAccessResourceImpl</span><span class="w"> </span><span class="n">resource</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RangerAccessResourceImpl</span><span class="p">();</span>
+<span class="n">resource</span><span class="p">.</span><span class="na">setValue</span><span class="p">(</span><span class="s">"path"</span><span class="p">,</span><span class="w"> </span><span class="n">fileName</span><span class="p">);</span><span class="w"> </span><span class="c1">// "path" must be a resource name in the servicedef JSON</span>
+
+<span class="n">RangerAccessRequest</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RangerAccessRequestImpl</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span><span class="w"> </span><span class="n">accessType</span><span class="p">,</span><span class="w"> </span><span class="n">user</span><span class="p">,</span><span class="w"> </span><span class="n">userGroups</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">);</span>
+<span class="n">RangerAccessResult</span><span class="w">  </span><span class="n">result</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">plugin</span><span class="p">.</span><span class="na">isAccessAllowed</span><span class="p">(</span><span class="n">request</span><span class="p">);</span>
+
+<span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="na">getIsAllowed</span><span class="p">();</span>
+</code></pre></div>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p><code>RangerPluginConfig</code> reads three XML files for the service type from the classpath of the protected
+service, and optionally three more for the specific service name
+(<code>ranger-&lt;type&gt;-&lt;serviceName&gt;-security.xml</code> and so on) that override them. Keys in
+<code>ranger-&lt;type&gt;-security.xml</code> start with <code>ranger.plugin.&lt;type&gt;</code>, where <code>&lt;type&gt;</code> is the service type
+(<code>hive</code>, <code>trino</code>, <code>kafka</code>, ...). The tables list the properties read by <code>agents-common</code>; individual
+plugin pages list the properties specific to their service.</p>
+<h3 id="connection">Connection<a class="headerlink" href="#connection" title="Permanent link">&para;</a></h3>
+<p>How the plugin finds Ranger Admin and which service's policies it enforces. The first two keys are
+required.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.service.name</code></td>
+<td>(none)</td>
+<td>String</td>
+<td>Name of the service in Ranger Admin whose policies this plugin enforces.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.policy.rest.url</code></td>
+<td>(none)</td>
+<td>URL</td>
+<td>Ranger Admin URL, for example <code>http://ranger-admin:6080</code>. Comma-separated list for HA.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.policy.rest.ssl.config.file</code></td>
+<td>(none)</td>
+<td>Path</td>
+<td><code>ranger-&lt;type&gt;-policymgr-ssl.xml</code> with keystore and truststore settings for HTTPS to Admin.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.policy.source.impl</code></td>
+<td><code>org.apache.ranger.admin.client.RangerAdminRESTClient</code></td>
+<td>Class</td>
+<td>Class that fetches policies. Replace it to load policies from another source.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.policy.rest.client.connection.timeoutMs</code></td>
+<td><code>120000</code></td>
+<td>Duration (ms)</td>
+<td>HTTP connect timeout to Admin.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.policy.rest.client.read.timeoutMs</code></td>
+<td><code>30000</code></td>
+<td>Duration (ms)</td>
+<td>HTTP read timeout.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.policy.rest.client.max.retry.attempts</code></td>
+<td><code>3</code></td>
+<td>Integer</td>
+<td>Retries per download attempt.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.policy.rest.client.retry.interval.ms</code></td>
+<td><code>1000</code></td>
+<td>Duration (ms)</td>
+<td>Delay between retries.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.policy.rest.client.cookie.enabled</code></td>
+<td><code>true</code></td>
+<td>Boolean</td>
+<td>Reuse the Admin session cookie between requests.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">ranger-&lt;type&gt;-security.xml (minimal, for a Trino service)</span><pre><span></span><code><span class="nt">&lt;configuration&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.trino.service.name<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>dev_trino<span class="nt">&lt;/value&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.trino.policy.rest.url<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>http://ranger-admin:6080<span class="nt">&lt;/value&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>ranger.plugin.trino.policy.cache.dir<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>/etc/ranger/dev_trino/policycache<span class="nt">&lt;/value&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div>
+<h4 id="authentication-to-ranger-admin">Authentication to Ranger Admin<a class="headerlink" href="#authentication-to-ranger-admin" title="Permanent link">&para;</a></h4>
+<p>The plugin's REST client authenticates with Kerberos (SPNEGO) when the host process has a Kerberos login,
+with HTTP Basic when <code>policy.rest.client.username</code> and <code>policy.rest.client.password</code> are set, or with a
+bearer token. For bearer tokens the client holds a token supplier (<code>java.util.function.Supplier&lt;String&gt;</code>)
+and calls it for every request, so tokens can be refreshed without restarting the plugin. The supplier is
+chosen from configuration when the plugin is created, or set in code with
+<code>RangerBasePlugin.registerTokenSupplier(Supplier&lt;String&gt;)</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.policy.rest.client.jwt.supplier</code></td>
+<td>(none)</td>
+<td>Class</td>
+<td><code>Supplier&lt;String&gt;</code> implementation that returns the bearer token. It needs a constructor taking a Hadoop <code>Configuration</code> or a no-argument constructor. When not set and <code>jwt.source</code> is set, <code>org.apache.ranger.plugin.authn.DefaultTokenSupplier</code> is used.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.policy.rest.client.jwt.source</code></td>
+<td>(none)</td>
+<td>Enum</td>
+<td>Where <code>DefaultTokenSupplier</code> reads the token: <code>env</code>, <code>file</code> or <code>cred</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.policy.rest.client.jwt.env</code></td>
+<td>(none)</td>
+<td>String</td>
+<td>For <code>env</code>: environment variable holding the token.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.policy.rest.client.jwt.file</code></td>
+<td>(none)</td>
+<td>Path</td>
+<td>For <code>file</code>: file holding the token; re-read when it changes.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.policy.rest.client.jwt.cred.file</code></td>
+<td>(none)</td>
+<td>Path</td>
+<td>For <code>cred</code>: credential store holding the token; re-read at most once a minute.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.policy.rest.client.jwt.cred.alias</code></td>
+<td>(none)</td>
+<td>String</td>
+<td>For <code>cred</code>: alias of the token in the credential store.</td>
+</tr>
+</tbody>
+</table>
+<p>A supplier class that cannot be loaded, does not implement <code>Supplier</code>, or cannot be instantiated fails
+plugin initialization with an <code>IllegalArgumentException</code>.</p>
+<h3 id="policy-refresh-and-cache">Policy refresh and cache<a class="headerlink" href="#policy-refresh-and-cache" title="Permanent link">&para;</a></h3>
+<p>The refresher polls Ranger Admin and keeps a copy of what it downloaded on local disk, so the
+service can start while Admin is unreachable.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.policy.cache.dir</code></td>
+<td>(none)</td>
+<td>Path</td>
+<td>Directory for the cache file <code>&lt;appId&gt;_&lt;serviceName&gt;.json</code>, plus roles, tags, and user-store caches.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.policy.pollIntervalMs</code></td>
+<td><code>30000</code></td>
+<td>Duration (ms)</td>
+<td>How often the refresher asks Admin for updates.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.supports.policy.deltas</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Ask Admin for incremental policy changes instead of the full set.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.supports.tag.deltas</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Ask Admin for incremental tag changes.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.preserve.deltas</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Keep versioned copies of the cache file.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.dedup.strings</code></td>
+<td><code>true</code></td>
+<td>Boolean</td>
+<td>Intern strings in downloaded policies to reduce heap use.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="request-context">Request context<a class="headerlink" href="#request-context" title="Permanent link">&para;</a></h3>
+<p>These keys describe where the plugin runs and how it determines the client address.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.access.cluster.name</code></td>
+<td><code>""</code></td>
+<td>String</td>
+<td>Cluster name sent with requests and audits; used by cluster-based conditions.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.access.cluster.type</code></td>
+<td><code>""</code></td>
+<td>String</td>
+<td>Cluster type, used the same way.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.use.x-forwarded-for.ipaddress</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Take the client IP from <code>X-Forwarded-For</code> when the request passed through a proxy.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.trusted.proxy.ipaddresses</code></td>
+<td>(none)</td>
+<td>List</td>
+<td>Proxies trusted for the <code>X-Forwarded-For</code> header.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="users-and-groups">Users and groups<a class="headerlink" href="#users-and-groups" title="Permanent link">&para;</a></h3>
+<p>Principals with special treatment, and how the plugin resolves a user's groups.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.super.users</code></td>
+<td>(none)</td>
+<td>List</td>
+<td>Users always allowed, bypassing policies.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.super.groups</code></td>
+<td>(none)</td>
+<td>List</td>
+<td>Groups always allowed, bypassing policies.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.service.admins</code></td>
+<td>(none)</td>
+<td>List</td>
+<td>Users treated as service admins by the engine.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.audit.exclude.users</code></td>
+<td>(none)</td>
+<td>List</td>
+<td>Users whose requests are not audited.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.audit.exclude.groups</code></td>
+<td>(none)</td>
+<td>List</td>
+<td>Groups whose requests are not audited.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.audit.exclude.roles</code></td>
+<td>(none)</td>
+<td>List</td>
+<td>Roles whose requests are not audited.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.use.rangerGroups</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Add the user's groups from the Ranger user store to the request.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.use.only.rangerGroups</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Ignore groups supplied by the host and use only Ranger's.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.convert.emailToUser</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Map an email-address principal to a Ranger user name through the user store.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="enrichers-fallback-and-chaining">Enrichers, fallback and chaining<a class="headerlink" href="#enrichers-fallback-and-chaining" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.is.fallback.supported</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Return "undetermined" to the host instead of deny when no policy matches. HDFS sets this from <code>xasecure.add-hadoop-authorization</code>.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.enable.implicit.userstore.enricher</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Load the user store even if the service definition does not declare the enricher. Turned on automatically by the Ranger-groups and email options above.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.enable.implicit.gdsinfo.enricher</code></td>
+<td><code>true</code></td>
+<td>Boolean</td>
+<td>Load <a href="../../features/gds/gds_intro/">GDS</a> dataset information.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.chained.services</code></td>
+<td>(none)</td>
+<td>List</td>
+<td>Other services whose policies are consulted after this one; see <a href="#chained-plugins">Chained plugins</a>.</td>
+</tr>
+<tr>
+<td><code>ranger.plugin.&lt;type&gt;.chained.services.&lt;name&gt;.impl</code></td>
+<td>(none)</td>
+<td>Class</td>
+<td><code>RangerChainedPlugin</code> implementation for each chained service.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="policy-engine-options">Policy engine options<a class="headerlink" href="#policy-engine-options" title="Permanent link">&para;</a></h3>
+<p>These tune <code>RangerPolicyEngineOptions</code>. All keys start with
+<code>ranger.plugin.&lt;type&gt;.policyengine.option.</code>; the table shows the rest of the key. The defaults shown
+are for plugins (Ranger Admin uses different defaults for its own embedded engine).</p>
+<table>
+<thead>
+<tr>
+<th>Key (after the prefix)</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>disable.context.enrichers</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Skip tag, user-store, and GDS enrichers.</td>
+</tr>
+<tr>
+<td><code>disable.custom.conditions</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Ignore policy conditions.</td>
+</tr>
+<tr>
+<td><code>disable.tagpolicy.evaluation</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Skip tag-based policies.</td>
+</tr>
+<tr>
+<td><code>disable.policy.refresher</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Do not start the refresher; policies must be set programmatically.</td>
+</tr>
+<tr>
+<td><code>disable.tag.retriever</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Skip the background download of tags.</td>
+</tr>
+<tr>
+<td><code>disable.userstore.retriever</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Skip the background download of the user store.</td>
+</tr>
+<tr>
+<td><code>disable.gdsinfo.retriever</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Skip the background download of GDS information.</td>
+</tr>
+<tr>
+<td><code>disable.role.resolution</code></td>
+<td><code>true</code></td>
+<td>Boolean</td>
+<td>When <code>false</code>, roles named in a policy are expanded to their users and groups when the policy's ACL summary is built.</td>
+</tr>
+<tr>
+<td><code>disable.trie.lookup.prefilter</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Evaluate every policy instead of trie-selected candidates (debugging only).</td>
+</tr>
+<tr>
+<td><code>cache.audit.results</code></td>
+<td><code>true</code></td>
+<td>Boolean</td>
+<td>Cache the audit-enabled decision per resource.</td>
+</tr>
+<tr>
+<td><code>enable.resourcematcher.reuse</code></td>
+<td><code>true</code></td>
+<td>Boolean</td>
+<td>Share resource matchers between policies with identical resources.</td>
+</tr>
+<tr>
+<td><code>optimize.trie.for.retrieval</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Use more memory for faster lookups in the resource trie.</td>
+</tr>
+<tr>
+<td><code>optimize.trie.for.space</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Use less memory at the cost of slower lookups in the resource trie.</td>
+</tr>
+<tr>
+<td><code>optimize.tag.trie.for.retrieval</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Same as <code>optimize.trie.for.retrieval</code>, for the tag trie.</td>
+</tr>
+<tr>
+<td><code>optimize.tag.trie.for.space</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Same as <code>optimize.trie.for.space</code>, for the tag trie.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="audit-ranger-type-auditxml">Audit (<code>ranger-&lt;type&gt;-audit.xml</code>)<a class="headerlink" href="#audit-ranger-type-auditxml" title="Permanent link">&para;</a></h3>
+<p>Audit properties keep the <code>xasecure.audit</code> prefix. <code>&lt;name&gt;</code> is a destination: <code>auditserver</code>, <code>solr</code>,
+<code>elasticsearch</code>, <code>opensearch</code>, <code>hdfs</code>, <code>log4j</code>, and others provided by <code>agents-audit</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>xasecure.audit.is.enabled</code></td>
+<td><code>true</code></td>
+<td>Boolean</td>
+<td>Master switch for auditing in this plugin.</td>
+</tr>
+<tr>
+<td><code>xasecure.audit.destination.&lt;name&gt;</code></td>
+<td>(none)</td>
+<td>Boolean</td>
+<td>Set to <code>true</code> to enable the destination.</td>
+</tr>
+<tr>
+<td><code>xasecure.audit.destination.&lt;name&gt;.batch.filespool.dir</code></td>
+<td>(none)</td>
+<td>Path</td>
+<td>Local spool directory used when the destination is unavailable.</td>
+</tr>
+<tr>
+<td><code>xasecure.audit.provider.filecache.is.enabled</code></td>
+<td><code>false</code></td>
+<td>Boolean</td>
+<td>Write events to a local file cache first and forward from there.</td>
+</tr>
+</tbody>
+</table>
+<p>Each destination has its own settings under <code>xasecure.audit.destination.&lt;name&gt;.</code>, for example
+<code>xasecure.audit.destination.auditserver.url</code> and <code>xasecure.audit.destination.hdfs.dir</code>.</p>
+<div class="highlight"><span class="filename">ranger-&lt;type&gt;-audit.xml (audit server destination)</span><pre><span></span><code><span class="nt">&lt;configuration&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.is.enabled<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>true<span class="nt">&lt;/value&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.auditserver<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>true<span class="nt">&lt;/value&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>xasecure.audit.destination.auditserver.url<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>http://ranger-audit-ingestor:7081<span class="nt">&lt;/value&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div>
+<p>The full property reference is on the <a href="../../services/audit/">Audit framework</a> page.</p>
+<h2 id="policy-refresher">Policy refresher<a class="headerlink" href="#policy-refresher" title="Permanent link">&para;</a></h2>
+<p><code>PolicyRefresher</code> is a daemon thread plus a timer. At startup it calls <code>loadRoles()</code> and
+<code>loadPolicy()</code> synchronously so the plugin has policies before serving its first request; then a
+timer enqueues a download trigger every <code>policy.pollIntervalMs</code>.</p>
+<ul>
+<li><strong>Download.</strong> <code>RangerAdminRESTClient.getServicePoliciesIfUpdated(lastKnownVersion,
+  lastActivationTime)</code> calls <code>/service/plugins/secure/policies/download/{serviceName}</code> (or the
+  non-<code>secure</code> path when Kerberos is off) with <code>lastKnownVersion</code>, <code>pluginId</code>, <code>clusterName</code>,
+  <code>supportsPolicyDeltas</code>, and <code>pluginCapabilities</code>. Admin answers with <code>ServicePolicies</code> only when
+  the version changed.</li>
+<li><strong>Apply.</strong> <code>RangerBasePlugin.setPolicies()</code> builds a new <code>RangerPolicyEngineImpl</code> (or applies
+  deltas to a copy of the current one), attaches enrichers, and swaps it in.</li>
+<li><strong>Cache.</strong> The applied policies are written to <code>&lt;policy.cache.dir&gt;/&lt;appId&gt;_&lt;serviceName&gt;.json</code>.
+  If Admin cannot be reached at startup, the cache is read instead. If Admin reports that the
+  service no longer exists, the cache file is renamed aside and the plugin runs with no policies.</li>
+<li><strong>Failure.</strong> Any other error is logged and the plugin keeps the last known policies; the next
+  poll tries again.</li>
+<li><strong>Roles, tags, user store, GDS.</strong> <code>RangerRolesProvider</code>, <code>RangerTagEnricher</code>,
+  <code>RangerUserStoreEnricher</code>, and <code>RangerGdsEnricher</code> each run the same download-and-cache pattern
+  against their own endpoints, using the polling intervals from their enricher options.</li>
+<li><strong>Force refresh.</strong> The plugin exposes <code>refreshPoliciesAndTags()</code> for hosts that want to refresh
+  after a <code>GRANT</code>.</li>
+</ul>
+<p>Every download is reported back to Admin, which is what populates the <strong>Audit &gt; Plugins</strong> and
+<strong>Plugin Status</strong> tabs in the UI.</p>
+<h2 id="request-and-result">Request and result<a class="headerlink" href="#request-and-result" title="Permanent link">&para;</a></h2>
+<p><code>RangerAccessRequest</code> describes what is being attempted. The host adapter fills a
+<code>RangerAccessRequestImpl</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>resource</code></td>
+<td>A <code>RangerAccessResource</code> (map of resource level to value, for example <code>database=finance, table=orders</code>), optionally with an owner.</td>
+</tr>
+<tr>
+<td><code>accessType</code></td>
+<td>The access type from the service definition (<code>select</code>, <code>write</code>, ...). A special value <code>_any</code> asks "any access at all", used for existence checks.</td>
+</tr>
+<tr>
+<td><code>user</code>, <code>userGroups</code>, <code>userRoles</code></td>
+<td>The principal. Roles are normally resolved by the engine from Ranger roles.</td>
+</tr>
+<tr>
+<td><code>accessTime</code></td>
+<td>When the access happens (drives validity schedules and time-of-day conditions).</td>
+</tr>
+<tr>
+<td><code>clientIPAddress</code>, <code>remoteIPAddress</code>, <code>forwardedAddresses</code></td>
+<td>Network origin, used by IP conditions and audits.</td>
+</tr>
+<tr>
+<td><code>clientType</code>, <code>action</code>, <code>requestData</code>, <code>sessionId</code></td>
+<td>Host-specific details recorded in audits (for Hive: <code>HIVESERVER2</code>, the command type, and the query text).</td>
+</tr>
+<tr>
+<td><code>clusterName</code>, <code>clusterType</code></td>
+<td>From configuration; used by cluster conditions.</td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td>A map populated by context enrichers (tags, user attributes, GDS info) and by the host (for example resources accessed together).</td>
+</tr>
+<tr>
+<td><code>resourceMatchingScope</code></td>
+<td><code>SELF</code> or <code>SELF_OR_DESCENDANTS</code>, for checks such as "may the user access anything under this database".</td>
+</tr>
+</tbody>
+</table>
+<p><code>RangerAccessResult</code> is what comes back:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>isAccessDetermined</code>, <code>isAllowed</code></td>
+<td>The decision. <code>isAccessDetermined=false</code> means no policy matched (see fallback in <a href="../policy-model/#evaluation-order">Policy model</a>).</td>
+</tr>
+<tr>
+<td><code>policyId</code>, <code>policyVersion</code>, <code>policyPriority</code>, <code>zoneName</code></td>
+<td>Which policy decided, from which zone.</td>
+</tr>
+<tr>
+<td><code>isAudited</code>, <code>auditPolicyId</code>, <code>auditLogId</code></td>
+<td>Whether an audit record is produced and which policy's audit flag decided that.</td>
+</tr>
+<tr>
+<td><code>reason</code></td>
+<td>Free text, for example <code>superuser</code> or <code>matched deny-all-else policy</code>.</td>
+</tr>
+<tr>
+<td><code>maskType</code>, <code>maskedValue</code>, <code>maskCondition</code></td>
+<td>For data-mask evaluations.</td>
+</tr>
+<tr>
+<td><code>filterExpr</code></td>
+<td>For row-filter evaluations.</td>
+</tr>
+<tr>
+<td><code>datasets</code>, <code>projects</code>, <code>allowedByDatasets</code>, <code>allowedByProjects</code></td>
+<td>GDS information.</td>
+</tr>
+<tr>
+<td><code>evaluatedPoliciesCount</code></td>
+<td>Diagnostics.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="context-enrichers-and-condition-evaluators">Context enrichers and condition evaluators<a class="headerlink" href="#context-enrichers-and-condition-evaluators" title="Permanent link">&para;</a></h2>
+<p><strong>Context enrichers</strong> run before evaluation and add information to <code>request.context</code>. They are
+declared in the service definition (<code>contextEnrichers</code>) or enabled implicitly by configuration:</p>
+<dl>
+<dt><code>RangerTagEnricher</code></dt>
+<dd>Adds the tags attached to the resource, from the tag service linked to this service. Options:
+<code>tagRetrieverClassName</code> (<code>RangerAdminTagRetriever</code> in the shipped tag service definition;
+<code>RangerFileBasedTagRetriever</code> reads a file), <code>tagRefresherPollingInterval</code> (ms, default 60000), <code>disableTrieLookupPrefilter</code>.</dd>
+<dt><code>RangerUserStoreEnricher</code></dt>
+<dd>Adds user and group attributes, Ranger groups, and the email-to-user mapping. Options:
+<code>userStoreRetrieverClassName</code> (default <code>RangerAdminUserStoreRetriever</code>),
+<code>userStoreRefresherPollingInterval</code> (ms, default 3600000).</dd>
+<dt><code>RangerGdsEnricher</code></dt>
+<dd>Adds the Governed Data Sharing datasets and projects that include the resource. Options:
+<code>retrieverClassName</code> (default <code>RangerAdminGdsInfoRetriever</code>), <code>refresherPollingInterval</code>
+(ms, default 60000).</dd>
+<dt>Geolocation providers (<code>RangerFileBasedGeolocationProvider</code>)</dt>
+<dd>Add location attributes for the client IP. Options are provider-specific.</dd>
+</dl>
+<p><strong>Condition evaluators</strong> implement <code>RangerConditionEvaluator</code> and are referenced from the
+service definition's <code>policyConditions</code> (by class name in <code>evaluator</code>). Shipped evaluators in
+<code>org.apache.ranger.plugin.conditionevaluator</code> include <code>RangerIpMatcher</code>, <code>RangerTimeOfDayMatcher</code>,
+<code>RangerAccessedFromClusterCondition</code>, <code>RangerAccessedFromClusterTypeCondition</code> (and their
+<code>Not</code> variants), <code>RangerContextAttributeValueInCondition</code> / <code>NotInCondition</code>,
+<code>RangerTagsAllPresentConditionEvaluator</code>, <code>RangerAnyOfExpectedTagsPresentConditionEvaluator</code>,
+<code>RangerNoneOfExpectedTagsPresentConditionEvaluator</code>, <code>RangerHiveResourcesAccessedTogetherCondition</code>,
+<code>RangerScriptConditionEvaluator</code> (JavaScript expressions over <code>USER</code>, <code>TAG</code>, <code>RESOURCE</code>, and
+request attributes), and <code>RangerScriptTemplateConditionEvaluator</code>. See
+<a href="../../features/policies/policy-conditions/">Policy conditions</a> for usage and
+<a href="../../dev/custom-conditions-enrichers/">Custom conditions and enrichers</a> for writing your own.</p>
+<h2 id="service-definition-model">Service definition model<a class="headerlink" href="#service-definition-model" title="Permanent link">&para;</a></h2>
+<p>A service definition (<code>RangerServiceDef</code>) is the JSON contract between a plugin, Ranger Admin's
+UI, and the policy engine. Top-level fields:</p>
+<dl>
+<dt><code>name</code>, <code>displayName</code>, <code>label</code>, <code>description</code></dt>
+<dd>Identity of the service type. <code>name</code> is what plugins pass as <code>serviceType</code>.</dd>
+<dt><code>implClass</code></dt>
+<dd><code>RangerBaseService</code> subclass that Ranger Admin loads for test-connection and resource lookup.</dd>
+<dt><code>options</code></dt>
+<dd>Map of service-wide switches: <code>enableDenyAndExceptionsInPolicies</code>, <code>enableTagBasedPolicies</code>,
+<code>enableImplicitConditionExpression</code>, <code>rrnResourceSepChar</code>.</dd>
+<dt><code>configs</code></dt>
+<dd>List of <code>RangerServiceConfigDef</code>: the properties an admin fills in when creating a service.
+Each has <code>name</code>, <code>type</code>, <code>subType</code>, <code>mandatory</code>, <code>defaultValue</code>, <code>validationRegEx</code>, <code>uiHint</code>,
+<code>label</code>.</dd>
+<dt><code>resources</code></dt>
+<dd>List of <code>RangerResourceDef</code>: the resource hierarchy. Each has <code>name</code>, <code>type</code>, <code>level</code>, <code>parent</code>,
+<code>mandatory</code>, <code>lookupSupported</code>, <code>recursiveSupported</code>, <code>excludesSupported</code>, <code>matcher</code>
+(<code>RangerDefaultResourceMatcher</code>, <code>RangerPathResourceMatcher</code>, <code>RangerURLResourceMatcher</code>),
+<code>matcherOptions</code> (<code>wildCard</code>, <code>ignoreCase</code>, <code>pathSeparatorChar</code>), <code>validationRegEx</code>, <code>uiHint</code>,
+<code>accessTypeRestrictions</code>, <code>isValidLeaf</code>.</dd>
+<dt><code>accessTypes</code></dt>
+<dd>List of <code>RangerAccessTypeDef</code>: the permissions. Each has <code>name</code>, <code>label</code>, <code>impliedGrants</code> (for
+example Hive <code>all</code> implies every other type), and <code>category</code> (<code>CREATE</code>, <code>READ</code>, <code>UPDATE</code>,
+<code>DELETE</code>, <code>MANAGE</code>).</dd>
+<dt><code>policyConditions</code></dt>
+<dd>List of <code>RangerPolicyConditionDef</code>: conditions available in the policy editor. Each has <code>name</code>,
+<code>evaluator</code> class, <code>evaluatorOptions</code>, <code>uiHint</code>, <code>label</code>.</dd>
+<dt><code>contextEnrichers</code></dt>
+<dd>List of <code>RangerContextEnricherDef</code>: enrichers to run. Each has <code>name</code>, <code>enricher</code> class,
+<code>enricherOptions</code>.</dd>
+<dt><code>enums</code></dt>
+<dd>List of <code>RangerEnumDef</code>: named value lists (<code>name</code>, <code>elements</code>, <code>defaultIndex</code>) usable by
+<code>configs</code> of type <code>enum</code>.</dd>
+<dt><code>dataMaskDef</code></dt>
+<dd><code>RangerDataMaskDef</code>: <code>maskTypes</code> (each with <code>name</code>, <code>label</code>, <code>transformer</code> expression,
+<code>dataMaskOptions</code>), plus the subset of <code>accessTypes</code> and <code>resources</code> that masking applies to.</dd>
+<dt><code>rowFilterDef</code></dt>
+<dd><code>RangerRowFilterDef</code>: the <code>accessTypes</code> and <code>resources</code> that row filtering applies to.</dd>
+</dl>
+<p>Every item carries an <code>itemId</code> that must stay stable across versions of the definition; Ranger
+Admin uses it to migrate existing policies when a definition is updated. The Hive definition,
+<a href="https://github.com/apache/ranger/blob/master/agents-common/src/main/resources/service-defs/ranger-servicedef-hive.json"><code>ranger-servicedef-hive.json</code></a>,
+is a good reference for a full definition with masking and row filtering; <code>ranger-servicedef-tag.json</code>
+shows a definition whose only purpose is enrichers and conditions.</p>
+<h2 id="shim-and-class-loader-isolation">Shim and class loader isolation<a class="headerlink" href="#shim-and-class-loader-isolation" title="Permanent link">&para;</a></h2>
+<p>Plugins bring their own dependency versions (Jersey, Jackson, HTTP client, and so on) that may
+conflict with the host service's. To avoid this, each plugin archive contains two layers:</p>
+<ul>
+<li><code>lib/ranger-&lt;type&gt;-plugin-shim-&lt;version&gt;.jar</code> and <code>ranger-plugin-classloader-&lt;version&gt;.jar</code> go
+  on the host's normal classpath. The shim contains only thin proxy classes.</li>
+<li><code>lib/ranger-&lt;type&gt;-plugin-impl/</code> holds the real plugin (<code>ranger-&lt;type&gt;-plugin</code>,
+  <code>ranger-plugins-common</code>, <code>ranger-audit-core</code>, <code>ranger-audit-dest-auditserver</code>,
+  <code>ranger-authz-api</code>, <code>ranger-plugins-cred</code>, <code>ranger-common-utils</code>, <code>ugsync-util</code>) and all their
+  dependencies.</li>
+</ul>
+<p>The shim class (for Hive, <code>RangerHiveAuthorizerFactory</code> in <code>ranger-hive-plugin-shim</code>) creates a
+<code>RangerPluginClassLoader</code> for the plugin type, which locates the <code>ranger-&lt;type&gt;-plugin-impl</code>
+directory next to the shim jar and loads every jar in it. The class loader is child-first: it looks
+in the impl directory before delegating to the host's class loader, so the plugin sees its own
+dependency versions while still being able to load host classes (<code>HiveConf</code>, Hadoop
+<code>UserGroupInformation</code>). Around every call into the implementation, the shim calls
+<code>activate()</code> (which sets the thread context class loader to the plugin loader) and <code>deactivate()</code>
+(which restores it):</p>
+<div class="highlight"><span class="filename">RangerHiveAuthorizerFactory.java (shim, excerpt)</span><pre><span></span><code><span class="n">rangerPluginClassLoader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RangerPluginClassLoader</span><span class="p">.</span><span class="na">getInstance</span><span class="p">(</span><span class="s">"hive"</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">getClass</span><span class="p">());</span>
+
+<span class="n">Class</span><span class="o">&lt;</span><span class="n">HiveAuthorizerFactory</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">HiveAuthorizerFactory</span><span class="o">&gt;</span><span class="p">)</span><span class="w"> </span><span class="n">Class</span><span class="p">.</span><span class="na">forName</span><span class="p">(</span>
+<span class="w">        </span><span class="s">"org.apache.ranger.authorization.hive.authorizer.RangerHiveAuthorizerFactory"</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="n">rangerPluginClassLoader</span><span class="p">);</span>
+
+<span class="n">activatePluginClassLoader</span><span class="p">();</span>
+<span class="n">rangerHiveAuthorizerFactoryImpl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cls</span><span class="p">.</span><span class="na">newInstance</span><span class="p">();</span>
+<span class="n">deactivatePluginClassLoader</span><span class="p">();</span>
+</code></pre></div>
+<p>The shim and the implementation use the same fully qualified class name; only the class loader
+differs. Plugins that run in a process without dependency conflicts (or that you embed in your own
+application) can skip the shim and depend on <code>ranger-plugins-common</code> directly.</p>
+<h2 id="audit-handler">Audit handler<a class="headerlink" href="#audit-handler" title="Permanent link">&para;</a></h2>
+<p><code>RangerDefaultAuditHandler</code> implements <code>RangerAccessResultProcessor</code>. For every result with
+<code>isAudited=true</code> it builds an <code>AuthzAuditEvent</code> and hands it to the audit framework
+(<code>AuditProviderFactory</code> in <code>agents-audit</code>). The event fields, as serialized to the audit store,
+are: <code>repoType</code>, <code>repo</code> (service name), <code>reqUser</code>, <code>evtTime</code>, <code>access</code>, <code>resource</code>, <code>resType</code>,
+<code>action</code>, <code>result</code>, <code>agent</code>, <code>policy</code>, <code>policy_version</code>, <code>reason</code>, <code>enforcer</code>, <code>sess</code>, <code>cliType</code>,
+<code>cliIP</code>, <code>reqData</code>, <code>agentHost</code>, <code>logType</code>, <code>id</code>, <code>seq_num</code>, <code>event_count</code>, <code>event_dur_ms</code>, <code>tags</code>,
+<code>datasets</code>, <code>projects</code>, <code>cluster_name</code>, <code>zone_name</code>, and <code>additional_info</code>. When the summary
+queue (<code>AuditSummaryQueue</code>, <code>summary.interval.ms</code>) is enabled, repeated identical events within
+the interval are collapsed into one record with <code>event_count</code> and <code>event_dur_ms</code>.</p>
+<p>The framework pipeline is asynchronous so audit never blocks the request:</p>
+<pre class="mermaid"><code>flowchart LR
+  H[RangerDefaultAuditHandler] --&gt; Q[AuditAsyncQueue]
+  Q --&gt; B[AuditBatchQueue]
+  B --&gt; S[AuditFileSpool&lt;br/&gt;local disk on failure]
+  S --&gt; D1[Solr / OpenSearch /&lt;br/&gt;Elasticsearch destination]
+  S --&gt; D2[HDFS / S3 / ADLS&lt;br/&gt;destination]
+  S --&gt; D3[Audit server&lt;br/&gt;REST destination]
+  S --&gt; D4[Log4j destination]</code></pre>
+<p>Hosts that need custom audit behavior (HDFS writes one event for the several checks of one file-system operation, Hive attaches the query
+text, multi-resource requests log once) subclass <code>RangerDefaultAuditHandler</code> or use
+<code>RangerMultiResourceAuditHandler</code>. Users, groups, or roles listed in the
+<code>ranger.plugin.&lt;type&gt;.audit.exclude.*</code> properties are never audited; audit filters defined in the
+service configuration (<code>ranger.plugin.audit.filters</code>) give finer control. See
+<a href="../../services/audit/audit-filters/">Audit filters</a>.</p>
+<h2 id="chained-plugins">Chained plugins<a class="headerlink" href="#chained-plugins" title="Permanent link">&para;</a></h2>
+<p>A plugin can consult the policies of another service after its own. The Hive plugin, for example,
+can chain the HDFS plugin so that a Hive URL grant is checked against HDFS policies. Configure
+<code>ranger.plugin.&lt;type&gt;.chained.services=&lt;otherService&gt;</code> and
+<code>ranger.plugin.&lt;type&gt;.chained.services.&lt;otherService&gt;.impl=&lt;RangerChainedPlugin subclass&gt;</code>. The
+chained plugin has its own refresher and policy engine; <code>RangerBasePlugin</code> merges its result with
+the primary result. Set <code>ranger.plugin.&lt;type&gt;.bypass.chained.plugin.evaluation.if.access.is.determined=true</code>
+to skip the chained evaluation once the primary engine has decided.</p>
+<h2 id="further-reading">Further reading<a class="headerlink" href="#further-reading" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../policy-model/">Policy model</a>: how the engine orders and combines policies.</li>
+<li><a href="../architecture/">Ranger architecture</a>: where plugins sit in the overall system.</li>
+<li><a href="../../plugins/custom-plugin/">Custom plugins</a>: building a plugin for your own service.</li>
+<li><a href="../../plugins/">Plugins overview</a>: the plugins shipped with Ranger.</li>
+<li><a href="../../dev/authz-api/">authz-api and Ranger PDP</a>: using Ranger without embedding a plugin.</li>
+<li><a href="../../features/client-interface/java/">Java client</a>: managing policies programmatically.</li>
+<li>Source: <a href="https://github.com/apache/ranger/tree/master/agents-common"><code>agents-common</code></a>,
+  <a href="https://github.com/apache/ranger/tree/master/ranger-plugin-classloader"><code>ranger-plugin-classloader</code></a>,
+  <a href="https://github.com/apache/ranger/tree/master/agents-audit"><code>agents-audit</code></a>,
+  <a href="https://github.com/apache/ranger/tree/master/ranger-examples/plugin-sampleapp"><code>ranger-examples/plugin-sampleapp</code></a>.</li>
+</ul>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 15:52:15 PDT">September 20, 2026</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2014-2025 The Apache Software Foundation
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://the-asf.slack.com/archives/C4SC5NXAA" target="_blank" rel="noopener" title="the-asf.slack.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M94.1 315.1c0 25.9-21.2 47.1-47.1 47.1S0 341 0 315.1 21.2 268 47.1 268h47.1v47.1zm23.7 0c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1v117.8c0 25.9-21.2 47.1-47.1 47.1s-47.1-21.2-47.1-47.1zm47.1-189c-25.9 0-47.1-21.2-47.1-47.1s21.2-47 47.1-47S212 53.2 212 79.1v47.1h-47.1zm0 23.7c25.9 0 47.1 21.2 47.1 47.1S190.8 244 164.9 244H47.1C21.2 244 0 222.8 0 196.9s21.2-47.1 47.1-47.1zm189 47.1c0-25.9 21.2-47.1 47.1-47.1s47 21.2 47 47.1-21.2 47.1-47.1 47.1h-47.1v-47.1zm-23.7 0c0 25.9-21.2 47.1-47.1 47.1S236 222.8 236 196.9V79.1c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1zm-47.1 189c25.9 0 47.1 21.2 47.1 47.1s-21.2 47-47.1 47-47.1-21.2-47.1-47.1v-47.1h47.1zm0-23.7c-25.9 0-47.1-21.2-47.1-47.1s21.2-47.1 47.1-47.1h117.8c25.9 0 47.1 21.2 47.1 47.1s-21.2 47.1-47.1 47.1z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="mailto:dev@ranger.apache.org" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l208 156a48 48 0 0 0 57.6 0l208-156c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48zM0 196v188c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V196L313.6 344.8c-34.1 25.6-81.1 25.6-115.2 0z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/apache/ranger" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://hub.docker.com/r/apache/ranger" target="_blank" rel="noopener" title="hub.docker.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M349.9 236.3h-66.1v-59.4h66.1zm0-204.3h-66.1v60.7h66.1zm78.2 144.8H362v59.4h66.1zm-156.3-72.1h-66.1v60.1h66.1zm78.1 0h-66.1v60.1h66.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1zm78.1 0h-66.1v59.4h66.1zm-78.1-72.1h-66.1v60.1h66.1z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.top", "navigation.tracking", "navigation.tabs", "navigation.path", "navigation.indexes", "navigation.prune", "content.code.copy", "toc.follow", "announce.dismiss"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/js/typewriter.js"></script>
+      
+        <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+      
+    
+  </body>
+</html>

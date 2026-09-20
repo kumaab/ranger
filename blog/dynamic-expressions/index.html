@@ -256,7 +256,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../getting-started/install/" class="md-tabs__link">
+        <a href="../../getting-started/introduction/" class="md-tabs__link">
           
   
   
@@ -300,7 +300,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../plugins/trino/" class="md-tabs__link">
+        <a href="../../plugins/" class="md-tabs__link">
           
   
   
@@ -321,6 +321,13 @@
   
     
     
+      
+  
+  
+  
+  
+    
+    
       <li class="md-tabs__item">
         <a href="../../services/admin/service/" class="md-tabs__link">
           
@@ -335,6 +342,41 @@
     
   
 
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../features/policies/resource-policies/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Features
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
       
         
   
@@ -344,13 +386,13 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../features/gds/gds_intro/" class="md-tabs__link">
+        <a href="../../dev/build/" class="md-tabs__link">
           
   
   
     
   
-  Features
+  Developer guide
 
         </a>
       </li>
@@ -510,6 +552,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -528,7 +578,7 @@
   
   
   
-    <a href="../../getting-started/install/" class="md-nav__link">
+    <a href="../../getting-started/introduction/" class="md-nav__link">
       
   
   
@@ -562,6 +612,10 @@
   
     
     
+      
+        
+      
+        
       
         
       
@@ -619,6 +673,56 @@
     
       
         
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
       
     
     
@@ -638,7 +742,7 @@
   
   
   
-    <a href="../../plugins/trino/" class="md-nav__link">
+    <a href="../../plugins/" class="md-nav__link">
       
   
   
@@ -681,6 +785,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -696,6 +804,10 @@
     <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
       
         
+  
+  
+  
+    
   
   
   
@@ -720,6 +832,8 @@
     </a>
   
 
+  
+
       
     </li>
   
@@ -733,6 +847,14 @@
   
     
     
+      
+        
+      
+        
+      
+        
+      
+        
       
         
       
@@ -758,7 +880,11 @@
   
   
   
-    <a href="../../features/gds/gds_intro/" class="md-nav__link">
+    
+  
+  
+  
+    <a href="../../features/policies/resource-policies/" class="md-nav__link">
       
   
   
@@ -766,6 +892,71 @@
     
   
     Features
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../dev/build/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer guide
   
 
     
@@ -949,10 +1140,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
         
           
-          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
             
   
   
@@ -970,8 +1161,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_9">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1893,6 +2084,11 @@ surrounds each value within quotes. For example, consider the following row-filt
 <p>The expression can evaluate to the following, if the user belongs to groups having an attribute named state:</p>
 <div class="highlight"><pre><span></span><code>location_state IN ('CA','OR','WA')
 </code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Related documentation</p>
+<p>Dynamic expressions are documented in <a href="../../features/policies/policy-conditions/">Policy conditions</a> and
+<a href="../../features/abac/">Attribute-based access control</a>.</p>
+</div>
 
 
 
@@ -1913,7 +2109,7 @@ surrounds each value within quotes. For example, consider the following row-filt
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 19, 2026 13:04:02 PDT">September 19, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 15:52:15 PDT">September 20, 2026</span>
   </span>
 
     

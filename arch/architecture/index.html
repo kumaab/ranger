@@ -847,17 +847,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#default-ports" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Default ports
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#high-availability" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1592,17 +1581,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#default-ports" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Default ports
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#high-availability" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1722,8 +1700,8 @@ Plugins download policies from Ranger Admin, keep a local copy, and evaluate eve
 memory inside the protected service. If Ranger Admin is unavailable, plugins keep enforcing the last
 policies they received. This gives Ranger high throughput and no single point of failure on the
 authorization path.</p>
-<p>This page describes the components, how data flows between them, typical deployment layouts, the
-default ports, and where to read about high availability.</p>
+<p>This page describes the components, how data flows between them, typical deployment layouts,
+and where to read about high availability.</p>
 <h2 id="components">Components<a class="headerlink" href="#components" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1782,53 +1760,53 @@ default ports, and where to read about high availability.</p>
 </tbody>
 </table>
 <h3 id="component-diagram">Component diagram<a class="headerlink" href="#component-diagram" title="Permanent link">&para;</a></h3>
-<pre class="mermaid"><code>flowchart LR
+<pre class="mermaid"><code>flowchart TB
   subgraph sources["Identity and metadata sources"]
-    LDAP[(LDAP / AD / UNIX)]
-    ATLAS[(Apache Atlas)]
+    direction LR
+    LDAP[("LDAP, AD or UNIX")]
+    ATLAS[("Apache Atlas")]
   end
 
-  subgraph ranger["Ranger core"]
-    US[UserSync]
-    TS[TagSync]
-    ADMIN[Ranger Admin&lt;br/&gt;UI + REST]
-    DB[(Policy DB)]
-    KMS[Ranger KMS]
-    PDP[Ranger PDP]
+  subgraph sync["Synchronization"]
+    direction LR
+    US["UserSync"]
+    TS["TagSync"]
   end
 
-  subgraph protected["Protected services"]
-    TRINO[Trino coordinator + plugin]
-    OZONE[Ozone Manager + plugin]
-    KAFKA[Kafka broker + plugin]
-    APP[Your app]
+  subgraph core["Policy administration"]
+    direction LR
+    ADMIN["Ranger Admin&lt;br/&gt;UI and REST API"]
+    DB[("Policy database")]
+    ADMIN &lt;--&gt; DB
   end
 
-  subgraph audit["Audit"]
-    ING[Audit ingestor]
-    KQ[(Kafka)]
-    DISP[Audit dispatchers]
-    IDX[(Solr / OpenSearch)]
-    HDFSA[(HDFS / S3 / ADLS)]
+  subgraph enforce["Policy enforcement"]
+    direction LR
+    PLUGINS["Plugins inside services&lt;br/&gt;Trino, Ozone, Kafka, Hive"]
+    PDP["Ranger PDP&lt;br/&gt;for your applications"]
+    KMS["Ranger KMS"]
+    PLUGINS ~~~ PDP ~~~ KMS
   end
 
-  LDAP --&gt;|users, groups| US --&gt;|REST| ADMIN
-  ATLAS --&gt;|tags| TS --&gt;|REST| ADMIN
-  ADMIN &lt;--&gt; DB
-  ADMIN --&gt;|policies, tags, roles, userstore| TRINO
-  ADMIN --&gt; OZONE
-  ADMIN --&gt; KAFKA
-  ADMIN --&gt; KMS
-  ADMIN --&gt; PDP
-  APP --&gt;|authz REST| PDP
-  TRINO --&gt;|audit events| ING
-  OZONE --&gt; ING
-  KAFKA --&gt; ING
-  PDP --&gt; ING
-  ING --&gt; KQ --&gt; DISP
-  DISP --&gt; IDX
-  DISP --&gt; HDFSA
-  ADMIN -.-&gt;|audit search| IDX</code></pre>
+  subgraph pipeline["Audit pipeline"]
+    direction LR
+    ING["Audit ingestor"] --&gt; KQ[("Kafka")] --&gt; DISP["Audit dispatchers"]
+  end
+
+  subgraph stores["Audit stores"]
+    direction LR
+    IDX[("OpenSearch or Solr")]
+    OBJ[("HDFS, S3 or ADLS")]
+    IDX ~~~ OBJ
+  end
+
+  LDAP --&gt; US
+  ATLAS --&gt; TS
+  sync --&gt;|"users, groups, tags"| core
+  core --&gt;|"policies, tags, roles"| enforce
+  enforce --&gt;|"audit events"| pipeline
+  pipeline --&gt; stores</code></pre>
+<p>Ranger Admin also reads the audit index (OpenSearch or Solr) to show audits in its UI.</p>
 <p>Plugins can also write audit events directly to Solr, Elasticsearch, OpenSearch, HDFS, or log files
 without going through the audit server; the audit server is the newer path that decouples the
 protected service from the audit store. It is the default in the development Docker setup on master
@@ -1843,19 +1821,21 @@ otherwise HTTP 304 (Not Modified) with no body.</p>
 <pre class="mermaid"><code>sequenceDiagram
   participant P as Plugin (PolicyRefresher)
   participant A as Ranger Admin
-  participant C as Local cache (policy.cache.dir)
+  participant C as Local cache
 
-  P-&gt;&gt;A: GET /service/plugins/secure/policies/download/{serviceName}?lastKnownVersion=N
+  P-&gt;&gt;A: GET policies (lastKnownVersion=N)
   alt policies changed
     A--&gt;&gt;P: ServicePolicies (version N+1)
     P-&gt;&gt;P: build new policy engine, swap atomically
-    P-&gt;&gt;C: write &lt;appId&gt;_&lt;serviceName&gt;.json
+    P-&gt;&gt;C: write policy cache file
   else no change
     A--&gt;&gt;P: 304 Not Modified
   end
   alt Admin unreachable at startup
     P-&gt;&gt;C: read cached ServicePolicies
   end</code></pre>
+<p>The download request is <code>GET /service/plugins/secure/policies/download/{serviceName}?lastKnownVersion=N</code>,
+and the cache file is named <code>&lt;appId&gt;_&lt;serviceName&gt;.json</code>.</p>
 <ul>
 <li>The same loop also downloads roles (<code>/service/roles/secure/download/{serviceName}</code>). When the
   service definition declares the enrichers, each enricher runs its own refresher for tags
@@ -1906,127 +1886,41 @@ policy edits.</p>
 <li>Ranger PDP if you have applications that call Ranger over REST instead of embedding a plugin.</li>
 </ol>
 <pre class="mermaid"><code>flowchart TB
-  LB[Load balancer] --&gt; A1[Ranger Admin 1]
-  LB --&gt; A2[Ranger Admin 2]
-  A1 --&gt; DB[(HA database)]
-  A2 --&gt; DB
-  US[UserSync] --&gt; LB
-  TS[TagSync] --&gt; LB
-  P1[Plugin in Trino coordinator] --&gt;|poll| LB
-  P2[Plugin in Ozone Manager] --&gt;|poll| LB
-  P3[Plugin in Kafka brokers] --&gt;|poll| LB
-  PDP[Ranger PDP] --&gt;|poll| LB
-  P1 &amp; P2 &amp; P3 &amp; PDP --&gt;|audit| AUD[Audit ingestor -&gt; Kafka -&gt; dispatchers]
-  AUD --&gt; IDX[(Solr / OpenSearch)]
-  AUD --&gt; COLD[(HDFS / S3)]
-  A1 -.-&gt; IDX</code></pre>
+  subgraph clients["Clients of Ranger Admin"]
+    direction LR
+    P["Plugins&lt;br/&gt;Trino, Ozone, Kafka"]
+    PDP["Ranger PDP"]
+    US["UserSync"]
+    TS["TagSync"]
+    P ~~~ PDP ~~~ US ~~~ TS
+  end
+
+  LB["Load balancer"]
+
+  subgraph admins["Ranger Admin instances"]
+    direction LR
+    A1["Ranger Admin 1"]
+    A2["Ranger Admin 2"]
+    A1 ~~~ A2
+  end
+
+  DB[("Highly available database")]
+  AUD["Audit ingestor, Kafka&lt;br/&gt;and dispatchers"]
+  IDX[("OpenSearch or Solr")]
+  COLD[("HDFS or S3")]
+
+  clients --&gt;|"REST"| LB
+  LB --&gt; admins
+  admins --&gt; DB
+  clients -.-&gt;|"audit events from&lt;br/&gt;plugins and PDP"| AUD
+  AUD --&gt; IDX
+  AUD --&gt; COLD</code></pre>
 <p>The <code>dev-support/ranger-docker</code> compose files in the repository bring up these components on one
 machine with a single Ranger Admin instance (Admin, database, UserSync, TagSync, PDP, KMS, audit
 server, OpenSearch or Solr, and protected services such as Trino, Ozone, Kafka, Knox, Hadoop, Hive, and
 HBase), built from source. It is the fastest way to see all the pieces together. The released images
 on Docker Hub cover Ranger Admin, its database and Solr. See
 <a href="../../getting-started/docker/">Running Ranger with Docker</a> for both.</p>
-<h2 id="default-ports">Default ports<a class="headerlink" href="#default-ports" title="Permanent link">&para;</a></h2>
-<p>The values below come from the default configuration files and compose files in the repository.
-Override them in the site configuration file of the service.</p>
-<table>
-<thead>
-<tr>
-<th>Component</th>
-<th>Port</th>
-<th>Protocol</th>
-<th>Key</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Ranger Admin</td>
-<td>6080</td>
-<td>HTTP</td>
-<td><code>ranger.service.http.port</code></td>
-</tr>
-<tr>
-<td>Ranger Admin</td>
-<td>6182</td>
-<td>HTTPS</td>
-<td><code>ranger.service.https.port</code></td>
-</tr>
-<tr>
-<td>Ranger PDP</td>
-<td>6500</td>
-<td>HTTP or HTTPS</td>
-<td><code>ranger.pdp.port</code></td>
-</tr>
-<tr>
-<td>Ranger KMS</td>
-<td>9292</td>
-<td>HTTP</td>
-<td><code>ranger.service.http.port</code></td>
-</tr>
-<tr>
-<td>Ranger KMS</td>
-<td>9393</td>
-<td>HTTPS</td>
-<td><code>ranger.service.https.port</code></td>
-</tr>
-<tr>
-<td>UserSync web server</td>
-<td>8280</td>
-<td>HTTP</td>
-<td><code>ranger.usersync.service.http.port</code></td>
-</tr>
-<tr>
-<td>UserSync web server</td>
-<td>8283</td>
-<td>HTTPS</td>
-<td><code>ranger.usersync.service.https.port</code></td>
-</tr>
-<tr>
-<td>TagSync web server</td>
-<td>8180</td>
-<td>HTTP</td>
-<td><code>ranger.tagsync.service.http.port</code></td>
-</tr>
-<tr>
-<td>TagSync web server</td>
-<td>8183</td>
-<td>HTTPS</td>
-<td><code>ranger.tagsync.service.https.port</code></td>
-</tr>
-<tr>
-<td>Audit ingestor</td>
-<td>7081</td>
-<td>HTTP</td>
-<td><code>ranger.audit.ingestor.http.port</code></td>
-</tr>
-<tr>
-<td>Audit ingestor</td>
-<td>7182</td>
-<td>HTTPS</td>
-<td><code>ranger.audit.ingestor.https.port</code></td>
-</tr>
-<tr>
-<td>Audit dispatcher</td>
-<td>7090</td>
-<td>HTTP</td>
-<td><code>ranger.audit.dispatcher.http.port</code></td>
-</tr>
-</tbody>
-</table>
-<p>The keys live in <code>ranger-admin-site.xml</code> (Admin), <code>ranger-pdp-site.xml</code> (PDP, which also serves
-HTTP/2), <code>ranger-kms-site.xml</code> (KMS), <code>ranger-ugsync-site.xml</code> (UserSync), <code>ranger-tagsync-site.xml</code>
-(TagSync), <code>ranger-audit-ingestor-site.xml</code> and each <code>ranger-audit-dispatcher-*-site.xml</code>. The
-UserSync and TagSync web servers expose metrics; TagSync serves <code>/metrics/status</code>,
-<code>/metrics/prometheus</code> and <code>/metrics/json</code>.</p>
-<p>Ports of dependent services used by the docker compose environment (not Ranger defaults, but useful
-when following the docker guide): PostgreSQL 5432, MySQL/MariaDB 3306, Oracle 1521, SQL Server 1433,
-Solr 8983, OpenSearch 9200, ZooKeeper 2181, Kafka 9092, KDC 88.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Some older documents list 9494 as the Ranger KMS HTTPS port. The shipped
-<code>kms/config/webserver/ranger-kms-site.xml</code> on master uses 9393; check your installed
-<code>ranger-kms-site.xml</code> if in doubt.</p>
-</div>
 <h2 id="high-availability">High availability<a class="headerlink" href="#high-availability" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Ranger Admin</strong> is stateless apart from the database, so you can run several instances behind a
@@ -2076,7 +1970,7 @@ Solr 8983, OpenSearch 9200, ZooKeeper 2181, Kafka 9092, KDC 88.</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 15:52:15 PDT">September 20, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 16:33:43 PDT">September 20, 2026</span>
   </span>
 
     

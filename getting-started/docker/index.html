@@ -954,10 +954,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#services-and-ports" class="md-nav__link">
+  <a href="#container-network" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Services and ports
+        Container network
       
     </span>
   </a>
@@ -1907,10 +1907,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#services-and-ports" class="md-nav__link">
+  <a href="#container-network" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Services and ports
+        Container network
       
     </span>
   </a>
@@ -2476,7 +2476,6 @@ with every database:</p>
 <th>Value</th>
 <th>Container</th>
 <th>Image built from</th>
-<th>Port</th>
 </tr>
 </thead>
 <tbody>
@@ -2484,19 +2483,16 @@ with every database:</p>
 <td><code>postgres</code> (default)</td>
 <td><code>ranger-postgres</code></td>
 <td><code>Dockerfile.ranger-postgres</code>, <code>POSTGRES_VERSION</code></td>
-<td>5432</td>
 </tr>
 <tr>
 <td><code>mysql</code></td>
 <td><code>ranger-mysql</code></td>
 <td><code>Dockerfile.ranger-mysql</code> (MariaDB, <code>MARIADB_VERSION</code>)</td>
-<td>3306</td>
 </tr>
 <tr>
 <td><code>oracle</code></td>
 <td><code>ranger-oracle</code></td>
 <td><code>Dockerfile.ranger-oracle</code>, <code>ORACLE_VERSION</code></td>
-<td>1521</td>
 </tr>
 </tbody>
 </table>
@@ -2533,124 +2529,7 @@ container, which you can use to run commands as ordinary users; see <a href="../
 <code>ENABLE_FILE_SYNC_SOURCE=true</code> before starting to have it read
 <code>scripts/usersync/ugsync-file-source.csv</code> instead, which defines <code>testuser_1</code> … <code>testuser_10</code> and their
 groups. You can also create users by hand under <strong>Settings → Users/Groups/Roles</strong>.</p>
-<h2 id="services-and-ports">Services and ports<a class="headerlink" href="#services-and-ports" title="Permanent link">&para;</a></h2>
-<p>Host ports published by the compose files (container name → port):</p>
-<table>
-<thead>
-<tr>
-<th>Container</th>
-<th>Host port(s)</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>ranger</code></td>
-<td>6080</td>
-<td>Ranger Admin UI and REST API</td>
-</tr>
-<tr>
-<td><code>ranger-kdc</code></td>
-<td>88 (tcp/udp), 749</td>
-<td>Kerberos KDC and kadmin</td>
-</tr>
-<tr>
-<td><code>ranger-zk</code></td>
-<td>2181</td>
-<td>ZooKeeper</td>
-</tr>
-<tr>
-<td>Database container</td>
-<td>5432, 3306 or 1521</td>
-<td>Policy database; see <a href="#choosing-the-database">Choosing the database</a></td>
-</tr>
-<tr>
-<td><code>ranger-opensearch</code></td>
-<td>9200, 9300</td>
-<td>Profile <code>audit-store-opensearch</code></td>
-</tr>
-<tr>
-<td><code>ranger-solr</code></td>
-<td>8983</td>
-<td>Profile <code>audit-store-solr</code></td>
-</tr>
-<tr>
-<td><code>ranger-kafka</code></td>
-<td>9092</td>
-<td>Audit transport; also the Kafka plugin container</td>
-</tr>
-<tr>
-<td><code>ranger-audit-ingestor</code></td>
-<td>7081, 7182</td>
-<td>Receives audits from plugins</td>
-</tr>
-<tr>
-<td><code>ranger-audit-dispatcher-solr</code></td>
-<td>7091</td>
-<td>Dispatcher to Solr (container port 7090)</td>
-</tr>
-<tr>
-<td><code>ranger-audit-dispatcher-hdfs</code></td>
-<td>7092</td>
-<td>Dispatcher to HDFS (container port 7090)</td>
-</tr>
-<tr>
-<td><code>ranger-audit-dispatcher-opensearch</code></td>
-<td>7093</td>
-<td>Dispatcher to OpenSearch (container port 7090)</td>
-</tr>
-<tr>
-<td><code>ranger-usersync</code></td>
-<td>8280</td>
-<td>UserSync embedded web server</td>
-</tr>
-<tr>
-<td><code>ranger-tagsync</code></td>
-<td>8180, 8185</td>
-<td>TagSync embedded web server and its shutdown port</td>
-</tr>
-<tr>
-<td><code>ranger-pdp</code></td>
-<td>6500</td>
-<td>Policy decision point REST API</td>
-</tr>
-<tr>
-<td><code>ranger-kms</code></td>
-<td>9292</td>
-<td>Ranger KMS REST API</td>
-</tr>
-<tr>
-<td><code>ranger-hadoop</code></td>
-<td>9000, 8088</td>
-<td>NameNode RPC, ResourceManager UI</td>
-</tr>
-<tr>
-<td><code>ranger-hive</code></td>
-<td>10000, 9083</td>
-<td>HiveServer2, Metastore</td>
-</tr>
-<tr>
-<td><code>ranger-hbase</code></td>
-<td>16000, 16010, 16020, 16030</td>
-<td>Master, Master UI, RegionServer, RegionServer UI</td>
-</tr>
-<tr>
-<td><code>ranger-knox</code></td>
-<td>8443</td>
-<td>Gateway</td>
-</tr>
-<tr>
-<td><code>ranger-trino</code></td>
-<td>8080</td>
-<td>Coordinator</td>
-</tr>
-<tr>
-<td><code>ozone-om</code></td>
-<td>9874, 9862</td>
-<td>Ozone Manager UI and RPC (SCM and datanode ports are in <code>docker-compose.ranger-ozone.yml</code>)</td>
-</tr>
-</tbody>
-</table>
+<h2 id="container-network">Container network<a class="headerlink" href="#container-network" title="Permanent link">&para;</a></h2>
 <p>All containers share the <code>rangernw</code> network. Most are reachable from each other by
 <code>&lt;container&gt;.rangernw</code>, for example <code>http://ranger.rangernw:6080</code>; the exceptions are the database
 (<code>ranger-db.rangernw</code>), Ozone (<code>om.rangernw</code>, <code>scm.rangernw</code>, <code>datanode.rangernw</code>) and Trino (<code>trino</code>).</p>
@@ -2731,7 +2610,7 @@ docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> 
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 15:52:15 PDT">September 20, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 16:33:43 PDT">September 20, 2026</span>
   </span>
 
     

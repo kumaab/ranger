@@ -78,7 +78,31 @@ nav:
   - Architecture:
     - Overview: arch/architecture.md
   - Plugins:
-    - Trino: plugins/trino.md
+      - Overview: plugins/index.md
+      - Polaris: plugins/polaris.md
+      - Trino: plugins/trino.md
+      - Ozone: plugins/ozone.md
+      - Nested structure: plugins/nestedstructure.md
+      - Kudu: plugins/kudu.md
+      - Schema Registry: plugins/schema-registry.md
+      - Presto: plugins/presto.md
+      - Elasticsearch: plugins/elasticsearch.md
+      - Kylin: plugins/kylin.md
+      - Sqoop: plugins/sqoop.md
+      - NiFi Registry: plugins/nifi-registry.md
+      - NiFi: plugins/nifi.md
+      - Atlas: plugins/atlas.md
+      - Kafka: plugins/kafka.md
+      - Solr: plugins/solr.md
+      - Ranger KMS: plugins/kms.md
+      - YARN: plugins/yarn.md
+      - Knox: plugins/knox.md
+      - Storm: plugins/storm.md
+      - HBase: plugins/hbase.md
+      - Hive: plugins/hive.md
+      - HDFS: plugins/hdfs.md
+      - Other service definitions: plugins/other-service-definitions.md
+      - Writing a custom plugin: plugins/custom-plugin.md
   - Services:
     - Ranger Admin: services/admin/service.md
     - Ranger KMS: services/kms/service.md

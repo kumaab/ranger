@@ -1837,7 +1837,7 @@ time-boxed access for a contractor, or business-hours-only access.</p>
 evaluates a request as follows.</p>
 <pre class="mermaid"><code>%%{init: {"flowchart": {"rankSpacing": 28, "nodeSpacing": 36}, "themeVariables": {"fontSize": "13px"}}}%%
 flowchart TB
-  SU{{"Is the user a super user or in a super group?"}}
+  SU{{"Is the user a plugin super user or in a super group?"}}
   EVAL["Evaluate the policies of the resource's security zone:&lt;br/&gt;tag-based policies, then resource-based policies"]
   DET{{"Decision?"}}
   FB{{"Does the plugin support fallback?"}}
@@ -1854,9 +1854,20 @@ flowchart TB
   FB --&gt;|no| DENY</code></pre>
 <p>Step by step:</p>
 <ol>
-<li><strong>Super users.</strong> If the user is listed in <code>ranger.plugin.&lt;type&gt;.super.users</code> or belongs to a
-   group in <code>ranger.plugin.&lt;type&gt;.super.groups</code>, access is allowed immediately with the reason
-   <code>superuser</code>.</li>
+<li>
+<p><strong>Super users.</strong> If the user is listed in <code>ranger.plugin.&lt;type&gt;.super.users</code> or belongs to a
+   group in <code>ranger.plugin.&lt;type&gt;.super.groups</code>, the access is allowed with the reason <code>superuser</code>.
+   The engine records this decision at the highest possible priority, so no policy, not even a deny
+   policy, can override it. Policies are still consulted, but only to decide whether the access is
+   audited. Super users are meant for the service's own system accounts.</p>
+<div class="admonition note">
+<p class="admonition-title">Super users are not service admins</p>
+<p>A super user bypasses authorization for data access in the plugin. Managing policies is a
+separate right: users and groups listed in <code>service.admin.users</code> and <code>service.admin.groups</code> in
+the service's configuration in Ranger Admin can manage that service's policies, roles, tags and
+security zones, and this gives them no access to the data itself.</p>
+</div>
+<ol>
 <li><strong>Zone selection.</strong> The engine determines whether the resource falls inside a
    <a href="../../features/sec-zone/intro/">security zone</a>. If it does, only that zone's policies are used;
    otherwise the default (unzoned) policies are used. Tag policies are likewise taken from the zone
@@ -1867,13 +1878,11 @@ flowchart TB
 <li><strong>Resource-based policies.</strong> Candidate policies are found with a resource trie, sorted with
    <code>OVERRIDE</code> before <code>NORMAL</code> and, within a priority, policies that have deny items first, and
    evaluated in turn. Policies outside their validity schedule are
-   skipped. Inside each policy the order is:<ol>
+   skipped. Inside each policy the order is:</li>
 <li>Deny items. If one matches, check deny exceptions; if none cancels it, the policy denies.</li>
 <li>Allow items. If one matches, check allow exceptions; if none cancels it, the policy allows.</li>
 <li>If nothing matched and <code>isDenyAllElse</code> is <code>true</code>, the policy denies.</li>
-</ol>
-</li>
-<li><strong>Combining results.</strong> The engine stops as soon as the result is final:<ul>
+<li><strong>Combining results.</strong> The engine stops as soon as the result is final:</li>
 <li>A deny from a policy is final when no policy of the same or higher priority remains that
   could allow it. In practice a deny at the same priority always wins over an allow.</li>
 <li>An allow is final once no policy with deny items remains to be checked at the same or higher
@@ -1881,14 +1890,14 @@ flowchart TB
 <li>A deny from a tag policy can be overridden only by a resource policy of <em>strictly higher</em>
   priority. An allow from a tag policy can still be denied by a resource policy of the same or
   higher priority.</li>
-</ul>
-</li>
 <li><strong>Undetermined.</strong> If no policy matched, the result is undetermined. Most plugins treat this as a
    deny. Plugins that set <code>ranger.plugin.&lt;type&gt;.is.fallback.supported=true</code> return the
    undetermined result to the host service, which then applies its native authorization. The HDFS
    plugin does this when <code>xasecure.add-hadoop-authorization=true</code> (the default in the shipped
    template), so HDFS falls back to POSIX permissions and HDFS ACLs. The YARN plugin does the same when
    <code>ranger.add-yarn-authorization=true</code> (the default).</li>
+</ol>
+</li>
 </ol>
 <p>Data-mask and row-filter policies are evaluated separately (<code>evalDataMaskPolicies</code>,
 <code>evalRowFilterPolicies</code>); for them the first matching policy item at the highest priority wins, and
@@ -1978,7 +1987,7 @@ determined it, <code>hadoop-acl</code> when HDFS fell back to native permissions
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 17:09:50 PDT">September 20, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 17:32:47 PDT">September 20, 2026</span>
   </span>
 
     

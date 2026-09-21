@@ -30,26 +30,29 @@ COPY ./downloads/apache-tez-${TEZ_VERSION}-bin.tar.gz        /home/ranger/dist/
 
 COPY ./scripts/hadoop/*.sh                                   ${RANGER_SCRIPTS}/
 
-RUN tar xvfz /home/ranger/dist/hadoop-${HADOOP_VERSION}.tar.gz --directory=/opt/ && \
-    ln -s /opt/hadoop-${HADOOP_VERSION} /opt/hadoop && \
-    rm -f /home/ranger/dist/hadoop-${HADOOP_VERSION}.tar.gz && \
-    tar xvfz /home/ranger/dist/apache-tez-${TEZ_VERSION}-bin.tar.gz --directory=/opt/ && \
-    ln -s /opt/apache-tez-${TEZ_VERSION}-bin /opt/tez && \
-    rm -f /home/ranger/dist/apache-tez-${TEZ_VERSION}-bin.tar.gz && \
-    tar xvfz /home/ranger/dist/ranger-${HDFS_PLUGIN_VERSION}-hdfs-plugin.tar.gz --directory=/opt/ranger && \
-    ln -s /opt/ranger/ranger-${HDFS_PLUGIN_VERSION}-hdfs-plugin /opt/ranger/ranger-hdfs-plugin && \
-    rm -f /home/ranger/dist/ranger-${HDFS_PLUGIN_VERSION}-hdfs-plugin.tar.gz && \
+RUN tar xvfz "/home/ranger/dist/hadoop-${HADOOP_VERSION}.tar.gz" --directory=/opt/ && \
+    ln -s "/opt/hadoop-${HADOOP_VERSION}" /opt/hadoop && \
+    rm -f "/home/ranger/dist/hadoop-${HADOOP_VERSION}.tar.gz" && \
+    tar xvfz "/home/ranger/dist/apache-tez-${TEZ_VERSION}-bin.tar.gz" --directory=/opt/ && \
+    ln -s "/opt/apache-tez-${TEZ_VERSION}-bin" /opt/tez && \
+    rm -f "/home/ranger/dist/apache-tez-${TEZ_VERSION}-bin.tar.gz" && \
+    tar xvfz "/home/ranger/dist/ranger-${HDFS_PLUGIN_VERSION}-hdfs-plugin.tar.gz" --directory=/opt/ranger && \
+    ln -s "/opt/ranger/ranger-${HDFS_PLUGIN_VERSION}-hdfs-plugin" /opt/ranger/ranger-hdfs-plugin && \
+    rm -f "/home/ranger/dist/ranger-${HDFS_PLUGIN_VERSION}-hdfs-plugin.tar.gz" && \
     rm -f /opt/ranger/ranger-hdfs-plugin/install.properties && \
-    tar xvfz /home/ranger/dist/ranger-${YARN_PLUGIN_VERSION}-yarn-plugin.tar.gz --directory=/opt/ranger && \
-    ln -s /opt/ranger/ranger-${YARN_PLUGIN_VERSION}-yarn-plugin /opt/ranger/ranger-yarn-plugin && \
-    rm -f /home/ranger/dist/ranger-${YARN_PLUGIN_VERSION}-yarn-plugin.tar.gz && \
+    tar xvfz "/home/ranger/dist/ranger-${YARN_PLUGIN_VERSION}-yarn-plugin.tar.gz" --directory=/opt/ranger && \
+    ln -s "/opt/ranger/ranger-${YARN_PLUGIN_VERSION}-yarn-plugin" /opt/ranger/ranger-yarn-plugin && \
+    rm -f "/home/ranger/dist/ranger-${YARN_PLUGIN_VERSION}-yarn-plugin.tar.gz" && \
     rm -f /opt/ranger/ranger-yarn-plugin/install.properties && \
-    chmod 744 ${RANGER_SCRIPTS}/ranger-hadoop-setup.sh ${RANGER_SCRIPTS}/ranger-hadoop.sh ${RANGER_SCRIPTS}/ranger-hadoop-mkdir.sh && \
+    chmod 744 "${RANGER_SCRIPTS}/ranger-hadoop-setup.sh" "${RANGER_SCRIPTS}/ranger-hadoop.sh" "${RANGER_SCRIPTS}/ranger-hadoop-mkdir.sh" && \
     useradd -g hadoop -ms /bin/bash healthcheck && \
-    chmod 744 ${RANGER_SCRIPTS}/ranger-hadoop-healthcheck.sh && \
-    chown healthcheck:hadoop ${RANGER_SCRIPTS}/ranger-hadoop-healthcheck.sh && \
-    chown hdfs:hadoop ${RANGER_SCRIPTS}/ranger-hadoop-mkdir.sh
+    chmod 744 "${RANGER_SCRIPTS}/ranger-hadoop-healthcheck.sh" && \
+    chown healthcheck:hadoop "${RANGER_SCRIPTS}/ranger-hadoop-healthcheck.sh" && \
+    chown hdfs:hadoop "${RANGER_SCRIPTS}/ranger-hadoop-mkdir.sh"
 
+# Ubuntu keeps only the current version of each package in the archive, so a pinned
+# version stops resolving as soon as a security update supersedes it.
+# hadolint ignore=DL3008
 RUN apt-get update && \
     apt-get install -y --no-install-recommends openssh-server && \
     mkdir -p /var/run/sshd && \

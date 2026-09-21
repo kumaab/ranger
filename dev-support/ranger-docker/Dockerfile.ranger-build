@@ -21,12 +21,17 @@ FROM ${RANGER_BASE_IMAGE}:${RANGER_BASE_BUILD_VERSION}
 ARG TARGETARCH
 
 # Install necessary packages to build Ranger
+# Ubuntu keeps only the current version of each package in the archive, so a pinned
+# version stops resolving as soon as a security update supersedes it.
+# hadolint ignore=DL3008
 RUN if grep -i ubuntu /etc/os-release; then\
-    apt-get update && apt-get -y install --no-install-recommends git maven build-essential;\
+    apt-get update && apt-get -y install --no-install-recommends git maven build-essential && rm -rf /var/lib/apt/lists/*;\
     fi
 
+# Same as above: dnf repositories only carry the current build of each package.
+# hadolint ignore=DL3041
 RUN if grep -i rhel /etc/os-release; then\
-    microdnf install -y git maven gcc;\
+    microdnf install -y git maven gcc && microdnf clean all;\
     fi
 
 # Set environment variables
@@ -38,7 +43,7 @@ RUN mkdir -p /home/ranger/git /home/ranger/.m2 && \
 	chown -R ranger:ranger /home/ranger
 
 COPY ./scripts/build/* ${RANGER_SCRIPTS}/
-RUN chmod 755 ${RANGER_SCRIPTS}/ranger-build.sh
+RUN chmod 755 "${RANGER_SCRIPTS}/ranger-build.sh"
 
 VOLUME /home/ranger/.m2
 VOLUME /home/ranger/patches

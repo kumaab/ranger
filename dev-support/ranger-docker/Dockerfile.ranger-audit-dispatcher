@@ -23,7 +23,10 @@ ARG RANGER_VERSION
 ARG KERBEROS_ENABLED
 
 # Install additional packages not in the base image
-RUN apt-get update && apt-get install -y \
+# Ubuntu keeps only the current version of each package in the archive, so a pinned
+# version stops resolving as soon as a security update supersedes it.
+# hadolint ignore=DL3008
+RUN apt-get update && apt-get install -y --no-install-recommends \
     net-tools \
     && rm -rf /var/lib/apt/lists/*
 
@@ -41,16 +44,16 @@ COPY ./scripts/audit-dispatcher/service-check-functions.sh    ${RANGER_SCRIPTS}/
 COPY ./scripts/kdc/krb5.conf /etc/krb5.conf
 
 # Extract and setup
-RUN tar xzf /tmp/ranger-${RANGER_VERSION}-audit-dispatcher.tar.gz -C /opt/ranger/audit-dispatcher --strip-components=1 && \
-    rm -f /tmp/ranger-${RANGER_VERSION}-audit-dispatcher.tar.gz && \
+RUN tar xzf "/tmp/ranger-${RANGER_VERSION}-audit-dispatcher.tar.gz" -C /opt/ranger/audit-dispatcher --strip-components=1 && \
+    rm -f "/tmp/ranger-${RANGER_VERSION}-audit-dispatcher.tar.gz" && \
     mkdir -p /var/log/ranger/audit-dispatcher && \
     mkdir -p /home/ranger/scripts && \
     rm -rf /opt/ranger/audit-dispatcher/logs && \
     ln -sf /var/log/ranger/audit-dispatcher /opt/ranger/audit-dispatcher/logs && \
-    cp /opt/ranger/audit-dispatcher/scripts/start-audit-dispatcher.sh ${RANGER_SCRIPTS}/ && \
-    chown -R ranger:ranger /opt/ranger/audit-dispatcher/ /var/log/ranger/ ${RANGER_SCRIPTS} && \
+    cp /opt/ranger/audit-dispatcher/scripts/start-audit-dispatcher.sh "${RANGER_SCRIPTS}/" && \
+    chown -R ranger:ranger /opt/ranger/audit-dispatcher/ /var/log/ranger/ "${RANGER_SCRIPTS}" && \
     chmod -R 755 /opt/ranger/audit-dispatcher && \
-    chmod 755 ${RANGER_SCRIPTS}/start-audit-dispatcher.sh
+    chmod 755 "${RANGER_SCRIPTS}/start-audit-dispatcher.sh"
 
 # Set Java home
 ENV JAVA_HOME=/opt/java/openjdk

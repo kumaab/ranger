@@ -22,12 +22,20 @@ FROM solr:${SOLR_VERSION}
 
 ARG SOLR_PLUGIN_VERSION
 
+# ranger-solr.sh starts as root to wait for keytabs and enable the plugin, then
+# drops to the solr user via su before handing over to the solr entrypoint.
+# hadolint ignore=DL3002
 USER root
 
-RUN apt update && DEBIAN_FRONTEND="noninteractive" apt-get install -y krb5-user
+# Ubuntu keeps only the current version of each package in the archive, so a pinned
+# version stops resolving as soon as a security update supersedes it.
+# hadolint ignore=DL3008
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends krb5-user && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /opt/solr/server/solr/configsets/ranger_audits/conf /home/ranger/dist /opt/ranger /home/ranger/scripts
-RUN chown -R solr:solr /opt/solr/server/solr/configsets/ranger_audits/
+RUN mkdir -p /opt/solr/server/solr/configsets/ranger_audits/conf /home/ranger/dist /opt/ranger /home/ranger/scripts && \
+    chown -R solr:solr /opt/solr/server/solr/configsets/ranger_audits/
 
 COPY --from=ranger-base /home/ranger/scripts/wait_for_keytab.sh             /home/ranger/scripts/wait_for_keytab.sh
 COPY --from=ranger-base /home/ranger/scripts/wait_for_testusers_keytab.sh   /home/ranger/scripts/wait_for_testusers_keytab.sh
@@ -35,9 +43,9 @@ COPY --from=ranger-base /home/ranger/scripts/wait_for_testusers_keytab.sh   /hom
 # Copy Ranger plugin
 COPY ./dist/ranger-${SOLR_PLUGIN_VERSION}-solr-plugin.tar.gz /home/ranger/dist/
 
-RUN tar xvfz /home/ranger/dist/ranger-${SOLR_PLUGIN_VERSION}-solr-plugin.tar.gz --directory=/opt/ranger && \
-    ln -s /opt/ranger/ranger-${SOLR_PLUGIN_VERSION}-solr-plugin /opt/ranger/ranger-solr-plugin && \
-    rm -f /home/ranger/dist/ranger-${SOLR_PLUGIN_VERSION}-solr-plugin.tar.gz && \
+RUN tar xvfz "/home/ranger/dist/ranger-${SOLR_PLUGIN_VERSION}-solr-plugin.tar.gz" --directory=/opt/ranger && \
+    ln -s "/opt/ranger/ranger-${SOLR_PLUGIN_VERSION}-solr-plugin" /opt/ranger/ranger-solr-plugin && \
+    rm -f "/home/ranger/dist/ranger-${SOLR_PLUGIN_VERSION}-solr-plugin.tar.gz" && \
     rm -f /opt/ranger/ranger-solr-plugin/install.properties && \
     mkdir -p /var/solr/data /etc/ranger && \
     chown -R solr:solr /opt/ranger /var/solr /etc/ranger

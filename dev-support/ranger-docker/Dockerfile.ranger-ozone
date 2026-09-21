@@ -22,10 +22,14 @@ FROM ${OZONE_RUNNER_IMAGE}:${OZONE_RUNNER_VERSION}
 ARG OZONE_HOME
 ARG OZONE_PLUGIN_VERSION
 
+# The ozone-runner entrypoint and the compose commands need root: they sudo to
+# create and chown the bind-mounted /data dirs before dropping to the hadoop user.
+# hadolint ignore=DL3002
 USER root
 
-RUN useradd -g hadoop -ms /bin/bash ozone
-RUN mkdir -p -m 755 /var/log/ozone
+RUN useradd -g hadoop -ms /bin/bash ozone && \
+    mkdir -p /var/log/ozone && \
+    chmod 755 /var/log/ozone
 
 # Required to locate the plugin jars and the config files.
 # javax.annotation-api is also required on the OM classpath for Jersey 2.x (see ranger-ozone-setup.sh).

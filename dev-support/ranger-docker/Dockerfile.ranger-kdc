@@ -22,12 +22,19 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV REALM=EXAMPLE.COM
 ENV KDC_HOST=kdc.example.com
 ENV ADMIN_PRINCIPAL=admin/admin
+# Throwaway credentials for the local dev KDC; the realm exists only inside this
+# compose stack and the same values are hard-coded in the kdc setup scripts.
+# hadolint ignore=DL3064
 ENV ADMIN_PASSWORD=rangerR0cks!
+# hadolint ignore=DL3064
 ENV MASTER_PASSWORD=rangerR0cks!
 
 # Install Kerberos components
+# Ubuntu keeps only the current version of each package in the archive, so a pinned
+# version stops resolving as soon as a security update supersedes it.
+# hadolint ignore=DL3008
 RUN apt-get update && \
-    apt-get install -y krb5-kdc krb5-admin-server krb5-user && \
+    apt-get install -y --no-install-recommends krb5-kdc krb5-admin-server krb5-user && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy configuration files
@@ -36,12 +43,16 @@ COPY ./scripts/kdc/kdc.conf      /etc/krb5kdc/kdc.conf
 COPY ./scripts/kdc/kadm5.acl     /etc/krb5kdc/kadm5.acl
 COPY ./scripts/kdc/entrypoint.sh /entrypoint.sh
 
-RUN chmod +x /entrypoint.sh && apt-get update && apt-get install -y netcat-openbsd && rm -rf /var/lib/apt/lists/*
+# Ubuntu keeps only the current version of each package in the archive, so a pinned
+# version stops resolving as soon as a security update supersedes it.
+# hadolint ignore=DL3008
+RUN chmod +x /entrypoint.sh && apt-get update && apt-get install -y --no-install-recommends netcat-openbsd && rm -rf /var/lib/apt/lists/*
 
 VOLUME /etc/keytabs
 
 EXPOSE 88/tcp 88/udp 749/tcp
 
+# hadolint ignore=DL3025
 HEALTHCHECK --interval=5s --timeout=5s --start-period=120s --retries=30 \
   CMD test -f /etc/keytabs/.provisioned && kinit -kt /etc/keytabs/datanode/dn.keytab dn/datanode.rangernw@EXAMPLE.COM && kdestroy
 

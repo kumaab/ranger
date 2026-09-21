@@ -24,13 +24,13 @@ ARG PDP_VERSION
 COPY ./dist/ranger-${PDP_VERSION}-pdp.tar.gz /home/ranger/dist/
 COPY ./scripts/pdp/ranger-pdp.sh             ${RANGER_SCRIPTS}/
 
-RUN    tar xvfz /home/ranger/dist/ranger-${PDP_VERSION}-pdp.tar.gz --directory=${RANGER_HOME} \
-    && ln -s ${RANGER_HOME}/ranger-${PDP_VERSION}-pdp ${RANGER_HOME}/pdp \
-    && rm -f /home/ranger/dist/ranger-${PDP_VERSION}-pdp.tar.gz \
+RUN    tar xvfz "/home/ranger/dist/ranger-${PDP_VERSION}-pdp.tar.gz" --directory="${RANGER_HOME}" \
+    && ln -s "${RANGER_HOME}/ranger-${PDP_VERSION}-pdp" "${RANGER_HOME}/pdp" \
+    && rm -f "/home/ranger/dist/ranger-${PDP_VERSION}-pdp.tar.gz" \
     && mkdir -p /var/log/ranger/pdp /var/run/ranger /etc/ranger/cache \
-    && ln -s ${RANGER_HOME}/pdp/ranger-pdp-services.sh /usr/bin/ranger-pdp-services.sh \
-    && chown -R ranger:ranger ${RANGER_HOME}/pdp/ ${RANGER_SCRIPTS}/ /var/log/ranger/ /var/run/ranger /etc/ranger/ \
-    && chmod 744 ${RANGER_SCRIPTS}/ranger-pdp.sh
+    && ln -s "${RANGER_HOME}/pdp/ranger-pdp-services.sh" /usr/bin/ranger-pdp-services.sh \
+    && chown -R ranger:ranger "${RANGER_HOME}/pdp/" "${RANGER_SCRIPTS}/" /var/log/ranger/ /var/run/ranger /etc/ranger/ \
+    && chmod 744 "${RANGER_SCRIPTS}/ranger-pdp.sh"
 
 USER ranger
 ENTRYPOINT [ "/home/ranger/scripts/ranger-pdp.sh" ]

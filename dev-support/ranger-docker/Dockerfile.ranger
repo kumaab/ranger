@@ -24,17 +24,17 @@ ARG RANGER_VERSION
 
 COPY ./dist/ranger-${RANGER_VERSION}-admin.tar.gz /tmp/
 
-RUN    tar xfz /tmp/ranger-${RANGER_VERSION}-admin.tar.gz --directory=/tmp \
-    && rm -f /tmp/ranger-${RANGER_VERSION}-admin/install.properties \
-    && mkdir -p /tmp/ranger-${RANGER_VERSION}-admin/configs \
-    && ln -s ews/webapp/WEB-INF/classes/conf /tmp/ranger-${RANGER_VERSION}-admin/conf \
-    && hardlink -c /tmp/ranger-${RANGER_VERSION}-admin
+RUN    tar xfz "/tmp/ranger-${RANGER_VERSION}-admin.tar.gz" --directory=/tmp \
+    && rm -f "/tmp/ranger-${RANGER_VERSION}-admin/install.properties" \
+    && mkdir -p "/tmp/ranger-${RANGER_VERSION}-admin/configs" \
+    && ln -s ews/webapp/WEB-INF/classes/conf "/tmp/ranger-${RANGER_VERSION}-admin/conf" \
+    && hardlink -c "/tmp/ranger-${RANGER_VERSION}-admin"
 
 FROM ${RANGER_BASE_IMAGE}:${RANGER_BASE_VERSION}
 
 ARG RANGER_VERSION
 
-RUN pip install --no-cache-dir pyyaml
+RUN pip install --no-cache-dir pyyaml==6.0.3
 
 COPY --from=ranger-admin-dist --chown=ranger:ranger /tmp/ranger-${RANGER_VERSION}-admin ${RANGER_HOME}/ranger-${RANGER_VERSION}-admin
 COPY ./downloads/postgresql-42.2.16.jre7.jar          /usr/share/java/postgresql.jar
@@ -44,10 +44,10 @@ COPY --chown=ranger:ranger ./scripts/admin/ranger.sh                 ${RANGER_SC
 COPY --chown=ranger:ranger ./scripts/admin/dba.py                    ${RANGER_SCRIPTS}/
 COPY --chown=ranger:ranger ./scripts/admin/create-ranger-services.py ${RANGER_SCRIPTS}/
 
-RUN    ln -s ${RANGER_HOME}/ranger-${RANGER_VERSION}-admin ${RANGER_HOME}/admin \
+RUN    ln -s "${RANGER_HOME}/ranger-${RANGER_VERSION}-admin" "${RANGER_HOME}/admin" \
     && mkdir -p /etc/ranger/admin /var/run/ranger /var/log/ranger \
     && chown ranger:ranger /etc/ranger/admin /var/run/ranger /var/log/ranger \
-    && chmod 755 ${RANGER_SCRIPTS}/ranger.sh
+    && chmod 755 "${RANGER_SCRIPTS}/ranger.sh"
 
 ENV RANGER_VERSION=${RANGER_VERSION}
 ENV RANGER_CONF_DIR=${RANGER_HOME}/admin/ews/webapp/WEB-INF/classes/conf

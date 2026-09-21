@@ -138,3 +138,36 @@ docker compose --profile ${AUDIT_DESTINATIONS} --profile audit-store-hdfs \
   -f docker-compose.ranger-audit-service.yml \
   -f docker-compose.ranger-audit-destination-hdfs.yml up -d
 ~~~
+
+### Linting the Dockerfiles
+
+The Dockerfiles in this directory are linted with [hadolint](https://github.com/hadolint/hadolint).
+The `dockerfile-lint` CI workflow runs the same check on every push and pull request **that
+touches a Dockerfile** (or the rule set or the script itself), so it is worth running locally
+before raising a review:
+
+~~~
+# lint every Dockerfile in the repository
+./dev-support/checks/hadolint.sh
+
+# lint only the Dockerfiles you changed
+./dev-support/checks/hadolint.sh dev-support/ranger-docker/Dockerfile.ranger
+~~~
+
+The script uses a local `hadolint` binary when one is on `PATH`, and otherwise falls back to the
+pinned `hadolint/hadolint` container image, so docker is the only prerequisite.
+
+The rule set lives in [`.hadolint.yaml`](../../.hadolint.yaml) at the repository root. Findings at
+`warning` or above fail the build; `info` and `style` findings are reported only.
+
+That file carries **no project-wide rule exemptions, and new ones should not be added**: a blanket
+`ignored` list would let any rule be switched off for the whole repository in a one-line diff. When
+a rule genuinely cannot be satisfied by a particular instruction, suppress it at that instruction
+with an inline comment and a short note explaining why, so the exemption is visible in the diff that
+introduces it and applies only to the line below it:
+
+~~~
+# The probe pipes curl into grep, so it needs a shell; JSON notation cannot express it.
+# hadolint ignore=DL3025
+HEALTHCHECK CMD curl -f -s http://localhost:7081/api/audit/health | grep -q 200 || exit 1
+~~~

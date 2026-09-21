@@ -1835,20 +1835,22 @@ time-boxed access for a contractor, or business-hours-only access.</p>
 <h2 id="evaluation-order">Evaluation order<a class="headerlink" href="#evaluation-order" title="Permanent link">&para;</a></h2>
 <p>The policy engine (<code>RangerPolicyEngineImpl</code> and <code>RangerDefaultPolicyEvaluator</code> in <code>agents-common</code>)
 evaluates a request as follows.</p>
-<pre class="mermaid"><code>flowchart TD
-  REQ[Access request] --&gt; SU{Super user or&lt;br/&gt;super group?}
-  SU --&gt;|yes| ALLOW1[Allow]
-  SU --&gt;|no| ZONE{Resource in a&lt;br/&gt;security zone?}
-  ZONE --&gt;|yes| ZP[Use that zone's policies]
-  ZONE --&gt;|no| DP[Use default zone policies]
-  ZP --&gt; TAG
-  DP --&gt; TAG
-  TAG[Evaluate tag-based policies&lt;br/&gt;for each tag on the resource] --&gt; RES
-  RES[Evaluate resource-based policies&lt;br/&gt;highest priority first] --&gt; DET{Access&lt;br/&gt;determined?}
-  DET --&gt;|denied| DENY[Deny]
-  DET --&gt;|allowed| ALLOW2[Allow]
-  DET --&gt;|undetermined| FB{Plugin supports&lt;br/&gt;fallback?}
-  FB --&gt;|yes: HDFS, YARN| NATIVE[Defer to native ACLs]
+<pre class="mermaid"><code>%%{init: {"flowchart": {"rankSpacing": 28, "nodeSpacing": 36}, "themeVariables": {"fontSize": "13px"}}}%%
+flowchart TB
+  SU{{"Is the user a super user or in a super group?"}}
+  EVAL["Evaluate the policies of the resource's security zone:&lt;br/&gt;tag-based policies, then resource-based policies"]
+  DET{{"Decision?"}}
+  FB{{"Does the plugin support fallback?"}}
+  ALLOW(["Allow"])
+  DENY(["Deny"])
+  NATIVE(["Defer to native ACLs"])
+
+  SU --&gt;|no| EVAL --&gt; DET
+  SU --&gt;|yes| ALLOW
+  DET --&gt;|allowed| ALLOW
+  DET --&gt;|none| FB
+  DET --&gt;|denied| DENY
+  FB --&gt;|"yes: HDFS, YARN"| NATIVE
   FB --&gt;|no| DENY</code></pre>
 <p>Step by step:</p>
 <ol>
@@ -1976,7 +1978,7 @@ determined it, <code>hadoop-acl</code> when HDFS fell back to native permissions
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 16:33:43 PDT">September 20, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 17:09:50 PDT">September 20, 2026</span>
   </span>
 
     

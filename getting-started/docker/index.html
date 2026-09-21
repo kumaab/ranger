@@ -2267,84 +2267,9 @@ PostgreSQL data directory that survives <code>down</code>.</p>
 <p>The rest of this page applies to <code>dev-support/ranger-docker</code> only. The compose files are combined with
 repeated <code>-f</code> options; <code>docker-compose.ranger.yml</code> is always included, and
 <code>--profile ${AUDIT_DESTINATIONS}</code> selects the audit store.</p>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Starts</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>docker-compose.ranger-build.yml</code></td>
-<td><code>ranger-build</code>: builds Ranger from source into <code>dist/</code></td>
-</tr>
-<tr>
-<td><code>docker-compose.ranger.yml</code></td>
-<td><code>ranger</code> (Admin), <code>ranger-kdc</code>, <code>ranger-zk</code>, <code>ranger-db</code></td>
-</tr>
-<tr>
-<td><code>docker-compose.ranger-db.yml</code></td>
-<td>Database definitions, selected by <code>RANGER_DB_TYPE</code> (<code>postgres</code>, <code>mysql</code>, <code>oracle</code>)</td>
-</tr>
-<tr>
-<td><code>docker-compose.ranger-db-mounted.yml</code></td>
-<td>Same as above with the PostgreSQL data directory mounted from <code>./postgres-db-mount</code></td>
-</tr>
-<tr>
-<td><code>docker-compose.ranger-audit-service.yml</code></td>
-<td>Audit server: <code>ranger-kafka</code>, <code>ranger-audit-ingestor</code>, and the store with its dispatcher for each selected profile (<code>audit-store-opensearch</code>, <code>audit-store-solr</code>, <code>audit-store-hdfs</code>)</td>
-</tr>
-<tr>
-<td><code>docker-compose.ranger-audit-destination-hdfs.yml</code></td>
-<td>Adds <code>ranger-hadoop</code> under the profile <code>audit-store-hdfs</code>, which <code>ranger-audit-dispatcher-hdfs</code> depends on</td>
-</tr>
-<tr>
-<td><code>docker-compose.ranger-usersync.yml</code></td>
-<td><code>ranger-usersync</code></td>
-</tr>
-<tr>
-<td><code>docker-compose.ranger-tagsync.yml</code></td>
-<td><code>ranger-tagsync</code></td>
-</tr>
-<tr>
-<td><code>docker-compose.ranger-pdp.yml</code></td>
-<td><code>ranger-pdp</code></td>
-</tr>
-<tr>
-<td><code>docker-compose.ranger-kms.yml</code></td>
-<td><code>ranger-kms</code></td>
-</tr>
-<tr>
-<td><code>docker-compose.ranger-hadoop.yml</code></td>
-<td><code>ranger-hadoop</code>: HDFS and YARN with the HDFS and YARN plugins</td>
-</tr>
-<tr>
-<td><code>docker-compose.ranger-hive.yml</code></td>
-<td><code>ranger-hive</code>: Hive Metastore and HiveServer2 with the Hive plugin (depends on <code>ranger-hadoop</code>)</td>
-</tr>
-<tr>
-<td><code>docker-compose.ranger-hbase.yml</code></td>
-<td><code>ranger-hbase</code> with the HBase plugin (depends on <code>ranger-hadoop</code>)</td>
-</tr>
-<tr>
-<td><code>docker-compose.ranger-kafka.yml</code></td>
-<td><code>ranger-kafka</code> with the Kafka plugin; included by the audit service file</td>
-</tr>
-<tr>
-<td><code>docker-compose.ranger-knox.yml</code></td>
-<td><code>ranger-knox</code> with the Knox plugin</td>
-</tr>
-<tr>
-<td><code>docker-compose.ranger-ozone.yml</code></td>
-<td><code>ozone-om</code>, <code>ozone-scm</code>, <code>ozone-datanode</code> with the Ozone plugin</td>
-</tr>
-<tr>
-<td><code>docker-compose.ranger-trino.yml</code></td>
-<td><code>ranger-trino</code> configured for Ranger access control</td>
-</tr>
-</tbody>
-</table>
+<p>Each service has its own compose file in
+<a href="https://github.com/apache/ranger/tree/master/dev-support/ranger-docker"><code>dev-support/ranger-docker</code></a>
+on GitHub; the commands below show which files to combine.</p>
 <h3 id="core-services-ranger-usersync-tagsync-pdp-kms-and-audit">Core services: ranger, usersync, tagsync, pdp, kms and audit<a class="headerlink" href="#core-services-ranger-usersync-tagsync-pdp-kms-and-audit" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1"># To enable file based sync source for usersync do:</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">ENABLE_FILE_SYNC_SOURCE</span><span class="o">=</span><span class="nb">true</span>
@@ -2610,7 +2535,7 @@ docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> 
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 16:33:43 PDT">September 20, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 17:09:50 PDT">September 20, 2026</span>
   </span>
 
     

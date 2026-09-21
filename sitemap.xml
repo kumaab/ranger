@@ -2,406 +2,406 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://apache.github.io/ranger/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/arch/architecture/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/arch/plugin-architecture/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/arch/policy-model/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/blog/abac-part-1/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/blog/abac-part-2/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/blog/blog/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/blog/dynamic-expressions/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/blog/integrating-applications/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/blog/policy-model/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/dev/authz-api/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/dev/build/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/dev/custom-conditions-enrichers/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/dev/rest-api/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/dev/testing-and-tools/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/features/abac/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/features/import-export/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/features/roles/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/features/client-interface/intro/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/features/client-interface/java/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/features/client-interface/python/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/features/gds/gds_intro/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/features/policies/policy-conditions/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/features/policies/resource-policies/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/features/policies/row-filter-column-masking/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/features/policies/tag-based-policies/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/features/sec-zone/intro/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/getting-started/docker/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/getting-started/faq/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/getting-started/first-policy/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/getting-started/install/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/getting-started/introduction/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/getting-started/trino-with-ranger/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/atlas/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/custom-plugin/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/elasticsearch/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/hbase/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/hdfs/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/hive/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/kafka/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/kms/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/knox/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/kudu/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/kylin/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/nestedstructure/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/nifi-registry/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/nifi/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/other-service-definitions/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/ozone/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/polaris/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/presto/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/schema-registry/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/solr/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/sqoop/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/storm/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/trino/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/plugins/yarn/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/project/asf-index/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/project/community/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/project/contributing/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/project/cve-list/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/project/java-code-style/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/project/release-process/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/project/security/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/release-notes/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/release-notes/1.x-and-older/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/release-notes/2.0.0/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/release-notes/2.1.0/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/release-notes/2.2.0/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/release-notes/2.3.0/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/release-notes/2.4.0/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/release-notes/2.5.0/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/release-notes/2.6.0/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/release-notes/2.7.0/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/release-notes/2.8.0/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/release-notes/2.9.0/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/release-notes/download/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/admin/authentication/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/admin/database/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/admin/high-availability/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/admin/installation/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/admin/metrics/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/admin/security-hardening/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/admin/service/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/admin/ui-guide/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/admin/users-groups-roles/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/audit/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/audit/audit-filters/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/audit/audit-schema/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/audit/audit-stores/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/audit-server/service/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/kms/high-availability/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/kms/hsm-and-key-stores/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/kms/service/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/pdp/service/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/tagsync/service/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/usersync/ldap-ad/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/usersync/operations/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/usersync/service/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
     <url>
          <loc>https://apache.github.io/ranger/services/usersync/unix-and-file-sources/</loc>
-         <lastmod>2026-09-20</lastmod>
+         <lastmod>2026-09-21</lastmod>
     </url>
 </urlset>

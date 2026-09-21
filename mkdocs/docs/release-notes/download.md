@@ -45,7 +45,7 @@ The current stable release is **Apache Ranger 2.9.0** (August 8, 2026); see the
 Binary tarballs follow the naming pattern `ranger-<version>-<component>.tar.gz`, for example
 `services/admin/ranger-2.9.0-admin.tar.gz` and `plugins/hive/ranger-2.9.0-hive-plugin.tar.gz`. Each sits next to
 its `.asc` and `.sha512` files. Binary tarballs have been published for 2.6.0 and later (the `pdp` service and the
-`trino` plugin from 2.9.0); for older releases build them from the source tarball.
+`trino` plugin from 2.9.0); for older releases build them from the source tarball as described in [Building from source](../dev/build.md).
 
 Previous releases are listed on the [Releases](index.md) page. Every release ever made, including the
 incubating ones, stays available at
@@ -129,38 +129,40 @@ The release manager builds them from the `dev-support/ranger-docker` Dockerfiles
 | [apache/ranger-base](https://hub.docker.com/r/apache/ranger-base) | Base image (OS + JDK) used to build and run the other images | `<date>-<n>-<jdk>`, for example `20260806-2-17` |
 
 The images are not signed; pull them by version tag rather than `latest` and check the image digest shown by
-Docker Hub. The quick-start below, from the cwiki page
-[Run Ranger in Docker using DockerHub images](https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=406622390),
-starts Ranger Admin with its PostgreSQL, Solr and ZooKeeper dependencies:
+Docker Hub. The quick start below follows the description published with the
+[apache/ranger](https://hub.docker.com/r/apache/ranger) image. It starts Ranger Admin with its PostgreSQL database
+and a standalone Solr for audits; `apache/ranger-zk` is only needed when Solr runs in SolrCloud mode.
 
 ```bash
 export RANGER_VERSION=2.9.0
-export RANGER_ZK_VERSION=2.8.0
-docker pull apache/ranger-zk:${RANGER_ZK_VERSION}
 docker pull apache/ranger-solr:${RANGER_VERSION}
 docker pull apache/ranger-db:${RANGER_VERSION}
 docker pull apache/ranger:${RANGER_VERSION}
 
 docker network create rangernw
 
-docker run -d --name ranger-zk --hostname ranger-zk.example.com --network rangernw -p 2181:2181 \
-  apache/ranger-zk:${RANGER_ZK_VERSION}
-
-docker run -d --name ranger-solr --hostname ranger-solr.example.com --network rangernw -p 8983:8983 \
+docker run -d --name ranger-solr --hostname ranger-solr.rangernw --network rangernw -p 8983:8983 \
   apache/ranger-solr:${RANGER_VERSION} solr-precreate ranger_audits /opt/solr/server/solr/configsets/ranger_audits/
 
-docker run -d --name ranger-db --hostname ranger-db.example.com --network rangernw \
+docker run -d \
+  -e POSTGRES_PASSWORD=rangerR0cks! \
+  -e RANGER_DB_USER=rangeradmin \
+  -e RANGER_DB_PASSWORD=rangerR0cks! \
+  --name ranger-db --hostname ranger-db.rangernw --network rangernw \
   --health-cmd='su -c "pg_isready -q" postgres' --health-interval=10s --health-timeout=2s --health-retries=30 \
   apache/ranger-db:${RANGER_VERSION}
 
-docker run -d --name ranger --hostname ranger.example.com --network rangernw \
-  -e RANGER_VERSION=${RANGER_VERSION} -e RANGER_DB_TYPE=postgres -p 6080:6080 \
-  apache/ranger:${RANGER_VERSION} /home/ranger/scripts/ranger.sh
+docker run -d \
+  -e POSTGRES_PASSWORD=rangerR0cks! \
+  -e RANGER_DB_USER=rangeradmin \
+  -e RANGER_DB_PASSWORD=rangerR0cks! \
+  --name ranger-admin --hostname ranger-admin.rangernw --network rangernw -p 6080:6080 \
+  apache/ranger:${RANGER_VERSION}
 ```
 
-Ranger Admin is then available at `http://localhost:6080/` (user `admin`, password `rangerR0cks!`). To run the
-full stack with plugins, or to build images from a source checkout, use the compose files in
-`dev-support/ranger-docker`.
+Ranger Admin is then available at `http://localhost:6080/login.jsp`. To run the full stack with plugins, or to
+build images from a source checkout, use the compose files described in
+[Running Ranger with Docker](../getting-started/docker.md).
 
 ## Maven Central
 
@@ -191,7 +193,8 @@ Artifacts you are most likely to depend on:
 ```
 
 The Python client is published to PyPI as [`apache-ranger`](https://pypi.org/project/apache-ranger/)
-(`pip install apache-ranger`); its source is in `intg/src/main/python` of the repository.
+(`pip install apache-ranger`); its source is in `intg/src/main/python` of the repository. See
+[Python client](../features/client-interface/python.md).
 
 ## Source code and release tags
 
@@ -207,7 +210,7 @@ mvn clean package -DskipTests
 ```
 
 The build writes the same `ranger-<version>-<component>.tar.gz` files that are published in the `services/`,
-`plugins/` and `tools/` directories to `target/`.
+`plugins/` and `tools/` directories to `target/`. See [Building from source](../dev/build.md).
 
 ## Further reading
 

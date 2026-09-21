@@ -77,8 +77,10 @@ mvn -T 8 clean verify            # what CI runs; includes checkstyle and spotbug
 ```
 
 Build artifacts (`ranger-<version>-admin.tar.gz`, `ranger-<version>-<plugin>-plugin.tar.gz`, ...) land in `target/`.
-To try your change end to end, `./ranger_in_docker up` builds and starts Ranger Admin and its dependencies in
-Docker.
+To try your change end to end, copy the archives into `dev-support/ranger-docker/dist/` and start Ranger Admin
+and its dependencies with the compose files in `dev-support/ranger-docker`, as described in
+[Running with Docker](../getting-started/docker.md#build-from-source). See also
+[Building from source](../dev/build.md) and [Testing and tools](../dev/testing-and-tools.md).
 
 ### Find something to work on
 
@@ -196,7 +198,8 @@ candidate and vote (only PMC votes are binding). When a release manager sends a 
    `dist.apache.org/repos/dist/dev/ranger/<version>-<rc>` location given in the mail, plus the project
    [KEYS](https://dist.apache.org/repos/dist/release/ranger/KEYS) file.
 2. Verify the signature and checksums.
-3. Build the source with tests and, ideally, run it (for example with `./ranger_in_docker up`).
+3. Build the source with tests and, ideally, run it (for example with the compose setup in
+   `dev-support/ranger-docker`; see [Running with Docker](../getting-started/docker.md#build-from-source)).
 4. Reply to the vote thread with `+1`, `0` or `-1` and what you tested, following the
    [Apache voting process](https://www.apache.org/foundation/voting.html).
 

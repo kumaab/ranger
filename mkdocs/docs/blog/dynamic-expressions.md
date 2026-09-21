@@ -291,3 +291,7 @@ The expression can evaluate to the following, if the user belongs to groups havi
 ```text
 location_state IN ('CA','OR','WA')
 ```
+
+!!! info "Related documentation"
+    Dynamic expressions are documented in [Policy conditions](../features/policies/policy-conditions.md) and
+    [Attribute-based access control](../features/abac.md).

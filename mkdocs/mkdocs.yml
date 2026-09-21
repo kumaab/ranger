@@ -73,24 +73,91 @@ plugins:
 nav:
   - Home: index.md
   - Getting started:
+      - Introduction: getting-started/introduction.md
       - Installation: getting-started/install.md
+      - Run Ranger with Docker: getting-started/docker.md
+      - Your first policy: getting-started/first-policy.md
       - Trino with Ranger: getting-started/trino-with-ranger.md
+      - FAQ: getting-started/faq.md
   - Architecture:
-    - Overview: arch/architecture.md
+      - Overview: arch/architecture.md
+      - Policy model: arch/policy-model.md
+      - Plugin architecture: arch/plugin-architecture.md
   - Plugins:
-    - Trino: plugins/trino.md
+      - Overview: plugins/index.md
+      - Polaris: plugins/polaris.md
+      - Trino: plugins/trino.md
+      - Ozone: plugins/ozone.md
+      - Nested structure: plugins/nestedstructure.md
+      - Kudu: plugins/kudu.md
+      - Schema Registry: plugins/schema-registry.md
+      - Presto: plugins/presto.md
+      - Elasticsearch: plugins/elasticsearch.md
+      - Kylin: plugins/kylin.md
+      - Sqoop: plugins/sqoop.md
+      - NiFi Registry: plugins/nifi-registry.md
+      - NiFi: plugins/nifi.md
+      - Atlas: plugins/atlas.md
+      - Kafka: plugins/kafka.md
+      - Solr: plugins/solr.md
+      - Ranger KMS: plugins/kms.md
+      - YARN: plugins/yarn.md
+      - Knox: plugins/knox.md
+      - Storm: plugins/storm.md
+      - HBase: plugins/hbase.md
+      - Hive: plugins/hive.md
+      - HDFS: plugins/hdfs.md
+      - Other service definitions: plugins/other-service-definitions.md
+      - Writing a custom plugin: plugins/custom-plugin.md
   - Services:
-    - Ranger Admin: services/admin/service.md
-    - Ranger KMS: services/kms/service.md
-    - Ranger UserSync: services/usersync/service.md
-    - Ranger TagSync: services/tagsync/service.md
+      - Ranger Admin:
+          - Overview: services/admin/service.md
+          - Deployment and configuration: services/admin/installation.md
+          - Authentication: services/admin/authentication.md
+          - Users, groups and roles: services/admin/users-groups-roles.md
+          - Database: services/admin/database.md
+          - High availability: services/admin/high-availability.md
+          - Security hardening: services/admin/security-hardening.md
+          - Admin UI guide: services/admin/ui-guide.md
+          - Metrics: services/admin/metrics.md
+      - Ranger UserSync:
+          - Overview: services/usersync/service.md
+          - UNIX and file sources: services/usersync/unix-and-file-sources.md
+          - LDAP and Active Directory: services/usersync/ldap-ad.md
+          - Operations: services/usersync/operations.md
+      - Ranger TagSync: services/tagsync/service.md
+      - Ranger KMS:
+          - Overview: services/kms/service.md
+          - High availability: services/kms/high-availability.md
+          - HSM and key stores: services/kms/hsm-and-key-stores.md
+      - Ranger PDP: services/pdp/service.md
+      - Audit:
+          - Audit framework: services/audit/index.md
+          - Audit stores: services/audit/audit-stores.md
+          - Audit filters: services/audit/audit-filters.md
+          - Audit schema: services/audit/audit-schema.md
+          - Audit server: services/audit-server/service.md
   - Features:
+      - Policies:
+          - Resource-based policies: features/policies/resource-policies.md
+          - Tag-based policies: features/policies/tag-based-policies.md
+          - Row filtering and column masking: features/policies/row-filter-column-masking.md
+          - Policy conditions: features/policies/policy-conditions.md
+      - Attribute-based access control: features/abac.md
+      - Roles: features/roles.md
+      - Security Zones: features/sec-zone/intro.md
       - Governed Data Sharing: features/gds/gds_intro.md
-      - Security Zones:
-          - Introduction: features/sec-zone/intro.md
-      - Client Libraries:
-          - Introduction: features/client-interface/intro.md
-          - Authz Remote Java Client: https://github.com/apache/ranger/blob/master/authz-remote/README.md
+      - Import and export: features/import-export.md
+      - Client libraries:
+          - Overview: features/client-interface/intro.md
+          - Java client: features/client-interface/java.md
+          - Python client: features/client-interface/python.md
+  - Developer guide:
+      - Building from source: dev/build.md
+      - REST API: dev/rest-api.md
+      - Authorization API and PDP: dev/authz-api.md
+      - Custom conditions and enrichers: dev/custom-conditions-enrichers.md
+      - Testing and tools: dev/testing-and-tools.md
   - Project:
       - Contributing: project/contributing.md
       - Community: project/community.md

@@ -11,10 +11,10 @@
         <link rel="canonical" href="https://apache.github.io/ranger/getting-started/trino-with-ranger/">
       
       
-        <link rel="prev" href="../first-policy/">
+        <link rel="prev" href="../install/">
       
       
-        <link rel="next" href="../faq/">
+        <link rel="next" href="../../arch/architecture/">
       
       
         
@@ -91,7 +91,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#trino-with-ranger" class="md-skip">
+        <a href="#introduction" class="md-skip">
           Skip to content
         </a>
       
@@ -258,7 +258,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../introduction/" class="md-tabs__link">
+        <a href="../install/" class="md-tabs__link">
           
   
   
@@ -302,7 +302,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../plugins/" class="md-tabs__link">
+        <a href="../../plugins/trino/" class="md-tabs__link">
           
   
   
@@ -323,13 +323,6 @@
   
     
     
-      
-  
-  
-  
-  
-    
-    
       <li class="md-tabs__item">
         <a href="../../services/admin/service/" class="md-tabs__link">
           
@@ -344,9 +337,6 @@
     
   
 
-    
-  
-
       
         
   
@@ -355,46 +345,14 @@
   
     
     
-      
-  
-  
-  
-  
-    
-    
       <li class="md-tabs__item">
-        <a href="../../features/policies/resource-policies/" class="md-tabs__link">
+        <a href="../../features/gds/gds_intro/" class="md-tabs__link">
           
   
   
     
   
   Features
-
-        </a>
-      </li>
-    
-  
-
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="../../dev/build/" class="md-tabs__link">
-          
-  
-  
-    
-  
-  Developer guide
 
         </a>
       </li>
@@ -554,14 +512,6 @@
       
         
       
-        
-      
-        
-      
-        
-      
-        
-      
     
     
     
@@ -617,34 +567,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../introduction/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Introduction
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../install/" class="md-nav__link">
         
   
@@ -670,62 +592,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../docker/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Run Ranger with Docker
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../first-policy/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Your first policy
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -734,8 +600,6 @@
       
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
-      
-        
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
@@ -779,8 +643,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -789,46 +651,52 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#run-the-trino-container" class="md-nav__link">
+  <a href="#introduction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Run the Trino container
+        Introduction
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#run-trino-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run Trino Container
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#create-the-trino-service-in-ranger-admin" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#configure-ranger-plugin-in-trino-container" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Create the Trino service in Ranger Admin
+        Configure Ranger Plugin in Trino Container
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#configure-the-ranger-plugin-in-the-trino-container" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#restart-trino-container" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configure the Ranger plugin in the Trino container
+        Restart Trino Container
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#restart-the-trino-container" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Restart the Trino container
-      
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -836,34 +704,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../faq/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    FAQ
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -884,10 +724,6 @@
   
     
     
-      
-        
-      
-        
       
         
       
@@ -945,56 +781,6 @@
     
       
         
-          
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
       
     
     
@@ -1014,7 +800,7 @@
   
   
   
-    <a href="../../plugins/" class="md-nav__link">
+    <a href="../../plugins/trino/" class="md-nav__link">
       
   
   
@@ -1057,10 +843,6 @@
       
         
       
-        
-      
-        
-      
     
     
     
@@ -1076,10 +858,6 @@
     <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
       
         
-  
-  
-  
-    
   
   
   
@@ -1104,8 +882,6 @@
     </a>
   
 
-  
-
       
     </li>
   
@@ -1119,14 +895,6 @@
   
     
     
-      
-        
-      
-        
-      
-        
-      
-        
       
         
       
@@ -1152,11 +920,7 @@
   
   
   
-    
-  
-  
-  
-    <a href="../../features/policies/resource-policies/" class="md-nav__link">
+    <a href="../../features/gds/gds_intro/" class="md-nav__link">
       
   
   
@@ -1164,71 +928,6 @@
     
   
     Features
-  
-
-    
-  </span>
-  
-  
-
-      
-        <span class="md-nav__icon md-icon"></span>
-      
-    </a>
-  
-
-  
-
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-      
-    
-    
-      
-        
-        
-      
-    
-    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
-      
-        
-  
-  
-  
-    <a href="../../dev/build/" class="md-nav__link">
-      
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Developer guide
   
 
     
@@ -1455,8 +1154,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -1465,46 +1162,52 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#run-the-trino-container" class="md-nav__link">
+  <a href="#introduction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Run the Trino container
+        Introduction
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#run-trino-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run Trino Container
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#create-the-trino-service-in-ranger-admin" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#configure-ranger-plugin-in-trino-container" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Create the Trino service in Ranger Admin
+        Configure Ranger Plugin in Trino Container
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#configure-the-ranger-plugin-in-the-trino-container" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#restart-trino-container" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configure the Ranger plugin in the Trino container
+        Restart Trino Container
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#restart-the-trino-container" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Restart the Trino container
-      
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1551,7 +1254,7 @@
     
     
       <li class="md-path__item">
-        <a href="../introduction/" class="md-path__link">
+        <a href="../install/" class="md-path__link">
           
   <span class="md-ellipsis">
     Getting started
@@ -1576,75 +1279,42 @@
   
 
 
-<!---
-  Licensed to the Apache Software Foundation (ASF) under one or more
-  contributor license agreements.  See the NOTICE file distributed with
-  this work for additional information regarding copyright ownership.
-  The ASF licenses this file to You under the Apache License, Version 2.0
-  (the "License"); you may not use this file except in compliance with
-  the License.  You may obtain a copy of the License at
+  <h1>Trino with Ranger</h1>
 
-      http://www.apache.org/licenses/LICENSE-2.0
+<!--
+ - Licensed to the Apache Software Foundation (ASF) under one or more
+ - contributor license agreements.  See the NOTICE file distributed with
+ - this work for additional information regarding copyright ownership.
+ - The ASF licenses this file to You under the Apache License, Version 2.0
+ - (the "License"); you may not use this file except in compliance with
+ - the License.  You may obtain a copy of the License at
+ -
+ -   http://www.apache.org/licenses/LICENSE-2.0
+ -
+ - Unless required by applicable law or agreed to in writing, software
+ - distributed under the License is distributed on an "AS IS" BASIS,
+ - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ - See the License for the specific language governing permissions and
+ - limitations under the License.
+ -->
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
--->
-
-<h1 id="trino-with-ranger">Trino with Ranger<a class="headerlink" href="#trino-with-ranger" title="Permanent link">&para;</a></h1>
-<p>This guide walks you through the steps to run Trino with Apache Ranger as the access control
-enforcer. Trino ships its own Ranger access control plugin, so the Trino container only needs to be
-pointed at a Ranger service and given the Ranger plugin configuration files. Ranger Admin is assumed
-to be running on the <code>rangernw</code> Docker network, as described in <a href="../docker/">Run Ranger with Docker</a>.</p>
-<h2 id="run-the-trino-container">Run the Trino container<a class="headerlink" href="#run-the-trino-container" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Docker Hub images</label><label for="__tabbed_1_2">Build from source (dev-support/ranger-docker)</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<p>With Ranger Admin started from the <a href="https://hub.docker.com/r/apache/ranger">DockerHub</a> images, run the image published by Trino on the
-same network, then follow the remaining sections of this page to configure it:</p>
-<div class="highlight"><span class="filename">Run Trino in Ranger&#x27;s network</span><pre><span></span><code>docker<span class="w"> </span>pull<span class="w"> </span>trinodb/trino
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<p>This guide will walk you through the steps to run Trino with Apache Ranger as the Access Control Enforcer.</p>
+<h3 id="run-trino-container">Run Trino Container<a class="headerlink" href="#run-trino-container" title="Permanent link">&para;</a></h3>
+<div class="highlight"><span class="filename">Run Trino in Ranger&#x27;s Network</span><pre><span></span><code>docker<span class="w"> </span>pull<span class="w"> </span>trinodb/trino
 docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:8080<span class="w"> </span>--name<span class="w"> </span>trino<span class="w"> </span>--network<span class="w"> </span>rangernw<span class="w"> </span>trinodb/trino
 
 <span class="c1"># for more details: https://hub.docker.com/r/trinodb/trino</span>
 </code></pre></div>
-</div>
-<div class="tabbed-block">
-<p><code>docker-compose.ranger-trino.yml</code> builds a <code>ranger-trino</code> container from <code>trinodb/trino</code> with the
-files from <code>scripts/trino</code> already in <code>/etc/trino/</code>, and Ranger Admin creates the <code>dev_trino</code>
-service on start. Nothing else on this page needs to be done by hand:</p>
-<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span><span class="si">${</span><span class="nv">AUDIT_DESTINATIONS</span><span class="si">}</span><span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-audit-service.yml<span class="w"> </span>-f<span class="w"> </span>docker-compose.ranger-trino.yml<span class="w"> </span>up<span class="w"> </span>-d
-</code></pre></div>
-<p>The shipped <code>ranger-trino-audit.xml</code> sends audits directly to Solr at <code>ranger-solr.rangernw:8983</code>;
-start the setup with <code>AUDIT_INDEX_STORE=solr</code> to see Trino audits in Ranger Admin.</p>
-</div>
-</div>
-</div>
-<h2 id="create-the-trino-service-in-ranger-admin">Create the Trino service in Ranger Admin<a class="headerlink" href="#create-the-trino-service-in-ranger-admin" title="Permanent link">&para;</a></h2>
-<p>In <strong>Service Manager</strong>, unless it is already listed, add a new service of type Trino named <code>dev_trino</code> (the name referenced by
-<code>ranger.service.name</code> below). See the <a href="../../plugins/trino/">Trino plugin</a> page for the service
-configuration properties.</p>
-<h2 id="configure-the-ranger-plugin-in-the-trino-container">Configure the Ranger plugin in the Trino container<a class="headerlink" href="#configure-the-ranger-plugin-in-the-trino-container" title="Permanent link">&para;</a></h2>
-<div class="highlight"><span class="filename">Update access-control.properties in /etc/trino/ in the Trino container</span><pre><span></span><code><span class="na">access-control.name</span><span class="o">=</span><span class="s">ranger</span>
+<h3 id="configure-ranger-plugin-in-trino-container">Configure Ranger Plugin in Trino Container<a class="headerlink" href="#configure-ranger-plugin-in-trino-container" title="Permanent link">&para;</a></h3>
+<div class="highlight"><span class="filename">Update access-control.properties in /etc/trino/ in Trino container</span><pre><span></span><code><span class="na">access-control.name</span><span class="o">=</span><span class="s">ranger</span>
 <span class="na">ranger.service.name</span><span class="o">=</span><span class="s">dev_trino</span>
 <span class="na">ranger.plugin.config.resource</span><span class="o">=</span><span class="s">/etc/trino/ranger-trino-security.xml,/etc/trino/ranger-trino-audit.xml,/etc/trino/ranger-policymgr-ssl.xml</span>
 <span class="na">ranger.hadoop.config.resource</span><span class="o">=</span>
 
 <span class="c1"># For details to configure Apache Ranger: https://trino.io/docs/current/security/ranger-access-control.html</span>
 </code></pre></div>
-<p>Copy <code>ranger-trino-security.xml</code>, <code>ranger-trino-audit.xml</code> and <code>ranger-policymgr-ssl.xml</code> into
-<code>/etc/trino/</code>. Working examples, pointing at <code>http://ranger:6080</code> and the <code>dev_trino</code> service, are in
-<a href="https://github.com/apache/ranger/blob/master/dev-support/ranger-docker/scripts/trino"><code>dev-support/ranger-docker/scripts/trino</code></a>.
-The Docker Hub quick start names the Ranger Admin container <code>ranger-admin</code>, so with those images set
-<code>ranger.plugin.trino.policy.rest.url</code> to <code>http://ranger-admin:6080</code>.</p>
-<h2 id="restart-the-trino-container">Restart the Trino container<a class="headerlink" href="#restart-the-trino-container" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>restart<span class="w"> </span>trino
-</code></pre></div>
-<p>After the restart, Trino downloads the <code>dev_trino</code> policies and every query is authorized by Ranger.
-Confirm the plugin is connected under <strong>Audit → Plugin Status</strong> in Ranger Admin, then create
-policies for catalogs, schemas, tables and columns as described in
-<a href="../../features/policies/resource-policies/">Resource-based policies</a>.</p>
+<h3 id="restart-trino-container">Restart Trino Container<a class="headerlink" href="#restart-trino-container" title="Permanent link">&para;</a></h3>
 
 
 
@@ -1665,7 +1335,7 @@ policies for catalogs, schemas, tables and columns as described in
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 17:32:47 PDT">September 20, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="January 20, 2026 14:19:41 PST">January 20, 2026</span>
   </span>
 
     

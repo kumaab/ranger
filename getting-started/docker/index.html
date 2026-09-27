@@ -976,17 +976,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Troubleshooting
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#further-reading" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1929,17 +1918,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Troubleshooting
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#further-reading" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2098,8 +2076,10 @@ release, so it cannot be pulled from Docker Hub; its images are built from your 
 <div class="tabbed-block">
 <ul>
 <li>A recent Docker with Compose v2 (<code>docker compose</code>); the README was written against Engine
-  v24.0.5 and Compose v2.20.2. Give Docker at least 4 GB of memory for the full stack; every
-  Ranger service defaults to a 256 MB heap (<code>RANGER_*_MAX_HEAP</code> in <code>.env</code>).</li>
+  v24.0.5 and Compose v2.20.2. Give Docker enough memory: the Ranger services alone default to a 256 MB heap each
+  (<code>RANGER_*_MAX_HEAP</code> in <code>.env</code>) and fit in 4 GB, but a stack that also runs Hadoop, Hive,
+  Kafka and OpenSearch needs at least 8 GB; with less, OpenSearch and HiveServer2 are killed
+  shortly after they start.</li>
 <li><code>git</code> and <code>bash</code>.</li>
 <li>Network access to <code>archive.apache.org</code> and Maven Central: <code>download-archives.sh</code> fetches the
   Hadoop, Hive, HBase, Kafka, Knox and Ozone archives and the JDBC drivers into
@@ -2482,30 +2462,6 @@ docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> 
    logging each one; the upgrade is complete when Ranger Admin is ready again.</li>
 </ol>
 <p>Use <code>docker-compose.ranger-db-mounted.yml</code> so the database survives the container rebuild.</p>
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Ranger Admin does not come up (development setup).</strong> <code>docker logs ranger</code> shows the configuration
-  and database bootstrap (<code>dba.py</code>), the service creation and the Ranger Admin log; a failed patch is
-  reported with its output. The same logs are in <code>/var/log/ranger</code> inside the container (<code>dba.log</code>,
-  <code>create-ranger-services.log</code>, <code>catalina.out</code>). The database container must be healthy first
-  (<code>docker ps</code> shows <code>(healthy)</code>).</li>
-<li><strong>Ranger Admin does not come up (Docker Hub images).</strong> Check <code>docker logs ranger-admin</code>, and that
-  <code>ranger-db</code> is <code>(healthy)</code> and was started with the same <code>RANGER_DB_USER</code> and <code>RANGER_DB_PASSWORD</code>
-  values as <code>ranger-admin</code>.</li>
-<li><strong>The audit ingestor or dispatcher stays in <code>Created</code>.</strong> Both wait for <code>ranger-kafka</code> to be healthy,
-  which in turn requires Ranger Admin to have created the <code>dev_kafka</code> service and the Kafka plugin to
-  have downloaded its policies; this takes a couple of minutes after Ranger Admin is ready.</li>
-<li><strong>An image build fails with a missing file under <code>dist/</code> or <code>downloads/</code>.</strong> Build Ranger and run
-  <code>download-archives.sh</code> for that service first; see
-  <a href="#build-from-source">Prepare the development setup</a>.</li>
-<li><strong>A plugin container starts but no policies are enforced.</strong> Check <strong>Audit → Plugin Status</strong> in the
-  UI, and <code>docker exec -it ranger-hive bash</code> to inspect <code>/etc/ranger/dev_hive/policycache</code> and the
-  component logs.</li>
-<li><strong>Kerberos errors</strong> (<code>Cannot find KDC</code>, missing keytab). Wait for <code>ranger-kdc</code> to become healthy;
-  keytabs appear under <code>dist/keytabs/</code> once provisioning finishes.</li>
-<li><strong>Build fails with a Java version error.</strong> The build image uses the JDK suffix in
-  <code>RANGER_BASE_BUILD_VERSION</code>; Ranger master requires JDK 17.</li>
-</ul>
 <h2 id="further-reading">Further reading<a class="headerlink" href="#further-reading" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="https://github.com/apache/ranger/blob/master/dev-support/ranger-docker/README.md"><code>dev-support/ranger-docker/README.md</code></a></li>
@@ -2535,7 +2491,7 @@ docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> 
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 27, 2026 13:49:45 PDT">September 27, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 27, 2026 16:13:40 PDT">September 27, 2026</span>
   </span>
 
     

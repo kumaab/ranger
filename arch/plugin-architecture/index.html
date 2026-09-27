@@ -803,10 +803,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#embedding-the-plugin" class="md-nav__link">
+  <a href="#embedding-ranger-in-your-own-application" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Embedding the plugin
+        Embedding Ranger in your own application
       
     </span>
   </a>
@@ -1497,10 +1497,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#embedding-the-plugin" class="md-nav__link">
+  <a href="#embedding-ranger-in-your-own-application" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Embedding the plugin
+        Embedding Ranger in your own application
       
     </span>
   </a>
@@ -1762,31 +1762,37 @@ your own application, read this page first and then <a href="../../plugins/custo
    them, for data-mask and row-filter decisions). Every result becomes an audit event.</li>
 <li>When the host shuts down, the plugin stops its background threads.</li>
 </ol>
-<h2 id="embedding-the-plugin">Embedding the plugin<a class="headerlink" href="#embedding-the-plugin" title="Permanent link">&para;</a></h2>
-<p>A host adapter embeds
-<a href="https://github.com/apache/ranger/blob/master/agents-common/src/main/java/org/apache/ranger/plugin/service/RangerBasePlugin.java"><code>RangerBasePlugin</code></a>
-from <code>ranger-plugins-common</code>. It creates the plugin for a service type and an application id (the id
-distinguishes several hosts of the same type, for example <code>hiveServer2</code> and <code>hiveMetastore</code>, in audit
-and cache file names), installs an audit handler, initializes it, and then asks it for access,
-data-mask and row-filter decisions. The sample in
-<a href="https://github.com/apache/ranger/blob/master/ranger-examples/plugin-sampleapp/src/main/java/org/apache/ranger/examples/sampleapp/RangerAuthorizer.java"><code>ranger-examples/plugin-sampleapp</code></a>
-is the minimal version:</p>
-<div class="highlight"><span class="filename">RangerAuthorizer.java (excerpt)</span><pre><span></span><code><span class="n">plugin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RangerBasePlugin</span><span class="p">(</span><span class="s">"sampleapp"</span><span class="p">,</span><span class="w"> </span><span class="s">"sampleapp"</span><span class="p">);</span>
-<span class="n">plugin</span><span class="p">.</span><span class="na">setResultProcessor</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">RangerDefaultAuditHandler</span><span class="p">(</span><span class="n">plugin</span><span class="p">.</span><span class="na">getConfig</span><span class="p">()));</span>
-<span class="n">plugin</span><span class="p">.</span><span class="na">init</span><span class="p">();</span>
+<h2 id="embedding-ranger-in-your-own-application">Embedding Ranger in your own application<a class="headerlink" href="#embedding-ranger-in-your-own-application" title="Permanent link">&para;</a></h2>
+<p>New integrations should use the
+<a href="../../dev/authz-api/">authorization API</a> rather than <code>RangerBasePlugin</code> directly. The
+<code>ranger-authz-api</code> module defines a small, stable interface: build a request from the user, the
+resource and the permissions wanted, and get back a decision together with any row filter or data mask
+to apply. Two implementations exist, chosen by configuration:</p>
+<ul>
+<li><code>authz-embedded</code> evaluates policies in-process. Behind the interface it runs the same policy engine,
+  policy refresher and audit pipeline that the plugins on this page use, one per Ranger service.</li>
+<li><code>authz-remote</code> sends the same request to a <a href="../../services/pdp/service/">Ranger PDP</a> server over REST,
+  for applications that cannot or should not embed the engine.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">Properties</span><span class="w"> </span><span class="n">props</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Properties</span><span class="p">();</span>
+<span class="n">props</span><span class="p">.</span><span class="na">load</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">FileInputStream</span><span class="p">(</span><span class="s">"ranger-authz.properties"</span><span class="p">));</span>
 
-<span class="n">RangerAccessResourceImpl</span><span class="w"> </span><span class="n">resource</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RangerAccessResourceImpl</span><span class="p">();</span>
-<span class="n">resource</span><span class="p">.</span><span class="na">setValue</span><span class="p">(</span><span class="s">"path"</span><span class="p">,</span><span class="w"> </span><span class="n">fileName</span><span class="p">);</span><span class="w"> </span><span class="c1">// "path" must be a resource name in the servicedef JSON</span>
+<span class="c1">// ranger.authorizer.impl.class selects RangerEmbeddedAuthorizer (default) or RangerRemoteAuthorizer</span>
+<span class="n">RangerAuthorizer</span><span class="w"> </span><span class="n">authorizer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RangerAuthorizerFactory</span><span class="p">.</span><span class="na">createAuthorizer</span><span class="p">(</span><span class="n">props</span><span class="p">);</span>
+<span class="n">authorizer</span><span class="p">.</span><span class="na">init</span><span class="p">();</span>
 
-<span class="n">RangerAccessRequest</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RangerAccessRequestImpl</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span><span class="w"> </span><span class="n">accessType</span><span class="p">,</span><span class="w"> </span><span class="n">user</span><span class="p">,</span><span class="w"> </span><span class="n">userGroups</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">);</span>
-<span class="n">RangerAccessResult</span><span class="w">  </span><span class="n">result</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">plugin</span><span class="p">.</span><span class="na">isAccessAllowed</span><span class="p">(</span><span class="n">request</span><span class="p">);</span>
+<span class="n">RangerUserInfo</span><span class="w">      </span><span class="n">user</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RangerUserInfo</span><span class="p">(</span><span class="s">"alice"</span><span class="p">);</span>
+<span class="n">RangerAccessInfo</span><span class="w">    </span><span class="n">access</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RangerAccessInfo</span><span class="p">(</span><span class="s">"table:sales/customers/accounts"</span><span class="p">,</span><span class="w"> </span><span class="s">"QUERY"</span><span class="p">,</span><span class="w"> </span><span class="s">"select"</span><span class="p">);</span>
+<span class="n">RangerAccessContext</span><span class="w"> </span><span class="n">ctx</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RangerAccessContext</span><span class="p">(</span><span class="s">"hive"</span><span class="p">,</span><span class="w"> </span><span class="s">"dev_hive"</span><span class="p">);</span>
 
-<span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="na">getIsAllowed</span><span class="p">();</span>
+<span class="n">RangerAuthzResult</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">authorizer</span><span class="p">.</span><span class="na">authorize</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">RangerAuthzRequest</span><span class="p">(</span><span class="n">user</span><span class="p">,</span><span class="w"> </span><span class="n">access</span><span class="p">,</span><span class="w"> </span><span class="n">ctx</span><span class="p">));</span>
 </code></pre></div>
-<p>The plugin also exposes the effective permissions of a resource (used by Hive <code>SHOW GRANT</code> and the
-HBase coprocessor), forwards SQL <code>GRANT</code>/<code>REVOKE</code> statements to Ranger Admin so they become policies,
-and can be asked to refresh its policies immediately. See
-<a href="../../plugins/custom-plugin/">Writing a custom plugin</a> for a complete walkthrough.</p>
+<p>The request and response model, the configuration of both implementations and a runnable sample are on
+the <a href="../../dev/authz-api/">Authorization API and PDP</a> page. Apache Polaris integrates this way.</p>
+<p><code>RangerBasePlugin</code> remains the lower-level building block that the plugins shipped in this repository
+(HDFS, Hive, HBase, Kafka, ...) and the <code>authz-embedded</code> library are built on. It is still the right
+choice when a service exposes an authorizer extension point that expects the plugin's own request and
+result objects, which is what <a href="../../plugins/custom-plugin/">Writing a custom plugin</a> walks through.</p>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
 <p>The plugin reads three XML files for its service type from the classpath of the protected service:
 <code>ranger-&lt;type&gt;-security.xml</code>, <code>ranger-&lt;type&gt;-audit.xml</code> and the TLS settings file. Three optional files
@@ -1881,158 +1887,71 @@ plugin has policies before serving its first request; after that it polls at the
 <p>Every download is reported back to Admin, which is what populates the <strong>Audit &gt; Plugins</strong> and
 <strong>Plugin Status</strong> tabs in the UI.</p>
 <h2 id="request-and-result">Request and result<a class="headerlink" href="#request-and-result" title="Permanent link">&para;</a></h2>
-<p><code>RangerAccessRequest</code> describes what is being attempted. The host adapter fills a
-<code>RangerAccessRequestImpl</code>:</p>
-<dl>
-<dt><code>resource</code></dt>
-<dd>A <code>RangerAccessResource</code> (map of resource level to value, for example <code>database=finance, table=orders</code>), optionally with an owner.</dd>
-<dt><code>accessType</code></dt>
-<dd>The access type from the service definition (<code>select</code>, <code>write</code>, ...). A special value <code>_any</code> asks "any access at all", used for existence checks: the engine expands it to every access type of the service definition, combines each one across policies by priority, and allows the request when at least one access type is allowed.</dd>
-<dt><code>user</code>, <code>userGroups</code>, <code>userRoles</code></dt>
-<dd>The principal. Roles are normally resolved by the engine from Ranger roles.</dd>
-<dt><code>accessTime</code></dt>
-<dd>When the access happens (drives validity schedules and time-of-day conditions).</dd>
-<dt><code>clientIPAddress</code>, <code>remoteIPAddress</code>, <code>forwardedAddresses</code></dt>
-<dd>Network origin, used by IP conditions and audits.</dd>
-<dt><code>clientType</code>, <code>action</code>, <code>requestData</code>, <code>sessionId</code></dt>
-<dd>Host-specific details recorded in audits (for Hive: <code>HIVESERVER2</code>, the command type, and the query text).</dd>
-<dt><code>clusterName</code>, <code>clusterType</code></dt>
-<dd>From configuration; used by cluster conditions.</dd>
-<dt><code>context</code></dt>
-<dd>A map populated by context enrichers (tags, user attributes, GDS info) and by the host (for example resources accessed together).</dd>
-<dt><code>resourceMatchingScope</code></dt>
-<dd><code>SELF</code> or <code>SELF_OR_DESCENDANTS</code>, for checks such as "may the user access anything under this database".</dd>
-</dl>
-<p><code>RangerAccessResult</code> is what comes back:</p>
-<dl>
-<dt><code>isAccessDetermined</code>, <code>isAllowed</code></dt>
-<dd>The decision. <code>isAccessDetermined=false</code> means no policy matched (see fallback in <a href="../policy-model/#evaluation-order">Policy model</a>).</dd>
-<dt><code>policyId</code>, <code>policyVersion</code>, <code>policyPriority</code>, <code>zoneName</code></dt>
-<dd>Which policy decided, from which zone.</dd>
-<dt><code>isAudited</code>, <code>auditPolicyId</code>, <code>auditLogId</code></dt>
-<dd>Whether an audit record is produced and which policy's audit flag decided that.</dd>
-<dt><code>reason</code></dt>
-<dd>Free text, for example <code>superuser</code> or <code>matched deny-all-else policy</code>.</dd>
-<dt><code>maskType</code>, <code>maskedValue</code>, <code>maskCondition</code></dt>
-<dd>For data-mask evaluations.</dd>
-<dt><code>filterExpr</code></dt>
-<dd>For row-filter evaluations.</dd>
-<dt><code>datasets</code>, <code>projects</code>, <code>allowedByDatasets</code>, <code>allowedByProjects</code></dt>
-<dd>GDS information.</dd>
-<dt><code>evaluatedPoliciesCount</code></dt>
-<dd>Diagnostics.</dd>
-</dl>
+<p>For every operation the host builds an access request and receives an access result. A request names
+the resource as a map from resource level to value (for Hive: database, table, column), the access
+type from the service definition (<code>select</code>, <code>write</code>, ...), the user with their groups and roles, and the
+context of the access: when it happens, the client address, the cluster, and host-specific details
+such as the SQL statement that are only recorded in audits. A request can ask about a resource and
+everything below it, which is how "may this user access anything in this database" is answered, and
+the special access type <code>_any</code> asks whether any access at all is allowed.</p>
+<p>The result says whether a policy matched and whether the access is allowed, which policy and security
+zone decided, whether the access must be audited, and, for data-mask and row-filter evaluations, the
+mask or filter expression to apply. An undetermined result means no policy matched; the
+<a href="../policy-model/#evaluation-order">policy model</a> page explains how the host treats it.</p>
+<p>The exact fields are in
+<a href="https://github.com/apache/ranger/blob/master/agents-common/src/main/java/org/apache/ranger/plugin/policyengine/RangerAccessRequest.java"><code>RangerAccessRequest</code></a>
+and
+<a href="https://github.com/apache/ranger/blob/master/agents-common/src/main/java/org/apache/ranger/plugin/policyengine/RangerAccessResult.java"><code>RangerAccessResult</code></a>.</p>
 <h2 id="context-enrichers-and-condition-evaluators">Context enrichers and condition evaluators<a class="headerlink" href="#context-enrichers-and-condition-evaluators" title="Permanent link">&para;</a></h2>
-<p><strong>Context enrichers</strong> run before evaluation and add information to <code>request.context</code>. They are
-declared in the service definition (<code>contextEnrichers</code>) or enabled implicitly by configuration:</p>
-<dl>
-<dt><code>RangerTagEnricher</code></dt>
-<dd>Adds the tags attached to the resource, from the tag service linked to this service. Options:
-<code>tagRetrieverClassName</code> (<code>RangerAdminTagRetriever</code> in the shipped tag service definition;
-<code>RangerFileBasedTagRetriever</code> reads a file), <code>tagRefresherPollingInterval</code> (ms, default 60000), <code>disableTrieLookupPrefilter</code>.</dd>
-<dt><code>RangerUserStoreEnricher</code></dt>
-<dd>Adds user and group attributes, Ranger groups, and the email-to-user mapping. Options:
-<code>userStoreRetrieverClassName</code> (default <code>RangerAdminUserStoreRetriever</code>),
-<code>userStoreRefresherPollingInterval</code> (ms, default 3600000).</dd>
-<dt><code>RangerGdsEnricher</code></dt>
-<dd>Adds the Governed Data Sharing datasets and projects that include the resource. Options:
-<code>retrieverClassName</code> (default <code>RangerAdminGdsInfoRetriever</code>), <code>refresherPollingInterval</code>
-(ms, default 60000).</dd>
-<dt>Geolocation providers (<code>RangerFileBasedGeolocationProvider</code>)</dt>
-<dd>Add location attributes for the client IP. Options are provider-specific.</dd>
-</dl>
-<p><strong>Condition evaluators</strong> implement <code>RangerConditionEvaluator</code>. A service definition references them
-from its <code>policyConditions</code>, by class name in <code>evaluator</code>. The evaluators shipped in
-<code>org.apache.ranger.plugin.conditionevaluator</code> are:</p>
+<p>Policies can depend on more than the resource and the user. <strong>Context enrichers</strong> run before
+evaluation and add that extra information to the request:</p>
 <ul>
-<li><strong>Request origin and time</strong><ul>
-<li><code>RangerIpMatcher</code>: client IP address or range.</li>
-<li><code>RangerTimeOfDayMatcher</code>: time-of-day windows.</li>
-<li><code>RangerValidityScheduleConditionEvaluator</code>: validity schedules on a policy item.</li>
+<li>the tags attached to the resource, downloaded from the tag service linked to the service;</li>
+<li>the attributes of users and groups from Ranger's user store, which also allows Ranger's own group
+  membership to be used instead of, or in addition to, the groups the host supplies;</li>
+<li>the Governed Data Sharing datasets and projects that include the resource;</li>
+<li>optionally, the geographic location of the client address, from a lookup file.</li>
 </ul>
-</li>
-<li><strong>Cluster</strong><ul>
-<li><code>RangerAccessedFromClusterCondition</code> and <code>RangerAccessedNotFromClusterCondition</code>: the cluster
-  name the request came from.</li>
-<li><code>RangerAccessedFromClusterTypeCondition</code> and <code>RangerAccessedNotFromClusterTypeCondition</code>: the
-  cluster type.</li>
-</ul>
-</li>
-<li><strong>Request context</strong><ul>
-<li><code>RangerContextAttributeValueInCondition</code> and <code>RangerContextAttributeValueNotInCondition</code>: a
-  value that an enricher or the host placed in the request context.</li>
-<li><code>RangerActionMatcher</code>: the action named in the request.</li>
-</ul>
-</li>
-<li><strong>Tags</strong><ul>
-<li><code>RangerTagsAllPresentConditionEvaluator</code>: all listed tags are on the resource.</li>
-<li><code>RangerAnyOfExpectedTagsPresentConditionEvaluator</code>: at least one listed tag is on the resource.</li>
-<li><code>RangerNoneOfExpectedTagsPresentConditionEvaluator</code>: none of the listed tags is on the resource.</li>
-</ul>
-</li>
-<li><strong>Hive</strong><ul>
-<li><code>RangerHiveResourcesAccessedTogetherCondition</code> and
-  <code>RangerHiveResourcesNotAccessedTogetherCondition</code>: resources used together in one query.</li>
-</ul>
-</li>
-<li><strong>Script</strong><ul>
-<li><code>RangerScriptConditionEvaluator</code>: a JavaScript expression over the request, resource, user and
-  tags (<code>REQ</code>, <code>RES</code>, <code>USER</code>, <code>TAG</code>).</li>
-<li><code>RangerScriptTemplateConditionEvaluator</code>: a fixed script declared in the service definition
-  (<code>scriptTemplate</code> in the evaluator options). The policy only chooses whether the script must
-  evaluate to true (<code>yes</code>) or false (<code>no</code>).</li>
-</ul>
-</li>
-</ul>
-<p>See <a href="../../features/policies/policy-conditions/">Policy conditions</a> for usage and
-<a href="../../dev/custom-conditions-enrichers/">Custom conditions and enrichers</a> for writing your own.</p>
+<p>A service definition declares which enrichers a plugin runs and how often each refreshes its data;
+the tag, user-store and GDS enrichers can also be switched on by plugin configuration.</p>
+<p><strong>Condition evaluators</strong> decide whether a policy or policy item applies to a request beyond the
+resource and access type. Ranger ships evaluators for the client IP address, the time of day,
+validity schedules, the cluster the request came from, values placed in the request context, the
+action named in the request, the presence or absence of tags, Hive resources used together in one
+query, and free-form JavaScript expressions over the request, the resource, the user and the tags.
+A service definition lists the conditions its policy editor offers and which evaluator backs each;
+<a href="../../features/policies/policy-conditions/">Policy conditions</a> describes them from the policy author's
+side, and <a href="../../dev/custom-conditions-enrichers/">Custom conditions and enrichers</a> shows how to write
+your own. The interfaces are
+<a href="https://github.com/apache/ranger/blob/master/agents-common/src/main/java/org/apache/ranger/plugin/contextenricher/RangerContextEnricher.java"><code>RangerContextEnricher</code></a>
+and
+<a href="https://github.com/apache/ranger/blob/master/agents-common/src/main/java/org/apache/ranger/plugin/conditionevaluator/RangerConditionEvaluator.java"><code>RangerConditionEvaluator</code></a>.</p>
 <h2 id="service-definition-model">Service definition model<a class="headerlink" href="#service-definition-model" title="Permanent link">&para;</a></h2>
-<p>A service definition (<code>RangerServiceDef</code>) is the JSON contract between a plugin, Ranger Admin's
-UI, and the policy engine. Top-level fields:</p>
-<dl>
-<dt><code>name</code>, <code>displayName</code>, <code>label</code>, <code>description</code></dt>
-<dd>Identity of the service type. <code>name</code> is what plugins pass as <code>serviceType</code>.</dd>
-<dt><code>implClass</code></dt>
-<dd><code>RangerBaseService</code> subclass that Ranger Admin loads for test-connection and resource lookup. A
-class that cannot be loaded or does not extend <code>RangerBaseService</code> is replaced by
-<code>RangerDefaultService</code> (test connection fails, lookup returns nothing) with a warning in the log.</dd>
-<dt><code>options</code></dt>
-<dd>Map of service-wide switches: <code>enableDenyAndExceptionsInPolicies</code>, <code>enableTagBasedPolicies</code>,
-<code>enableImplicitConditionExpression</code>, <code>rrnResourceSepChar</code>.</dd>
-<dt><code>configs</code></dt>
-<dd>List of <code>RangerServiceConfigDef</code>: the properties an admin fills in when creating a service.
-Each has <code>name</code>, <code>type</code>, <code>subType</code>, <code>mandatory</code>, <code>defaultValue</code>, <code>validationRegEx</code>, <code>uiHint</code>,
-<code>label</code>.</dd>
-<dt><code>resources</code></dt>
-<dd>List of <code>RangerResourceDef</code>: the resource hierarchy. Each has <code>name</code>, <code>type</code>, <code>level</code>, <code>parent</code>,
-<code>mandatory</code>, <code>lookupSupported</code>, <code>recursiveSupported</code>, <code>excludesSupported</code>, <code>matcher</code>
-(<code>RangerDefaultResourceMatcher</code>, <code>RangerPathResourceMatcher</code>, <code>RangerURLResourceMatcher</code>),
-<code>matcherOptions</code> (<code>wildCard</code>, <code>ignoreCase</code>, <code>pathSeparatorChar</code>), <code>validationRegEx</code>, <code>uiHint</code>,
-<code>accessTypeRestrictions</code>, <code>isValidLeaf</code>.</dd>
-<dt><code>accessTypes</code></dt>
-<dd>List of <code>RangerAccessTypeDef</code>: the permissions. Each has <code>name</code>, <code>label</code>, <code>impliedGrants</code> (for
-example Hive <code>all</code> implies every other type), and <code>category</code> (<code>CREATE</code>, <code>READ</code>, <code>UPDATE</code>,
-<code>DELETE</code>, <code>MANAGE</code>).</dd>
-<dt><code>policyConditions</code></dt>
-<dd>List of <code>RangerPolicyConditionDef</code>: conditions available in the policy editor. Each has <code>name</code>,
-<code>evaluator</code> class, <code>evaluatorOptions</code>, <code>uiHint</code>, <code>label</code>.</dd>
-<dt><code>contextEnrichers</code></dt>
-<dd>List of <code>RangerContextEnricherDef</code>: enrichers to run. Each has <code>name</code>, <code>enricher</code> class,
-<code>enricherOptions</code>.</dd>
-<dt><code>enums</code></dt>
-<dd>List of <code>RangerEnumDef</code>: named value lists (<code>name</code>, <code>elements</code>, <code>defaultIndex</code>) usable by
-<code>configs</code> of type <code>enum</code>.</dd>
-<dt><code>dataMaskDef</code></dt>
-<dd><code>RangerDataMaskDef</code>: <code>maskTypes</code> (each with <code>name</code>, <code>label</code>, <code>transformer</code> expression,
-<code>dataMaskOptions</code>), plus the subset of <code>accessTypes</code> and <code>resources</code> that masking applies to.</dd>
-<dt><code>rowFilterDef</code></dt>
-<dd><code>RangerRowFilterDef</code>: the <code>accessTypes</code> and <code>resources</code> that row filtering applies to.</dd>
-</dl>
-<p>Every item carries an <code>itemId</code> that must stay stable across versions of the definition; Ranger
-Admin uses it to migrate existing policies when a definition is updated. The Hive definition,
-<a href="https://github.com/apache/ranger/blob/master/agents-common/src/main/resources/service-defs/ranger-servicedef-hive.json"><code>ranger-servicedef-hive.json</code></a>,
-is a good reference for a full definition with masking and row filtering; <code>ranger-servicedef-tag.json</code>
-shows a definition whose only purpose is enrichers and conditions.</p>
+<p>A service definition is the JSON contract between a plugin, Ranger Admin's UI and the policy engine.
+It is what makes Ranger generic: the engine and the UI know nothing about Hive tables or Kafka topics
+except what the definition tells them. A definition describes:</p>
+<ul>
+<li>the identity of the service type, and the class Ranger Admin uses to test a connection and to look
+  up resource names while a policy is being edited (a missing or wrong class falls back to a default
+  that cannot test or look up anything, with a warning in the log);</li>
+<li>the resource hierarchy (for Hive: database, table, column, plus URL and UDF), and for each level
+  whether wildcards, recursion and excludes are supported and how values are matched;</li>
+<li>the access types (permissions) with their labels, the grants each one implies (Hive <code>all</code> implies
+  every other type) and their category;</li>
+<li>the properties an administrator fills in when creating a service, such as a connection URL and
+  credentials;</li>
+<li>the policy conditions offered in the policy editor and the context enrichers the plugin runs;</li>
+<li>which access types and resources support data masking and row filtering, and the mask types
+  available;</li>
+<li>service-wide options, for example whether deny policies and tag-based policies are enabled.</li>
+</ul>
+<p>Every item carries an id that must stay stable across versions of the definition, because Ranger
+Admin uses it to migrate existing policies when a definition changes. The shipped definitions live in
+<a href="https://github.com/apache/ranger/tree/master/agents-common/src/main/resources/service-defs"><code>agents-common/src/main/resources/service-defs</code></a>;
+<code>ranger-servicedef-hive.json</code> is a good reference for a full definition with masking and row
+filtering, and <code>ranger-servicedef-tag.json</code> for one whose only purpose is enrichers and conditions.
+The Java model is
+<a href="https://github.com/apache/ranger/blob/master/agents-common/src/main/java/org/apache/ranger/plugin/model/RangerServiceDef.java"><code>RangerServiceDef</code></a>.</p>
 <h2 id="shim-and-class-loader-isolation">Shim and class loader isolation<a class="headerlink" href="#shim-and-class-loader-isolation" title="Permanent link">&para;</a></h2>
 <p>Plugins bring their own dependency versions (Jersey, Jackson, HTTP client, and so on) that may
 conflict with the host service's. To avoid this, each plugin archive contains two layers:</p>
@@ -2118,7 +2037,7 @@ to skip the chained evaluation once the primary engine has decided.</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 27, 2026 13:24:34 PDT">September 27, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 27, 2026 13:49:45 PDT">September 27, 2026</span>
   </span>
 
     

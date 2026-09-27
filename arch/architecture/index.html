@@ -1707,54 +1707,44 @@ and where to read about high availability.</p>
 <thead>
 <tr>
 <th>Component</th>
-<th>Runs as</th>
 <th>Purpose</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><a href="../../services/admin/service/">Ranger Admin</a></td>
-<td>Web application (<code>security-admin</code> module)</td>
 <td>Policy store, REST API and web UI for policies, services, users, roles, zones, tags, and audit search.</td>
 </tr>
 <tr>
 <td><a href="../../services/admin/database/">Policy database</a></td>
-<td>MySQL, PostgreSQL, Oracle, SQL Server, or SQL Anywhere</td>
 <td>Persists everything Ranger Admin manages. Plugins never talk to it directly.</td>
 </tr>
 <tr>
 <td><a href="../plugin-architecture/">Plugins</a></td>
-<td>Library inside the protected service process</td>
 <td>Download policies, evaluate access requests in-process, and emit audit events.</td>
 </tr>
 <tr>
 <td><a href="../../services/pdp/service/">Ranger PDP</a></td>
-<td>REST server (<code>pdp</code> module)</td>
 <td>Policy decision point: applications send an authorization request over HTTP and receive a decision.</td>
 </tr>
 <tr>
 <td><a href="../../services/usersync/service/">UserSync</a></td>
-<td>Standalone service (<code>ugsync</code> module)</td>
 <td>Pulls users and groups from LDAP, Active Directory, UNIX, or files into Ranger Admin for use in policies.</td>
 </tr>
 <tr>
 <td><a href="../../services/tagsync/service/">TagSync</a></td>
-<td>Standalone service (<code>tagsync</code> module)</td>
 <td>Pulls classifications (tags) from Apache Atlas or files into Ranger Admin for tag-based policies.</td>
 </tr>
 <tr>
 <td><a href="../../services/kms/service/">Ranger KMS</a></td>
-<td>Web application (<code>kms</code> module)</td>
 <td>Key management service, compatible with the Hadoop KMS API, whose key operations are authorized by Ranger policies.</td>
 </tr>
 <tr>
 <td><a href="../../services/audit-server/service/">Audit server</a></td>
-<td>Ingestor and dispatchers (<code>audit-server</code> module)</td>
 <td>Receives audit events from plugins over REST, buffers them in Kafka, and dispatches them to Solr, OpenSearch, or HDFS.</td>
 </tr>
 <tr>
 <td><a href="../../services/audit/">Audit stores</a></td>
-<td>Solr, OpenSearch, Elasticsearch, HDFS, object stores, log files</td>
 <td>Keep audit events. Ranger Admin queries the index store to show audits in the UI.</td>
 </tr>
 </tbody>
@@ -1815,16 +1805,21 @@ otherwise HTTP 304 (Not Modified) with no body.</p>
 <p>The download request is <code>GET /service/plugins/secure/policies/download/{serviceName}?lastKnownVersion=N</code>,
 and the cache file is named <code>&lt;appId&gt;_&lt;serviceName&gt;.json</code>.</p>
 <ul>
-<li>The same loop also downloads roles (<code>/service/roles/secure/download/{serviceName}</code>). When the
-  service definition declares the enrichers, each enricher runs its own refresher for tags
-  (<code>/service/tags/secure/download/{serviceName}</code>),
-  the user store (<code>/service/xusers/secure/download/{serviceName}</code>), and GDS data
-  (<code>/service/gds/secure/download/{serviceName}</code>). Non-Kerberos deployments use the same paths
-  without the <code>secure/</code> segment.</li>
-<li>Policies are cached on local disk under <code>ranger.plugin.&lt;type&gt;.policy.cache.dir</code> so a service can
-  restart and enforce policies even while Ranger Admin is down.</li>
-<li>Ranger Admin records each download in the <strong>Audit &gt; Plugins</strong> and <strong>Plugin Status</strong> tabs, which is
-  how you verify that a plugin is connected and up to date.</li>
+<li>
+<p>The same loop also downloads roles. When the service definition declares the enrichers, each
+  enricher runs its own refresher against its own endpoint:</p>
+<ul>
+<li>roles: <code>/service/roles/secure/download/{serviceName}</code></li>
+<li>tags: <code>/service/tags/secure/download/{serviceName}</code></li>
+<li>user store: <code>/service/xusers/secure/download/{serviceName}</code></li>
+<li>GDS data: <code>/service/gds/secure/download/{serviceName}</code></li>
+</ul>
+<p>Non-Kerberos deployments use the same paths without the <code>secure/</code> segment.
+* Policies are cached on local disk under <code>ranger.plugin.&lt;type&gt;.policy.cache.dir</code> so a service can
+  restart and enforce policies even while Ranger Admin is down.
+* Ranger Admin records each download in the <strong>Audit &gt; Plugins</strong> and <strong>Plugin Status</strong> tabs, which is
+  how you verify that a plugin is connected and up to date.</p>
+</li>
 </ul>
 <h3 id="access-authorization-inside-the-protected-service">Access authorization (inside the protected service)<a class="headerlink" href="#access-authorization-inside-the-protected-service" title="Permanent link">&para;</a></h3>
 <p>An access request never leaves the process. The service's authorizer hook (for example Hive's
@@ -1841,8 +1836,7 @@ enabled per plugin with <code>xasecure.audit.destination.&lt;name&gt;</code> pro
 <code>ranger-&lt;type&gt;-audit.xml</code>; <code>auditserver</code>, <code>hdfs</code>, <code>solr</code>, <code>elasticsearch</code>, <code>opensearch</code>, and <code>log4j</code>
 are the common ones. See <a href="../../services/audit/">Audit framework</a>.</p>
 <h3 id="user-and-group-sync">User and group sync<a class="headerlink" href="#user-and-group-sync" title="Permanent link">&para;</a></h3>
-<p>UserSync reads users and groups from its configured source (LDAP, Active Directory, UNIX
-<code>/etc/passwd</code> and <code>/etc/group</code>, or a file), converts them to Ranger's model, and posts them to Ranger Admin over
+<p>UserSync reads users and groups from its configured source (LDAP, Active Directory, UNIX, or a file), converts them to Ranger's model, and posts them to Ranger Admin over
 REST. Sync is incremental after the first full run.</p>
 <h3 id="tag-sync">Tag sync<a class="headerlink" href="#tag-sync" title="Permanent link">&para;</a></h3>
 <p>TagSync subscribes to Atlas entity change notifications on Kafka (or polls Atlas REST, or reads
@@ -1948,7 +1942,7 @@ on Docker Hub cover Ranger Admin, its database and Solr. See
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 27, 2026 12:55:09 PDT">September 27, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 27, 2026 13:24:34 PDT">September 27, 2026</span>
   </span>
 
     

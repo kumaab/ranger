@@ -2538,6 +2538,12 @@ policies for the item's resources without being Ranger administrators: they can 
 delete policies in the Admin UI or REST API as long as the resources of the new policy are covered by
 a policy that delegates to them (Ranger Admin checks this with
 <a href="https://github.com/apache/ranger/blob/master/security-admin/src/main/java/org/apache/ranger/biz/RangerPolicyAdminImpl.java"><code>RangerPolicyAdmin</code></a>).
+The check is made per access type: the delegating policies must grant the user every access type
+that the change touches. For a new policy that is every access type in it; for an edit that changes
+its resources, <code>isEnabled</code>, <code>policyPriority</code>, <code>isDenyAllElse</code>, policy-level <code>conditions</code>,
+<code>validitySchedules</code> or the principals with <code>delegateAdmin</code>, every access type in the old and the new
+policy; for an edit that only adds or removes grants, the access types added or removed; for a
+delete, or an edit that changes no grant, every access type in the stored policy.
 The same flag authorizes <code>GRANT</code>/<code>REVOKE</code> statements issued through plugins that support them
 (Hive, HBase): the plugin sends an <code>_admin</code> access request and only items with <code>delegateAdmin</code> match.</p>
 <h3 id="user-and-in-resource-names"><code>{USER}</code> and <code>${{ ... }}</code> in resource names<a class="headerlink" href="#user-and-in-resource-names" title="Permanent link">&para;</a></h3>
@@ -2742,7 +2748,9 @@ processes each access request as follows:</p>
 <li>Tag-based policies are evaluated before resource-based policies; see
   <a href="../tag-based-policies/#evaluation-semantics">Tag-based policies</a> for how the two interact.</li>
 <li>A deny by a policy at the same or higher priority than an earlier allow replaces the allow. An
-  allow replaces an earlier deny only if its policy has strictly higher priority.</li>
+  allow replaces an earlier deny only if its policy has strictly higher priority. This holds per
+  access type, also for <code>_any</code> requests, which are evaluated as one request per access type of the
+  service definition and allowed when any of them is allowed.</li>
 <li>Once a request is allowed and no policies with deny items remain, evaluation stops.</li>
 <li>If no policy decides, the result is <em>undetermined</em>. Plugins whose service supports fallback (HDFS,
   YARN) then consult the component's native permissions; every other plugin treats undetermined as
@@ -2794,7 +2802,7 @@ processes each access request as follows:</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 17:32:47 PDT">September 20, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 27, 2026 12:55:09 PDT">September 27, 2026</span>
   </span>
 
     

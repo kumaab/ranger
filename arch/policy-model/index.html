@@ -1890,6 +1890,11 @@ security zones, and this gives them no access to the data itself.</p>
 <li>A deny from a tag policy can be overridden only by a resource policy of <em>strictly higher</em>
   priority. An allow from a tag policy can still be denied by a resource policy of the same or
   higher priority.</li>
+<li>A request for the access type <code>_any</code> is expanded to every access type of the service
+  definition. Each access type is combined across policies with the rules above; in particular
+  an allow replaces an earlier deny of the same access type only from a policy of strictly
+  higher priority, exactly as for a single-type request. The request is allowed as soon as one
+  access type is allowed and denied when every access type is denied.</li>
 <li><strong>Undetermined.</strong> If no policy matched, the result is undetermined. Most plugins treat this as a
    deny. Plugins that set <code>ranger.plugin.&lt;type&gt;.is.fallback.supported=true</code> return the
    undetermined result to the host service, which then applies its native authorization. The HDFS
@@ -1987,7 +1992,7 @@ determined it, <code>hadoop-acl</code> when HDFS fell back to native permissions
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 17:32:47 PDT">September 20, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 27, 2026 12:55:09 PDT">September 27, 2026</span>
   </span>
 
     

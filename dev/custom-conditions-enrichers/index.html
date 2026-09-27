@@ -1776,7 +1776,7 @@ pick a condition by <code>name</code> and give it values; the plugin instantiate
 <tr>
 <td><code>enricher</code></td>
 <td>String</td>
-<td>Fully qualified class implementing <code>RangerContextEnricher</code>.</td>
+<td>Fully qualified class implementing <code>RangerContextEnricher</code>, with a no-arg constructor. The plugin checks that the class implements the interface before instantiating it; otherwise it logs <code>failed to instantiate context enricher</code> and runs without the enricher.</td>
 </tr>
 <tr>
 <td><code>enricherOptions</code></td>
@@ -2219,7 +2219,10 @@ running plugin.</p>
 <li>
 <p>Verify in the plugin log (<code>DEBUG</code> on <code>org.apache.ranger.plugin.conditionevaluator</code> and
    <code>org.apache.ranger.plugin.contextenricher</code>) that the classes were instantiated; a <code>ClassNotFoundException</code>
-   there means the jar is not in the <code>-plugin-impl</code> directory of the process that hosts the plugin.</p>
+   there means the jar is not in the <code>-plugin-impl</code> directory of the process that hosts the plugin, and
+   <code>is not assignable to</code> means the class does not implement <code>RangerContextEnricher</code> (or, for a retriever
+   named in <code>tagRetrieverClassName</code>, <code>userStoreRetrieverClassName</code> or <code>retrieverClassName</code>, the matching
+   retriever interface); both are detected before the class is instantiated.</p>
 </li>
 </ol>
 <h2 id="testing-without-a-cluster">Testing without a cluster<a class="headerlink" href="#testing-without-a-cluster" title="Permanent link">&para;</a></h2>
@@ -2258,7 +2261,7 @@ Copy that layout to write an offline test for your classes; details in
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 17:32:47 PDT">September 20, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 27, 2026 12:55:09 PDT">September 27, 2026</span>
   </span>
 
     

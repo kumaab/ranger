@@ -2206,7 +2206,7 @@ timer enqueues a download trigger every <code>policy.pollIntervalMs</code>.</p>
 <dt><code>resource</code></dt>
 <dd>A <code>RangerAccessResource</code> (map of resource level to value, for example <code>database=finance, table=orders</code>), optionally with an owner.</dd>
 <dt><code>accessType</code></dt>
-<dd>The access type from the service definition (<code>select</code>, <code>write</code>, ...). A special value <code>_any</code> asks "any access at all", used for existence checks.</dd>
+<dd>The access type from the service definition (<code>select</code>, <code>write</code>, ...). A special value <code>_any</code> asks "any access at all", used for existence checks: the engine expands it to every access type of the service definition, combines each one across policies by priority, and allows the request when at least one access type is allowed.</dd>
 <dt><code>user</code>, <code>userGroups</code>, <code>userRoles</code></dt>
 <dd>The principal. Roles are normally resolved by the engine from Ranger roles.</dd>
 <dt><code>accessTime</code></dt>
@@ -2312,7 +2312,9 @@ UI, and the policy engine. Top-level fields:</p>
 <dt><code>name</code>, <code>displayName</code>, <code>label</code>, <code>description</code></dt>
 <dd>Identity of the service type. <code>name</code> is what plugins pass as <code>serviceType</code>.</dd>
 <dt><code>implClass</code></dt>
-<dd><code>RangerBaseService</code> subclass that Ranger Admin loads for test-connection and resource lookup.</dd>
+<dd><code>RangerBaseService</code> subclass that Ranger Admin loads for test-connection and resource lookup. A
+class that cannot be loaded or does not extend <code>RangerBaseService</code> is replaced by
+<code>RangerDefaultService</code> (test connection fails, lookup returns nothing) with a warning in the log.</dd>
 <dt><code>options</code></dt>
 <dd>Map of service-wide switches: <code>enableDenyAndExceptionsInPolicies</code>, <code>enableTagBasedPolicies</code>,
 <code>enableImplicitConditionExpression</code>, <code>rrnResourceSepChar</code>.</dd>
@@ -2447,7 +2449,7 @@ to skip the chained evaluation once the primary engine has decided.</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 20, 2026 17:32:47 PDT">September 20, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 27, 2026 12:55:09 PDT">September 27, 2026</span>
   </span>
 
     

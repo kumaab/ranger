@@ -146,4 +146,8 @@ retrieve UserStore entries from a variety of alternative sources!
 
 !!! note
     Part 3 of this series has not been published on the Apache Ranger site. The alternative UserStore sources it
-    refers to (external user-store retrievers) are documented in Attribute-based access control.
+    refers to (external user-store retrievers) are documented in [Attribute-based access control](../features/abac.md).
+
+!!! info "Related documentation"
+    See [Attribute-based access control](../features/abac.md), [Dynamic expressions](dynamic-expressions.md) and
+    [Policy conditions](../features/policies/policy-conditions.md).

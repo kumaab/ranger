@@ -302,4 +302,11 @@ ORC or JSON formats, which can then be loaded into various tools for analysis.
 - [Apache Ranger: security zones](https://cwiki.apache.org/confluence/display/RANGER/Introduction+of+Security+Zones+in+Ranger)
 - [Apache Ranger: Python](https://pypi.org/project/apache-ranger/)
 - [Apache Ranger: Java](https://cwiki.apache.org/confluence/display/RANGER/Ranger+Client+Libraries)
-- Apache Ranger: REST API
+- [Apache Ranger: REST API](../dev/rest-api.md)
+
+!!! info "Related documentation"
+    The concepts in this post are documented in [Policy model](../arch/policy-model.md),
+    [Resource-based policies](../features/policies/resource-policies.md),
+    [Tag-based policies](../features/policies/tag-based-policies.md),
+    [Row filtering and column masking](../features/policies/row-filter-column-masking.md),
+    [Attribute-based access control](../features/abac.md) and [Security zones](../features/sec-zone/intro.md).

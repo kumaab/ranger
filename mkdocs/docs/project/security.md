@@ -23,6 +23,8 @@ vulnerability privately, what happens after you report it, and what the project'
 not promise. Published vulnerabilities and the releases that fix them are listed in
 [Vulnerabilities found in Apache Ranger](cve-list.md).
 
+If you operate Ranger and want to harden a deployment, see
+[Security hardening](../services/admin/security-hardening.md).
 
 ## Reporting a vulnerability
 
@@ -188,6 +190,8 @@ should:
   successful pull;
 - keep audit enabled if you rely on it for compliance.
 
+The configuration for each of these points is covered in [Security hardening](../services/admin/security-hardening.md),
+[Authentication](../services/admin/authentication.md) and [Users, groups and roles](../services/admin/users-groups-roles.md).
 
 ## Staying informed
 
